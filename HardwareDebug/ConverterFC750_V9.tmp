@@ -1,0 +1,6 @@
+-MAKEUD=E:\OneDrive\LUU DIEN CUA CUON\AUSDOOR\UPS V9\FirmWare\FC750_V9\HardwareDebug\\FC750_V9_c.ud
+-form=hexadecimal
+-output="FC750_V9.hex"
+-byte_count=FF
+-nomessage
+-nologo

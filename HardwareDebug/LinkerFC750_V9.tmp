@@ -1,0 +1,38 @@
+-MAKEUD=E:\OneDrive\LUU DIEN CUA CUON\AUSDOOR\UPS V9\FirmWare\FC750_V9\HardwareDebug/FC750_V9_l.ud
+-device="C:/Users/phamv/.eclipse/com.renesas.platform_1435879475/DebugComp/RL78/RL78/Common/DR5F104AA.DVF"
+-library="E:\OneDrive\LUU DIEN CUA CUON\AUSDOOR\UPS V9\FirmWare\FC750_V9\CCRL_100\lib\pfdl.lib"
+-list="FC750_V9.map"
+-show=total_size
+-nooptimize
+-entry=_start
+-auto_section_layout
+-security_id=00000000000000000000
+-user_opt_byte=EFFFE9
+-ocdbg=04
+-ocdtr
+-input=".\generate\cstart.obj"
+-input=".\generate\stkinit.obj"
+-input=".\src\r_cg_adc.obj"
+-input=".\src\r_cg_adc_user.obj"
+-input=".\src\r_cg_cgc.obj"
+-input=".\src\r_cg_cgc_user.obj"
+-input=".\src\r_cg_pfdl.obj"
+-input=".\src\r_cg_port.obj"
+-input=".\src\r_cg_port_user.obj"
+-input=".\src\r_cg_serial.obj"
+-input=".\src\r_cg_serial_user.obj"
+-input=".\src\r_cg_timer.obj"
+-input=".\src\r_cg_timer_user.obj"
+-input=".\src\r_main.obj"
+-input=".\src\r_systeminit.obj"
+-library="C:\Program Files (x86)\Renesas Electronics\CS+\CC\CC-RL\V1.10.00\lib\rl78em4s.lib"
+-library="C:\Program Files (x86)\Renesas Electronics\CS+\CC\CC-RL\V1.10.00\lib\rl78em4r.lib"
+-library="C:\Program Files (x86)\Renesas Electronics\CS+\CC\CC-RL\V1.10.00\lib\malloc_n.lib"
+-output="FC750_V9.abs"
+-debug
+-nocompress
+-memory=high
+-rom=.data=.dataR,.sdata=.sdataR
+-nomessage
+-nologo
+-total_size

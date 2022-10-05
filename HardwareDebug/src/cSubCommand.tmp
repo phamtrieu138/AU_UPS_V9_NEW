@@ -1,0 +1,11 @@
+-cpu=S3
+-c
+-dev="C:/Users/phamv/.eclipse/com.renesas.platform_1435879475/DebugComp/RL78/RL78/Common/DR5F104AA.DVF"
+-MAKEUD="E:\OneDrive\LUU DIEN CUA CUON\AUSDOOR\UPS V9\FirmWare\FC750_V9\HardwareDebug\src"
+-I "C:\Program Files (x86)\Renesas Electronics\CS+\CC\CC-RL\V1.10.00\inc"
+-I "E:\OneDrive\LUU DIEN CUA CUON\AUSDOOR\UPS V9\FirmWare\FC750_V9\CCRL_100\lib"
+-I "E:\OneDrive\LUU DIEN CUA CUON\AUSDOOR\UPS V9\FirmWare\FC750_V9\generate" 
+-character_set=utf8
+-lang=c
+-g
+-far_rom 
