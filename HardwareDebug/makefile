@@ -150,5 +150,5 @@ endif
 	@echo ''
 	@echo 'Clean complete.'
 
-.PHONY: all clean $(LINKER_OUTPUT_OUTPUTS)  
+.PHONY: all clean 
 -include ../makefile.targets

@@ -34,7 +34,7 @@ User definitions
 ***********************************************************************************************************************/
 
 /* Start user code for function. Do not edit comment generated here */
-#define	FIRMWARE_VER			902
+#define	FIRMWARE_VER			903
 #define ENABLE_LINE_OVERCURRENT	0
 #define ENABLE_DECREASE_VOLTAGE	0
 #define C750 1
