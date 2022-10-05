@@ -879,14 +879,10 @@ Macro definitions
 ***********************************************************************************************************************/
 /* 16-bit timer data register 00 (TDR00) */
 #define _031F_TAU_TDR00_VALUE                   (0x031FU)
-/* 16-bit timer data register 01 (TDR01) */
-#define _0000_TAU_TDR01_VALUE                   (0x0000U)
 /* 16-bit timer data register 03 (TDR03) */
 #define _0000_TAU_TDR03_VALUE                   (0x0000U)
 /* Clock divisor for TAU0 channel 0 */
 #define _0001_TAU0_CHANNEL0_DIVISOR             (0x0001U)
-/* Clock divisor for TAU0 channel 1 */
-#define _0001_TAU0_CHANNEL1_DIVISOR             (0x0001U)
 /* Clock divisor for TAU0 channel 3 */
 #define _0001_TAU0_CHANNEL3_DIVISOR             (0x0001U)
 /* 16-bit timer data register 02 (TDR02) */

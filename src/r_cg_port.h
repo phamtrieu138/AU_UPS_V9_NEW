@@ -214,10 +214,10 @@ void R_PORT_Create(void);
 #define D1 			P0_bit.no1
 #define D0		 	P1_bit.no0
 
-#define SD_PP	 	P3_bit.no0
+#define SD_PP	 	P1_bit.no6
 #define ON_24V_MCU 	P4_bit.no0
 #define RELAY	 	P1_bit.no1
-#define PB		 	P6_bit.no0
+#define PB		 	P3_bit.no0
 #define BUZZER		P12_bit.no0
 void setupTestCheck(void);
 void clearTestCheck(void);

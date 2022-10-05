@@ -90,14 +90,6 @@ void R_TAU0_Create(void)
     TDR00 = _031F_TAU_TDR00_VALUE;
     TO0 &= ~_0001_TAU_CH0_OUTPUT_VALUE_1;
     TOE0 &= ~_0001_TAU_CH0_OUTPUT_ENABLE;
-    /* Channel 1 is used as slave channel for PWM output function */
-    TMR01 = _0000_TAU_CLOCK_SELECT_CKM0 | _0000_TAU_CLOCK_MODE_CKS | _0000_TAU_COMBINATION_SLAVE |
-            _0400_TAU_TRIGGER_MASTER_INT | _0009_TAU_MODE_PWM_SLAVE;
-    TDR01 = _0000_TAU_TDR01_VALUE;
-    TOM0 |= _0002_TAU_CH1_OUTPUT_COMBIN;
-    TOL0 &= ~_0002_TAU_CH1_OUTPUT_LEVEL_L;
-    TO0 &= ~_0002_TAU_CH1_OUTPUT_VALUE_1;
-    TOE0 |= _0002_TAU_CH1_OUTPUT_ENABLE;
     /* Channel 3 is used as slave channel for PWM output function */
     TMR03 = _0000_TAU_CLOCK_SELECT_CKM0 | _0000_TAU_CLOCK_MODE_CKS | _0000_TAU_COMBINATION_SLAVE |
             _0400_TAU_TRIGGER_MASTER_INT | _0009_TAU_MODE_PWM_SLAVE;
@@ -114,9 +106,6 @@ void R_TAU0_Create(void)
     TOL0 &= ~_0004_TAU_CH2_OUTPUT_LEVEL_L;
     TO0 &= ~_0004_TAU_CH2_OUTPUT_VALUE_1;
     TOE0 &= ~_0004_TAU_CH2_OUTPUT_ENABLE;
-    /* Set TO01 pin */
-    P1 &= 0xBFU;
-    PM1 &= 0xBFU;
     /* Set TO03 pin */
     P3 &= 0xFDU;
     PM3 &= 0xFDU;
@@ -132,8 +121,8 @@ void R_TAU0_Channel0_Start(void)
 {
     TMIF00 = 0U;    /* clear INTTM00 interrupt flag */
     TMMK00 = 0U;    /* enable INTTM00 interrupt */
-    TOE0 |= _0002_TAU_CH1_OUTPUT_ENABLE | _0008_TAU_CH3_OUTPUT_ENABLE;
-    TS0 |= _0001_TAU_CH0_START_TRG_ON | _0002_TAU_CH1_START_TRG_ON | _0008_TAU_CH3_START_TRG_ON;
+    TOE0 |= _0008_TAU_CH3_OUTPUT_ENABLE;
+    TS0 |= _0001_TAU_CH0_START_TRG_ON | _0008_TAU_CH3_START_TRG_ON;
 }
 
 /***********************************************************************************************************************
@@ -144,8 +133,8 @@ void R_TAU0_Channel0_Start(void)
 ***********************************************************************************************************************/
 void R_TAU0_Channel0_Stop(void)
 {
-    TT0 |= _0001_TAU_CH0_STOP_TRG_ON | _0002_TAU_CH1_STOP_TRG_ON | _0008_TAU_CH3_STOP_TRG_ON;
-    TOE0 &= ~_0002_TAU_CH1_OUTPUT_ENABLE & ~_0008_TAU_CH3_OUTPUT_ENABLE;
+    TT0 |= _0001_TAU_CH0_STOP_TRG_ON | _0008_TAU_CH3_STOP_TRG_ON;
+    TOE0 &= ~_0008_TAU_CH3_OUTPUT_ENABLE;
     /* Mask channel 0 interrupt */
     TMMK00 = 1U;    /* disable INTTM00 interrupt */
     TMIF00 = 0U;    /* clear INTTM00 interrupt flag */

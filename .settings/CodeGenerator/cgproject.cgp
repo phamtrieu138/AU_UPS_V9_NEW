@@ -135,7 +135,7 @@
     <TRD1_INTP0 Name="TRD1_INTP0" Value="0" />
     <ELC_TARGET8 Name="ELC_TARGET8" Text="disable" />
     <ProjectName Name="PrjName" Text="FC750_V9" />
-    <ProjectPath Name="PrjPath" Text="E:\OneDrive\LUU DIEN CUA CUON\AUSDOOR\UPS V9\FirmWare\FC750_V9.0.1" />
+    <ProjectPath Name="PrjPath" Text="E:\OneDrive\LUU DIEN CUA CUON\AUSDOOR\UPS V9\FirmWare\FC750_V9" />
     <ProjectKind Name="PrjKind" Text="Project78K0R" />
     <DeviceName Name="DeviceName" Fixed="" Text="RL78G14" />
     <CPUCoreType Name="CPUCoreType" Fixed="" Text="1" />
@@ -280,7 +280,7 @@
           <P13 Chip="R5F104AA,R5F104AC,R5F104AD,R5F104AE,R5F104BA,R5F104BC,R5F104BD,R5F104BE,R5F104CA,R5F104CC,R5F104CD,R5F104CE,R5F104EA,R5F104EC,R5F104ED,R5F104EE,R5F104FA,R5F104FC,R5F104FD,R5F104FE,R5F104GA,R5F104GC,R5F104GD,R5F104GE,R5F104JC,R5F104JD,R5F104JE,R5F104LC,R5F104LD,R5F104LE" Name="P13/TXD2/SO20/TRDIOA1" Nch="true" AltFunc="TRDIOA1_P13" Point="I/O" />
           <P14 Name="P14/RXD2/SI20/SDA20/TRDIOD0" TTL="true" Nch="true" AltFunc="" Point="I/O" />
           <P15 Name="P15/_SCK20/SCL20/TRDIOB0" TTL="true" Nch="true" AltFunc="TRDIOB0_P15" Point="I/O" />
-          <P16 Chip="R5F104AA,R5F104AC,R5F104AD,R5F104AE,R5F104BA,R5F104BC,R5F104BD,R5F104BE,R5F104CA,R5F104CC,R5F104CD,R5F104CE,R5F104EA,R5F104EC,R5F104ED,R5F104EE,R5F104FA,R5F104FC,R5F104FD,R5F104FE,R5F104GA,R5F104GC,R5F104GD,R5F104GE,R5F104JC,R5F104JD,R5F104JE,R5F104LC,R5F104LD,R5F104LE" Name="P16/TI01/TO01/INTP5/TRDIOC0" TTL="true" AltFunc="TO01" Point="I/O" />
+          <P16 Chip="R5F104AA,R5F104AC,R5F104AD,R5F104AE,R5F104BA,R5F104BC,R5F104BD,R5F104BE,R5F104CA,R5F104CC,R5F104CD,R5F104CE,R5F104EA,R5F104EC,R5F104ED,R5F104EE,R5F104FA,R5F104FC,R5F104FD,R5F104FE,R5F104GA,R5F104GC,R5F104GD,R5F104GE,R5F104JC,R5F104JD,R5F104JE,R5F104LC,R5F104LD,R5F104LE" Name="P16/TI01/TO01/INTP5/TRDIOC0" TTL="true" AltFunc="P16" Point="I/O" />
           <P17 Chip="R5F104AA,R5F104AC,R5F104AD,R5F104AE,R5F104BA,R5F104BC,R5F104BD,R5F104BE,R5F104CA,R5F104CC,R5F104CD,R5F104CE,R5F104EA,R5F104EC,R5F104ED,R5F104EE,R5F104FA,R5F104FC,R5F104FD,R5F104FE,R5F104GA,R5F104GC,R5F104GD,R5F104GE,R5F104JC,R5F104JD,R5F104JE,R5F104LC,R5F104LD,R5F104LE" Name="P17/TI02/TO02/TRDIOA0/TRDCLK" TTL="true" Nch="true" AltFunc="TRDIOA0_P17" Point="I/O" />
         </Port1>
         <Port2 ADIN="true">
@@ -301,8 +301,8 @@
           <P51 Chip="RL78G14_30pin,RL78G14_32pin,RL78G14_36pin,RL78G14_40pin,RL78G14_44pin,RL78G14_48pin,RL78G14_49pin,RL78G14_52pin,RL78G14_64pin,RL78G14_80pin,RL78G14_100pin" Name="P51/INTP2/SO00/TXD0/TOOLTXD/TRGIOB" Nch="true" AltFunc="TXD0" Point="I/O" />
         </Port5>
         <Port6>
-          <P60 Name="P60/SCLA0" AltFunc="P60" Point="I/O" />
-          <P61 Name="P61/SDAA0" AltFunc="P61" Point="I/O" />
+          <P60 Name="P60/SCLA0" AltFunc="" Point="I/O" />
+          <P61 Name="P61/SDAA0" AltFunc="" Point="I/O" />
         </Port6>
         <Port12>
           <P120 Chip="R5F104AA,R5F104AC,R5F104AD,R5F104AE,R5F104BA,R5F104BC,R5F104BD,R5F104BE,R5F104CA,R5F104CC,R5F104CD,R5F104CE,R5F104EA,R5F104EC,R5F104ED,R5F104EE,R5F104FA,R5F104FC,R5F104FD,R5F104FE,R5F104GA,R5F104GC,R5F104GD,R5F104GE,R5F104JC,R5F104JD,R5F104JE,R5F104LC,R5F104LD,R5F104LE" Name="P120/ANI19" DIN="true" Pullup="true" AltFunc="P120" Point="I/O" />
@@ -1402,7 +1402,7 @@
           <setting name="Output_value" value="0" />
         </P15>
         <P16>
-          <setting name="Operation" value="unused" />
+          <setting name="Operation" value="output" />
           <setting name="Pull_up" value="unused" />
           <setting name="TTL_buffer" value="unused" />
           <setting name="N-ch_open-drain" value="unused" />
@@ -1489,14 +1489,14 @@
       </PortP5>
       <PortP6>
         <P60>
-          <setting name="Operation" value="input" />
+          <setting name="Operation" value="unused" />
           <setting name="Pull_up" value="unused" />
           <setting name="TTL_buffer" value="unused" />
           <setting name="N-ch_open-drain" value="unused" />
           <setting name="Output_value" value="0" />
         </P60>
         <P61>
-          <setting name="Operation" value="output" />
+          <setting name="Operation" value="unused" />
           <setting name="Pull_up" value="unused" />
           <setting name="TTL_buffer" value="unused" />
           <setting name="N-ch_open-drain" value="unused" />
@@ -1705,8 +1705,37 @@
     </ADC>
     <TAU0>
       <Channel0>
-        <setting name="ChannelFunction" value="11" />
+        <setting name="ChannelFunction" value="8" />
         <setting name="Pinselection" value="-1" />
+        <TAUPWMMaster0>
+          <PWMMaster0>
+            <setting name="Value_scale" value="1" />
+            <setting name="PWM_cycle" value="50" />
+            <setting name="Master_interrupt_priority" value="3" />
+            <setting name="Master_interrupt" value="used" />
+          </PWMMaster0>
+          <PWMSlave1>
+            <setting name="PWM_duty" value="50" />
+            <setting name="OuputLevel" value="0" />
+            <setting name="OuputValue" value="0" />
+            <setting name="Slave_interrupt_priority" value="3" />
+            <setting name="Slave_interrupt" value="used" />
+          </PWMSlave1>
+          <PWMSlave2>
+            <setting name="PWM_duty" value="50" />
+            <setting name="OuputLevel" value="0" />
+            <setting name="OuputValue" value="0" />
+            <setting name="Slave_interrupt_priority" value="3" />
+            <setting name="Slave_interrupt" value="used" />
+          </PWMSlave2>
+          <PWMSlave3>
+            <setting name="PWM_duty" value="0" />
+            <setting name="OuputLevel" value="0" />
+            <setting name="OuputValue" value="0" />
+            <setting name="Slave_interrupt_priority" value="3" />
+            <setting name="Slave_interrupt" value="unused" />
+          </PWMSlave3>
+        </TAUPWMMaster0>
         <TAUMultiPWMMaster0>
           <PWMMaster0>
             <setting name="Value_scale" value="1" />
@@ -1738,7 +1767,7 @@
         </TAUMultiPWMMaster0>
       </Channel0>
       <Channel1>
-        <setting name="ChannelFunction" value="9" />
+        <setting name="ChannelFunction" value="0" />
         <setting name="Pinselection" value="-1" />
       </Channel1>
       <Channel2>
@@ -1762,7 +1791,7 @@
         </TAUInterval2>
       </Channel2>
       <Channel3>
-        <setting name="ChannelFunction" value="9" />
+        <setting name="ChannelFunction" value="8" />
         <setting name="Pinselection" value="-1" />
         <TAUSquare3>
           <setting name="Count_clock" value="MCK clock" />
