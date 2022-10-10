@@ -1216,7 +1216,6 @@
         <pior1_value Name="pior1_value" Value="00" />
         <cg_security1 Name="cg_security1" Value="00" />
         <cg_security9 Name="cg_security9" Value="00" />
-        <lvi_option Name="lvi_option" Value="FF" />
         <cg_security6 Name="cg_security6" Value="00" />
         <cg_crc_area Name="cg_crc_area" Value="00" />
         <cg_iawctl_value Name="cg_iawctl_value" Value="00" />
@@ -1228,8 +1227,9 @@
         <cg_security4 Name="cg_security4" Value="00" />
         <pior_value Name="pior_value" Value="00" />
         <cg_pms_value Name="cg_pms_value" Value="00" />
-        <cg_security7 Name="cg_security7" Value="00" />
         <cg_option Name="cg_option" Value="04" />
+        <cg_security7 Name="cg_security7" Value="00" />
+        <lvi_option Name="lvi_option" Value="FF" />
       </GlobleUserTag>
     </TAG>
   </DIR>
@@ -1448,7 +1448,7 @@
       </PortP2>
       <PortP3>
         <P30>
-          <setting name="Operation" value="output" />
+          <setting name="Operation" value="input" />
           <setting name="Pull_up" value="unused" />
           <setting name="TTL_buffer" value="unused" />
           <setting name="N-ch_open-drain" value="unused" />
