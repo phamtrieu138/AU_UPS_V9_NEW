@@ -1344,7 +1344,6 @@
         &lt;pior1_value Name="pior1_value" Value="00" /&gt;&#13;
         &lt;cg_security1 Name="cg_security1" Value="00" /&gt;&#13;
         &lt;cg_security9 Name="cg_security9" Value="00" /&gt;&#13;
-        &lt;lvi_option Name="lvi_option" Value="FF" /&gt;&#13;
         &lt;cg_security6 Name="cg_security6" Value="00" /&gt;&#13;
         &lt;cg_crc_area Name="cg_crc_area" Value="00" /&gt;&#13;
         &lt;cg_iawctl_value Name="cg_iawctl_value" Value="00" /&gt;&#13;
@@ -1356,8 +1355,9 @@
         &lt;cg_security4 Name="cg_security4" Value="00" /&gt;&#13;
         &lt;pior_value Name="pior_value" Value="00" /&gt;&#13;
         &lt;cg_pms_value Name="cg_pms_value" Value="00" /&gt;&#13;
-        &lt;cg_security7 Name="cg_security7" Value="00" /&gt;&#13;
         &lt;cg_option Name="cg_option" Value="04" /&gt;&#13;
+        &lt;cg_security7 Name="cg_security7" Value="00" /&gt;&#13;
+        &lt;lvi_option Name="lvi_option" Value="FF" /&gt;&#13;
       &lt;/GlobleUserTag&gt;&#13;
     &lt;/TAG&gt;&#13;
   &lt;/DIR&gt;&#13;
@@ -1576,7 +1576,7 @@
       &lt;/PortP2&gt;&#13;
       &lt;PortP3&gt;&#13;
         &lt;P30&gt;&#13;
-          &lt;setting name="Operation" value="output" /&gt;&#13;
+          &lt;setting name="Operation" value="input" /&gt;&#13;
           &lt;setting name="Pull_up" value="unused" /&gt;&#13;
           &lt;setting name="TTL_buffer" value="unused" /&gt;&#13;
           &lt;setting name="N-ch_open-drain" value="unused" /&gt;&#13;

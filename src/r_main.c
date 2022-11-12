@@ -157,6 +157,7 @@ void main(void)
 				}
 				break;
 			case SYS_DIS:
+				setPowerMCU_ON();
 				if (sysCom.cnt <= 60000) {
 					if (sysCom.cnt == 0) {
 						sysDis.state = DIS_WAIT;
@@ -313,6 +314,7 @@ void main(void)
 					sysCom.state = SYS_CHARGE;
 				break;
 			case SYS_AUTO_DIS:
+				setPowerMCU_ON();
 				switch (sysCom.autoDisState) {
 				case 0: //delay 50ms
 					sysDis.PPflag = FALSE;
@@ -412,6 +414,7 @@ void main(void)
 				}
 				break;
 			case SYS_DIS_ERR:
+				setPowerMCU_ON();
 				if (sysCom.cnt == 0) {
 					uartSendSysCallBack(UART_ADDRESS_SYS, SYS_DIS_ERR, sysDis.errCode);
 					dataSaveArr[0] = sysCom.state << 4;	//4 bits high byte 0 = sysState;
@@ -479,6 +482,7 @@ void main(void)
 				sysDis.PPflag = FALSE;
 				sysDis.errCnt = 0;
 				sysCom.buzzState = BUZZ_CHARGE;
+				setPowerMCU_ON();
 				if (sysCom.cnt < 65000)
 					sysCom.cnt++;
 				if (sysCom.cnt < SYS_DELAY_RELAY_CHARGE) {
@@ -597,6 +601,7 @@ void main(void)
 				}
 				break;
 			case SYS_CHARGE_ERR:
+				setPowerMCU_ON();
 				if (sysCom.cnt == 0) {
 					uartSendSysCallBack(UART_ADDRESS_SYS, SYS_CHARGE_ERR, 0);
 				}

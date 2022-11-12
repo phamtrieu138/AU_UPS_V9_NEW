@@ -34,11 +34,11 @@ User definitions
 ***********************************************************************************************************************/
 
 /* Start user code for function. Do not edit comment generated here */
-#define	FIRMWARE_VER			903
+#define	FIRMWARE_VER			904
 #define ENABLE_LINE_OVERCURRENT	0
 #define ENABLE_DECREASE_VOLTAGE	0
-#define C750 1
-#define D_TYPE 1
+#define C750 0
+#define D_TYPE 0
 //define type of UPS
 #if C750
 	//C750
