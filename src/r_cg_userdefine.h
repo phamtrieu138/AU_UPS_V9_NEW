@@ -37,12 +37,12 @@ User definitions
 #define	FIRMWARE_VER			904
 #define ENABLE_LINE_OVERCURRENT	0
 #define ENABLE_DECREASE_VOLTAGE	0
-#define C750 0
-#define D_TYPE 0
+#define C750 1
+#define D_TYPE 1
 //define type of UPS
 #if C750
 	//C750
-	#define OUTPUT_DIS_OVERLOAD2 	330		//385
+	#define OUTPUT_DIS_OVERLOAD2 	430		//330
 	#define	MAX_TIME_DIS			20000000   //56h
 #else
 //C1200

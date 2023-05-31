@@ -1,12 +1,12 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <RfpProject>
   <FileVersion>V1.04.00</FileVersion>
-  <ProductVersion>V3.09.00</ProductVersion>
+  <ProductVersion>V3.10.00</ProductVersion>
   <ParameterFile>R5F104AA.fcf</ParameterFile>
   <Device>RL78</Device>
   <OperationTab>
     <Endian>RFLG_ENDIAN_LITTLE</Endian>
-    <ProgramFile>E:\OneDrive\LUU DIEN CUA CUON\AUSDOOR\UPS V9\FirmWare\FC750 V9.0.0\FC750_V9\HardwareDebug\FC750_V9.hex</ProgramFile>
+    <ProgramFile>E:\OneDrive\LUU DIEN CUA CUON\AUSDOOR\UPS V9\FirmWare\FC750 V9.0.0\FC750_V9\HardwareDebug\FC750_V9_C750.hex</ProgramFile>
   </OperationTab>
   <OperationSettingTab>
     <FillCode>False</FillCode>
@@ -22,8 +22,8 @@
     <ListOperation>Erase,Program,Verify</ListOperation>
   </OperationSettingTab>
   <BlockSettingTab>
-    <ListErase>0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19</ListErase>
-    <ListPV>0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19</ListPV>
+    <ListErase>0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15</ListErase>
+    <ListPV>0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15</ListPV>
     <ListLockbit>
     </ListLockbit>
     <ListOTP>
@@ -51,6 +51,7 @@
     <DisableReadCmd>False</DisableReadCmd>
     <DisableBootProgram>False</DisableBootProgram>
     <DisableInitCmd>False</DisableInitCmd>
+    <DisableTestMode>False</DisableTestMode>
     <SetIDandPWD>False</SetIDandPWD>
     <IdCode>
     </IdCode>

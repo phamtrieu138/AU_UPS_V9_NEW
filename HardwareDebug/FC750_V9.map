@@ -1,4 +1,4 @@
-Renesas Optimizing Linker (W3.03.00 )             12-Nov-2022 09:05:59
+Renesas Optimizing Linker (W3.03.00 )             24-Mar-2023 10:31:13
 
 *** Options ***
 
@@ -60,13 +60,13 @@ SECTION                            START      END         SIZE   ALIGN
 .security_id
                                   000000c4  000000cd         a   1
 .text
-                                  000000ce  00000419       34c   1
+                                  000000ce  0000042e       361   1
 PFDL_COD
-                                  0000041a  000004a7        8e   2
+                                  00000430  000004bd        8e   2
 .RLIB
-                                  000004a8  00000985       4de   1
+                                  000004be  0000099b       4de   1
 .SLIB
-                                  00000986  0000098c         7   1
+                                  0000099c  000009a2         7   1
 .const
                                   00002000  00002000         0   2
 .textf
@@ -84,4 +84,4 @@ PFDL_COD
 
 RAMDATA SECTION:  000005f8 Byte(s)
 ROMDATA SECTION:  000000c0 Byte(s)
-PROGRAM SECTION:  0000241e Byte(s)
+PROGRAM SECTION:  00002433 Byte(s)

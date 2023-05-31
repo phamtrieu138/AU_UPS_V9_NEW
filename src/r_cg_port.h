@@ -206,9 +206,9 @@ void R_PORT_Create(void);
 //	#define LED_YELLOW 	P0_bit.no1
 //	#define LED_GREEN 	P1_bit.no0
 //AUS
-	#define LED_GREEN 	P0_bit.no0
-	#define LED_YELLOW 	P0_bit.no1
-	#define LED_RED 	P1_bit.no0
+#define LED_GREEN 	P0_bit.no0
+#define LED_YELLOW 	P0_bit.no1
+#define LED_RED 	P1_bit.no0
 
 #define D2		 	P0_bit.no0
 #define D1 			P0_bit.no1
