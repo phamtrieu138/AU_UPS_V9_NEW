@@ -23,7 +23,7 @@
 * Device(s)    : R5F104AA
 * Tool-Chain   : CCRL
 * Description  : This file includes user definition.
-* Creation Date: 10/7/2022
+* Creation Date: 26/09/2023
 ***********************************************************************************************************************/
 
 #ifndef _USER_DEF_H
@@ -34,68 +34,33 @@ User definitions
 ***********************************************************************************************************************/
 
 /* Start user code for function. Do not edit comment generated here */
-#define	FIRMWARE_VER			904
-#define ENABLE_LINE_OVERCURRENT	0
-#define ENABLE_DECREASE_VOLTAGE	0
+#define	FIRMWARE_VER 910
 #define C750 1
-#define D_TYPE 1
+#define D_TYPE 0
 //define type of UPS
 #if C750
-	//C750
-	#define OUTPUT_DIS_OVERLOAD2 	430		//330
+//C750
+	#define OUTPUT_DIS_OVERLOAD2 	325		//325 V9.1.0
 	#define	MAX_TIME_DIS			20000000   //56h
 #else
 //C1200
-	#define OUTPUT_DIS_OVERLOAD2 	440
-	#define	MAX_TIME_DIS			28000000	//78h
+#define OUTPUT_DIS_OVERLOAD2 	450    //450 V9.1.0
+#define	MAX_TIME_DIS			28000000	//78h
 #endif
 //over current when grid on
-#if ENABLE_LINE_OVERCURRENT
-#if C750
-#define OUTPUT_GRID_OVERLOAD 	450  //340
-#else
-		#define OUTPUT_GRID_OVERLOAD 	700  //340
-	#endif
-#else
-	#define OUTPUT_GRID_OVERLOAD 	1000  //340
-#endif
-#if ENABLE_DECREASE_VOLTAGE
-#if C750
-	#define OUTPUT_DIS_OVERLOAD1 	300  //340
-#else
-		#define OUTPUT_DIS_OVERLOAD1 	350  //340
-	#endif
-#else
-	#define OUTPUT_DIS_OVERLOAD1 	1000  //340
-#endif
-#define	TIME_A_DAY				8640000
-#define OUTPUT_DIS_NORMAL 		200
-//readwrite type define
-#define WRITEDATA				1
-#define	READBLOCK				2
-#define	READBYTES				3
-//DF_sate define
-#define DF_READINGBLOCK0		0
-#define DF_STARTWRITEBLOCK0		1
-#define DF_WAITTOREADBLOCKX		2
-#define DF_READINGBLOCKX		3
-#define DF_WAITINGTOEND			4
-#define DF_IDLE					5
-#define DF_ONLYREADBLOCK0		6
-#define DF_ONLYREADBLOCK1		7
-#define DF_ONLYREADBLOCK2		8
-#define DF_ONLYREADBLOCK3		9
+#define OUTPUT_GRID_OVERLOAD 	650  //650 V9.1.0
 #define SYS_DELAY_INIT 			1000
+#define SYS_DELAY_RELAY_DIS		800
+#define SYS_DELAY_PP	 		2200
 #define SYS_DELAY_CHECK_PP 		2350
 #define SYS_DELAY_PWM	 		2800
-#define SYS_DELAY_PP	 		2200
-#define SYS_DELAY_RELAY_DIS		800
+#define SYS_DELAY_CHECK_LINE	3200
 #define SYS_DELAY_RELAY_CHARGE 	2500
 typedef enum {
-	SYS_INIT = 0, SYS_DIS = 1, SYS_DIS_ERR = 2, SYS_STOP = 3, SYS_OFF = 4, SYS_CHARGE = 5, SYS_CHARGE_ERR = 6, SYS_AUTO_DIS = 7
+	SYS_INIT = 0, SYS_DIS = 1, SYS_DIS_ERR = 2, SYS_STOP = 3, SYS_OFF = 4, SYS_CHARGE = 5, SYS_CHARGE_ERR = 6, SYS_AUTO_DIS = 7, SYS_STARTUP = 8
 } sysState_t;
 typedef enum {
-	DIS_WAIT = 0, DIS_RELAY_ON = 1, DIS_PP_ON = 2, DIS_CHECK_PP_ON = 3, DIS_PWM_ON = 4
+	DIS_WAIT = 0, DIS_RELAY_ON = 1, DIS_PP_ON = 2, DIS_CHECK_PP_ON = 3, DIS_PWM_ON = 4, DIS_CHECK_LINE = 5
 } disState_t;
 typedef enum {
 	BUZZ_OFF = 0, BUZZ_DIS = 1, BUZZ_CHARGE = 2, BUZZ_ERR = 3, BUZZ_STOP = 4
@@ -125,7 +90,8 @@ typedef struct {
 } sysCommon_t;
 typedef struct {
 	uint32_t disCnt;
-	uint32_t timeCheckCnt;
+	uint8_t checkOverCurCnt;
+	uint8_t overCurrStep;
 	uint16_t underBattVolCnt;
 	uint32_t noLoadCnt;
 	disState_t state;
@@ -139,7 +105,8 @@ typedef struct {
 	boolean released;
 } sysDis_t;
 typedef struct {
-	uint32_t chargCnt;
+	uint8_t checkOverCurCnt;
+	uint8_t overCurrStep;
 	uint16_t resetChargCnt;
 	uint16_t timeStartState1;
 	uint16_t floatVoltageSet;
@@ -169,8 +136,10 @@ uint8_t chargeVolADJ(uint16_t volSet);
 void setDataOut(void);
 void sendToDataFlashBuffer(uint8_t *data);
 void readDataFlashBlock(uint8_t blockno);
-uint8_t chainManager(void);
 void backToChargeSystem(void);
 void timeOnlineContinuos(void);
+void dataFlashHandle1(void);
+uint8_t startWriteToEEP1(uint16_t numberOfData);
+uint8_t startReadFromEEP1(uint16_t numberOfData, uint16_t startOfAddress);
 /* End user code. Do not edit comment generated here */
 #endif

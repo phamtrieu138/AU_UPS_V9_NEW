@@ -23,7 +23,7 @@
 * Device(s)    : R5F104AA
 * Tool-Chain   : CCRL
 * Description  : This file implements device driver for Serial module.
-* Creation Date: 10/7/2022
+* Creation Date: 26/09/2023
 ***********************************************************************************************************************/
 
 #ifndef SERIAL_H
@@ -389,6 +389,7 @@ void R_UART0_Start(void);
 void R_UART0_Stop(void);
 MD_STATUS R_UART0_Send(uint8_t * const tx_buf, uint16_t tx_num);
 MD_STATUS R_UART0_Receive(uint8_t * const rx_buf, uint16_t rx_num);
+static void r_uart0_callback_receiveend(void);
 
 /* Start user code for function. Do not edit comment generated here */
 #define UART_COMMAND_READ		0x01

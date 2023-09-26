@@ -23,7 +23,7 @@
 * Device(s)    : R5F104AA
 * Tool-Chain   : CCRL
 * Description  : This file implements device driver for PORT module.
-* Creation Date: 10/7/2022
+* Creation Date: 26/09/2023
 ***********************************************************************************************************************/
 
 /***********************************************************************************************************************
@@ -129,8 +129,8 @@ void ledUpdate(led_t state, uint8_t errCode) {
 		break;
 	case LED_ERRSTATE:
 		if (ledCnt < 2000) {
-			if (ledCnt < 200 * errCode) {
-				if ((ledCnt % 100) == 0)
+			if (ledCnt < 400 * errCode) {
+				if ((ledCnt % 200) == 0)
 					LED_RED ^= 1;
 			} else
 				LED_RED = 0;
@@ -336,7 +336,7 @@ void clearPowerMCU_ON(void) {
 }
 uint8_t pushButtonCheck(uint8_t *data) {
 	static uint16_t cnt = 0;
-	if (cnt < 800) {
+	if (cnt < 500) {
 		if ((*data) != PB)
 			cnt++;
 		else
@@ -344,6 +344,19 @@ uint8_t pushButtonCheck(uint8_t *data) {
 	} else {
 		cnt = 0;
 		(*data) = PB;
+	}
+	return 1;
+}
+uint8_t lineInCheck(uint8_t *data) {
+	static uint16_t cnt = 0;
+	if (cnt < 500) {
+		if ((*data) != LINE_IN)
+			cnt++;
+		else
+			cnt = 0;
+	} else {
+		cnt = 0;
+		(*data) = LINE_IN;
 	}
 	return 1;
 }

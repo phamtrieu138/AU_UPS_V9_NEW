@@ -23,7 +23,7 @@
 * Device(s)    : R5F104AA
 * Tool-Chain   : CCRL
 * Description  : This file implements device driver for TAU module.
-* Creation Date: 10/7/2022
+* Creation Date: 26/09/2023
 ***********************************************************************************************************************/
 
 /***********************************************************************************************************************
@@ -186,7 +186,7 @@ void R_TMR_RD0_Create(void)
     TRDMR |= _00_TMRD_TRDGRC0_GENERAL | _00_TMRD_TRDGRD0_GENERAL;
     TRDOER1 &= _F0_TMRD_CHANNEL0_OUTPUT_DEFAULT;
     TRDOER1 |= _00_TMRD_TRDIOA0_OUTPUT_ENABLE | _00_TMRD_TRDIOB0_OUTPUT_ENABLE;
-    TRDOCR |= _00_TMRD_TRDIOA0_INITIAL_OUTPUT_L | _00_TMRD_TRDIOB0_INITIAL_OUTPUT_L;
+    TRDOCR |= _00_TMRD_TRDIOA0_INITIAL_OUTPUT_L | _02_TMRD_TRDIOB0_INITIAL_OUTPUT_H;
     TRDCR0 |= _04_TMRD_INETNAL_CLOCK_F32 | _A0_TMRD_COUNTER_CLEAR_TRDGRC;
     TRDIER0 = _00_TMRD_IMIA_DISABLE | _00_TMRD_IMIB_DISABLE | _00_TMRD_IMIC_DISABLE | _08_TMRD_IMID_ENABLE |
               _00_TMRD_OVIE_DISABLE;
@@ -261,7 +261,7 @@ void R_TMR_RD1_Create(void)
     TRDMR |= _00_TMRD_TRDGRC1_GENERAL | _00_TMRD_TRDGRD1_GENERAL;
     TRDOER1 &= _0F_TMRD_CHANNEL1_OUTPUT_DEFAULT;
     TRDOER1 |= _00_TMRD_TRDIOA1_OUTPUT_ENABLE | _00_TMRD_TRDIOB1_OUTPUT_ENABLE;
-    TRDOCR |= _00_TMRD_TRDIOA1_INITIAL_OUTPUT_L | _00_TMRD_TRDIOB1_INITIAL_OUTPUT_L;
+    TRDOCR |= _00_TMRD_TRDIOA1_INITIAL_OUTPUT_L | _20_TMRD_TRDIOB1_INITIAL_OUTPUT_H;
     TRDCR1 |= _04_TMRD_INETNAL_CLOCK_F32 | _A0_TMRD_COUNTER_CLEAR_TRDGRC;
     TRDIER1 = _00_TMRD_IMIA_DISABLE | _00_TMRD_IMIB_DISABLE | _00_TMRD_IMIC_DISABLE | _08_TMRD_IMID_ENABLE |
               _00_TMRD_OVIE_DISABLE;
@@ -317,4 +317,33 @@ void R_TMR_RD1_Stop(void)
 }
 
 /* Start user code for adding. Do not edit comment generated here */
+void R_TMR_RD0_Create1(void)
+{
+    TRD0EN = 1U;    /* enable input clock supply */
+    TRDSTR |= _04_TMRD_TRD0_COUNT_CONTINUES;
+    TRDSTR &= (uint8_t)~_01_TMRD_TRD0_COUNT_START;  /* disable TMRD0 operation */
+    TRDMK0 = 1U;    /* disable TMRD0 interrupt */
+    TRDIF0 = 0U;    /* clear TMRD0 interrupt flag */
+    /* Set INTTRD0 high priority */
+    TRDPR10 = 0U;
+    TRDPR00 = 0U;
+    TRDOER1 &= _F0_TMRD_CHANNEL0_OUTPUT_DEFAULT;
+    TRDOER1 |= _00_TMRD_TRDIOA0_OUTPUT_ENABLE | _00_TMRD_TRDIOB0_OUTPUT_ENABLE;
+    TRDOCR = 0;
+}
+void R_TMR_RD1_Create1(void)
+{
+    TRD0EN = 1U;    /* enable input clock supply */
+    TRDSTR |= _08_TMRD_TRD1_COUNT_CONTINUES;
+    TRDSTR &= (uint8_t)~_02_TMRD_TRD1_COUNT_START;  /* disable TMRD1 operation */
+    TRDMK1 = 1U;    /* disable TMRD1 interrupt */
+    TRDIF1 = 0U;    /* clear TMRD1 interrupt flag */
+    /* Set INTTRD1 high priority */
+    TRDPR11 = 0U;
+    TRDPR01 = 0U;
+    TRDOER1 &= _0F_TMRD_CHANNEL1_OUTPUT_DEFAULT;
+    TRDOER1 |= _00_TMRD_TRDIOA1_OUTPUT_ENABLE | _00_TMRD_TRDIOB1_OUTPUT_ENABLE;
+    TRDOCR = 0;
+}
+
 /* End user code. Do not edit comment generated here */

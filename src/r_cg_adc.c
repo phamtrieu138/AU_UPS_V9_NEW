@@ -23,7 +23,7 @@
 * Device(s)    : R5F104AA
 * Tool-Chain   : CCRL
 * Description  : This file implements device driver for ADC module.
-* Creation Date: 10/7/2022
+* Creation Date: 26/09/2023
 ***********************************************************************************************************************/
 
 /***********************************************************************************************************************
@@ -63,8 +63,8 @@ void R_ADC_Create(void)
     ADPR1 = 1U;
     ADPR0 = 1U;
     /* The reset status of ADPC is analog input, so it's unnecessary to set. */
-    /* Set ANI0 - ANI3 pin as analog input */
-    PM2 |= 0x0FU;
+    /* Set ANI0 - ANI2 pin as analog input */
+    PM2 |= 0x07U;
     /* Set ANI18 pin */
     PMC14 |= 0x80U;
     PM14 |= 0x80U;

@@ -111,6 +111,7 @@
 								</option>
 								<option id="com.renesas.cdt.managedbuild.renesas.ccrl.linker.option.totalSize.1601029272" name="Displays the total sizes of sections (-total_size)" superClass="com.renesas.cdt.managedbuild.renesas.ccrl.linker.option.totalSize" useByScannerDiscovery="false" value="true" valueType="boolean"/>
 								<option id="com.renesas.cdt.managedbuild.renesas.ccrl.linker.option.show.totalSize.1698784000" name="Output total sizes of sections (-show=total_size)" superClass="com.renesas.cdt.managedbuild.renesas.ccrl.linker.option.show.totalSize" useByScannerDiscovery="false" value="true" valueType="boolean"/>
+								<option id="com.renesas.cdt.managedbuild.renesas.ccrl.linker.option.stack.1055509146" name="Outputs a stack use information file (-stack)" superClass="com.renesas.cdt.managedbuild.renesas.ccrl.linker.option.stack" useByScannerDiscovery="false" value="true" valueType="boolean"/>
 								<inputType id="Base.Linker.ccrl.inputType.1809994637" name="Linker InputType" superClass="Base.Linker.ccrl.inputType"/>
 							</tool>
 							<tool id="com.renesas.cdt.managedbuild.renesas.ccrl.base.converter.110195720" name="Converter" superClass="com.renesas.cdt.managedbuild.renesas.ccrl.base.converter">

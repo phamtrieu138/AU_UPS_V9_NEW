@@ -23,7 +23,7 @@
 * Device(s)    : R5F104AA
 * Tool-Chain   : CCRL
 * Description  : This file implements device driver for PORT module.
-* Creation Date: 10/7/2022
+* Creation Date: 26/09/2023
 ***********************************************************************************************************************/
 
 #ifndef PORT_H
@@ -218,6 +218,7 @@ void R_PORT_Create(void);
 #define ON_24V_MCU 	P4_bit.no0
 #define RELAY	 	P1_bit.no1
 #define PB		 	P3_bit.no0
+#define LINE_IN	 	P2_bit.no3
 #define BUZZER		P12_bit.no0
 void setupTestCheck(void);
 void clearTestCheck(void);
@@ -225,5 +226,6 @@ void setPowerMCU_ON(void);
 void clearPowerMCU_ON(void);
 void ledDmoi(void);
 uint8_t pushButtonCheck(uint8_t *data);
+uint8_t lineInCheck(uint8_t * data);
 /* End user code. Do not edit comment generated here */
 #endif

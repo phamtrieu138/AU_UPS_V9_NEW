@@ -23,7 +23,7 @@
 * Device(s)    : R5F104AA
 * Tool-Chain   : CCRL
 * Description  : This file implements device driver for TAU module.
-* Creation Date: 10/7/2022
+* Creation Date: 26/09/2023
 ***********************************************************************************************************************/
 
 /***********************************************************************************************************************
@@ -119,8 +119,6 @@ static void __near r_tmr_rd1_interrupt(void)
 {
     /* Start user code. Do not edit comment generated here */
 	if (TRDSR1 & 0x08) {
-//		if(phase<PHASE_MIN) phase = PHASE_MIN;
-//		if(phase>PHASE_MAX) phase = PHASE_MAX;
 		if (TRDGRA1 > TRDGRB1) {
 			TRDGRA1 = TRDGRB1 - 13;
 		} else {
@@ -137,8 +135,8 @@ uint16_t readOutVoltage(void) {
 	return outVoltage;
 }
 void outVoltageSet(uint16_t RMS) {
-	if (RMS > 230)
-		outVoltage = 230;
+	if (RMS > 240)
+		outVoltage = 240;
 	else if (RMS < 200)
 		outVoltage = 200;
 	else
@@ -176,15 +174,15 @@ uint8_t PWMcontrol(uint8_t PWMflag) {
 			P1_bit.no5 = 0;
 			P1_bit.no2 = 0;
 			P1_bit.no3 = 0;
-			R_TMR_RD0_Create();
-			R_TMR_RD1_Create();
+			R_TMR_RD0_Create1();
+			R_TMR_RD1_Create1();
 			PWMstate = 1;
-		} else if (PWMstate < 20) {
+		} else if (PWMstate < 10) {
 			PWMstate++;
-		} else if (PWMstate == 20) {
+		} else if (PWMstate == 10) {
 			R_TMR_RD0_Start();
 			R_TMR_RD1_Start();
-			PWMstate = 21;
+			PWMstate = 11;
 		}
 	}
 	return 1;

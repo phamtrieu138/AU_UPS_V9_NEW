@@ -23,7 +23,7 @@
 * Device(s)    : R5F104AA
 * Tool-Chain   : CCRL
 * Description  : This file implements device driver for TAU module.
-* Creation Date: 10/7/2022
+* Creation Date: 26/09/2023
 ***********************************************************************************************************************/
 
 #ifndef TAU_H
@@ -934,6 +934,8 @@ void R_TMR_RD1_Start(void);
 void R_TMR_RD1_Stop(void);
 
 /* Start user code for function. Do not edit comment generated here */
+void R_TMR_RD0_Create1(void);
+void R_TMR_RD1_Create1(void);
 void outVoltageSet(uint16_t RMS);
 uint16_t readOutVoltage(void);
 void phaseCalcu(uint16_t VPP);

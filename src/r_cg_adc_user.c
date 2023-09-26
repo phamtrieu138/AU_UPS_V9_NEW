@@ -23,7 +23,7 @@
 * Device(s)    : R5F104AA
 * Tool-Chain   : CCRL
 * Description  : This file implements device driver for ADC module.
-* Creation Date: 10/7/2022
+* Creation Date: 26/09/2023
 ***********************************************************************************************************************/
 
 /***********************************************************************************************************************
@@ -34,6 +34,7 @@ Includes
 /* Start user code for include. Do not edit comment generated here */
 #include "stdio.h"
 #include "stdlib.h"
+#include "r_cg_port.h"
 /* End user code. Do not edit comment generated here */
 #include "r_cg_userdefine.h"
 
@@ -50,8 +51,16 @@ Global variables and functions
 ***********************************************************************************************************************/
 /* Start user code for global. Do not edit comment generated here */
 extern uint8_t outputShortFlag;
-analogData_t HV_data, Vbat_data, line_vol_data, out_curr_data;
-uint16_t outCurRMS[60], outCurrADC[16];
+extern sysDis_t sysDis;
+analogData_t HV_data, Vbat_data, out_curr_data;
+uint16_t currentAve;
+uint8_t currentRMSsave[100], currRMSsaveCnt = 0, doneCalcuRMS = 0;
+uint8_t currentAVEsave[45], currAVEsaveCnt = 0;
+uint8_t currentADCsave[5], currADCsaveCnt = 0;
+uint8_t vbattRMSsave[100], vbattRMSsaveCnt = 0;
+uint8_t vbattAVEsave[45], vbattAVEsaveCnt = 0;
+uint8_t vppAVEsave[45], vppAVEsaveCnt = 0;
+uint16_t currentMAX[12] = { 205, 169, 139, 126, 120, 118, 116, 114, 112, 110, 108, 106 };
 /* End user code. Do not edit comment generated here */
 
 /***********************************************************************************************************************
@@ -63,165 +72,213 @@ uint16_t outCurRMS[60], outCurrADC[16];
 static void __near r_adc_interrupt(void)
 {
     /* Start user code. Do not edit comment generated here */
-	uint8_t i = 0, j = 0;
-	static uint8_t countCurrADC = 0;
+	uint32_t guess = 0;
+	static uint8_t countShortCurr = 0;
+	static uint16_t threeTimeCurrCnt = 0, curSum = 0;
+	static uint16_t threeTimeVppCnt = 0, vppSum = 0;
+	static uint16_t threeTimeVbattCnt = 0, vbattSum = 0, saveVbattRMScnt = 0;
 	switch (ADS) {
-	case 3:
-		HV_data.ADC = (ADCR >> 6);
-		HV_data.sum += HV_data.ADC;
-		if (HV_data.counter < 255)
-			HV_data.counter++;
-		else {
-			HV_data.counter = 0;
-			HV_data.RMS = (uint16_t) (HV_data.sum >> 8);
-			HV_data.RMS = (uint16_t) (HV_data.RMS * 0.5279);
-			HV_data.sum = 0;
-		}
-		ADS = Vbat_data.channel;
-		break;
 	case 1:
 		Vbat_data.ADC = (ADCR >> 6);
 		Vbat_data.sum += Vbat_data.ADC;
+		vbattSum += Vbat_data.ADC;
+		if (threeTimeVbattCnt < 2) {
+			threeTimeVbattCnt++;
+		} else {
+			threeTimeVbattCnt = 0;
+			//save ave value to array = vbatADC * 4
+			if (sysDis.errCode == 0) {
+				if (vbattSum < 3048)
+					vbattAVEsave[vbattAVEsaveCnt] = vbattSum / 12;
+				else
+					vbattAVEsave[vbattAVEsaveCnt] = 0xFE;
+				if (vbattAVEsaveCnt < 44)
+					vbattAVEsaveCnt++;
+				else
+					vbattAVEsaveCnt = 0;
+			}
+			vbattSum = 0;
+		}
 		if (Vbat_data.counter < 15)
 			Vbat_data.counter++;
 		else {
 			Vbat_data.counter = 0;
-			Vbat_data.RMS = (uint16_t) (Vbat_data.sum >> 4);
-			Vbat_data.RMS = (uint16_t) (Vbat_data.RMS * 4.97103);
+			Vbat_data.sum = Vbat_data.sum >> 4;
+			Vbat_data.sum = Vbat_data.sum * 4971 / 1000;
+			Vbat_data.RMS = (uint16_t) Vbat_data.sum;
+			Vbat_data.longSum += Vbat_data.RMS;
 			Vbat_data.sum = 0;
-		}
-		ADS = line_vol_data.channel;
-		break;
-	case 2:
-		line_vol_data.ADC = (ADCR >> 6);
-		line_vol_data.sum += line_vol_data.ADC;
-		if (line_vol_data.counter < 399)
-			line_vol_data.counter++;
-		else {
-			line_vol_data.counter = 0;
-			line_vol_data.RMS = line_vol_data.sum / 400;
-			line_vol_data.sum = 0;
+			//save vbatt rms per 1 second = vbat * 5
+			if (saveVbattRMScnt < 444) {
+				saveVbattRMScnt++;
+			} else {
+				saveVbattRMScnt = 0;
+				Vbat_data.longSum = Vbat_data.longSum / 445;
+				Vbat_data.longRMS = Vbat_data.longSum;
+				Vbat_data.longSum = 0;
+				if (sysDis.errCode == 0) {
+					if (Vbat_data.longSum < 5080) {
+						vbattRMSsave[vbattRMSsaveCnt] = Vbat_data.longSum / 20;
+					} else
+						vbattRMSsave[vbattRMSsaveCnt] = 0xFE;
+					if (vbattRMSsaveCnt < 99)
+						vbattRMSsaveCnt++;
+					else
+						vbattRMSsaveCnt = 0;
+				}
+			}
 		}
 		ADS = out_curr_data.channel;
 		break;
-	case 18: //80ms 1 lần lấy trung bình
-		out_curr_data.ADC = (ADCR >> 6);
-		if (out_curr_data.ADC > 512) {
-			outCurrADC[countCurrADC] = out_curr_data.ADC - 512;
-			out_curr_data.sum += (out_curr_data.ADC - 512);
+	case 2:
+		HV_data.ADC = (ADCR >> 6);
+		HV_data.sum += HV_data.ADC;
+		if (threeTimeVppCnt < 2) {
+			threeTimeVppCnt++;
+			vppSum += HV_data.ADC;
 		} else {
-			out_curr_data.sum += (512 - out_curr_data.ADC);
-			outCurrADC[countCurrADC] = 0;
-		}
-		//check output shortcir
-		for (i = 0; i <= 6; i++) {
-			if (countCurrADC >= i) {
-				if (outCurrADC[countCurrADC - i] >= CURR_SHORT_ADC)
-					j++;
-			} else {
-				if (outCurrADC[16 + countCurrADC - i] >= CURR_SHORT_ADC)
-					j++;
+			threeTimeVppCnt = 0;
+			vppSum += HV_data.ADC;
+			//save ave value to array = 1/4 vppADC
+			if (sysDis.errCode == 0) {
+				if (vppSum < 3048)
+					vppAVEsave[vppAVEsaveCnt] = vppSum / 12;
+				else
+					vppAVEsave[vppAVEsaveCnt] = 0xFE;
+				if (vppAVEsaveCnt < 44)
+					vppAVEsaveCnt++;
+				else
+					vppAVEsaveCnt = 0;
 			}
+			vppSum = 0;
 		}
-		if (j >= 5) {
-			//output short circuit
-			outputShortFlag = 1;
-		}
-		if (countCurrADC < 15)
-			countCurrADC++;
-		else
-			countCurrADC = 0;
-
-		if (out_curr_data.counter < 319)
-			out_curr_data.counter++;
+		if (HV_data.counter < 255)
+			HV_data.counter++;
 		else {
-			out_curr_data.counter = 0;
-			out_curr_data.RMS = (uint16_t) (out_curr_data.sum * 0.0391); //gia tri rms = thuc te *100;
-			out_curr_data.sum = 0;
-			for (i = 0; i < 59; i++) {
-				outCurRMS[i] = outCurRMS[i + 1];
-			}
-			outCurRMS[59] = out_curr_data.RMS;
+			HV_data.counter = 0;
+			HV_data.sum = HV_data.sum >> 8;
+			HV_data.sum = HV_data.sum * 528 / 1000;
+			HV_data.RMS = (uint16_t) HV_data.sum;
+			HV_data.sum = 0;
 		}
+		ADS = Vbat_data.channel;
+		break;
+	case 18: //150ms 1 lần lấy mẫu
+		out_curr_data.ADC = (ADCR >> 6);
+		if (out_curr_data.ADC > 512)
+			out_curr_data.ADC = (out_curr_data.ADC - 512);
+		else
+			out_curr_data.ADC = (512 - out_curr_data.ADC);
+		//save ADC value to array
+		if (sysDis.errCode == 0) {
+			if (out_curr_data.ADC < 508)
+				currentADCsave[currADCsaveCnt] = out_curr_data.ADC >> 1;
+			else
+				currentADCsave[currADCsaveCnt] = 0xFE;
+			if (currADCsaveCnt < 4)
+				currADCsaveCnt++;
+			else
+				currADCsaveCnt = 0;
+		}
+		// calculate ave value (3 times)
+		curSum += out_curr_data.ADC;
+		if (threeTimeCurrCnt < 2) {
+			threeTimeCurrCnt++;
+		} else {
+			threeTimeCurrCnt = 0;
+			currentAve = curSum / 3;
+			curSum = 0;
+			//save ave value to array
+			if (sysDis.errCode == 0) {
+				if (currentAve < 508)
+					currentAVEsave[currAVEsaveCnt] = currentAve >> 1;
+				else
+					currentAVEsave[currAVEsaveCnt] = 0xFE;
+				if (currAVEsaveCnt < 44)
+					currAVEsaveCnt++;
+				else
+					currAVEsaveCnt = 0;
+			}
+			// kiem tra ngan mach
+			if (currentAve < 60)
+				countShortCurr = 0;
+			else {
+				if (currentAve > currentMAX[countShortCurr]) {
+					outputShortFlag = 1;
+					sysDis.errCode = 0x04;
+				}
+				if (countShortCurr < 11)
+					countShortCurr++; //10ms
+			}
+		}
+		//calcu RMS current output
+		out_curr_data.sum += out_curr_data.ADC * out_curr_data.ADC;
+		if (out_curr_data.counter < 132) {
+			out_curr_data.counter++;
+		} else {
+			out_curr_data.counter = 0;
+			out_curr_data.sum = out_curr_data.sum / 133;
+			//calcu sqrt of sum
+			guess = out_curr_data.sum >> 1; // Initial guess
+			if (out_curr_data.sum <= 2) {
+				out_curr_data.RMS = 1;
+			} else {
+				while ((guess * guess) > out_curr_data.sum) {
+					guess = (guess + out_curr_data.sum / guess) >> 1;
+				}
+				guess = guess * 10;
+				out_curr_data.RMS = guess; //gia tri rms = thuc te *100;
+			}
+			doneCalcuRMS = 1;
+			out_curr_data.sum = 0;
+			//save rms value to array
+			if (sysDis.errCode == 0) {
+				if (out_curr_data.RMS < 1016)
+					currentRMSsave[currRMSsaveCnt] = out_curr_data.RMS >> 2;
+				else
+					currentRMSsave[currRMSsaveCnt] = 0xFE;
+				if (currRMSsaveCnt < 99)
+					currRMSsaveCnt++;
+				else
+					currRMSsaveCnt = 0;
+			}
+		}
+		//check output short circuit
 		ADS = HV_data.channel;
+		break;
+	default:
+		ADS = Vbat_data.channel;
 		break;
 	}
 	/* End user code. Do not edit comment generated here */
 }
 
 /* Start user code for adding. Do not edit comment generated here */
-uint8_t outCurrCheck(uint16_t valueToCompare, uint8_t compareType,
-		uint8_t dataCnt) {
-	uint8_t i = 0;
-	if (dataCnt <= 60) {
-		if (compareType == 1)    //compare >=
-				{
-			for (i = 60 - dataCnt; i <= 59; i++) {
-				if (outCurRMS[i] <= valueToCompare)
-					return 0;
-			}
-		} else              //compare <=
-		{
-			for (i = 60 - dataCnt; i <= 59; i++) {
-				if (outCurRMS[i] >= valueToCompare)
-					return 0;
-			}
-		}
-	} else
-		return 0;
-	return 1;
-}
-
-uint8_t lineVolCheck(uint16_t data, uint8_t *lineFlag) {
-	static uint16_t cnt = 0;
-	if ((*lineFlag) == 0) {
-		if (cnt < 400) {
-			if (data > 45)
-				cnt++;
-			else
-				cnt = 0;
-		} else {
-			cnt = 0;
-			(*lineFlag) = 1;
-		}
-	} else {
-		if (cnt < 400) {
-			if (data < 35)
-				cnt++;
-			else
-				cnt = 0;
-		} else {
-			cnt = 0;
-			(*lineFlag) = 0;
-		}
-	}
-	return 1;
-}
-uint8_t mySqrt(uint16_t dataIn) {
-	uint16_t temp = dataIn;
-	uint16_t result = 1, newResult = 0;
-	if (dataIn < 16)
-		result = 4;
+uint8_t checkShortCircuit(uint16_t dataADCave) {
+	static uint8_t count;
+	if (dataADCave < 60)
+		count = 0;
 	else {
-		while (temp >= 16) {
-			temp = temp >> 4;
-			result = (result << 2);
+		if (dataADCave > currentMAX[count]) {
+			return 1;
 		}
-		if (temp <= 4)
-			result = result << 1;
-		else
-			result = result * 3;
+		if (count < 11)
+			count++; //10ms
 	}
-	while (1) {
-		newResult = (result + (dataIn / result)) >> 1;
-		if (abs(result - newResult) <= 1)
-			break;
-		result = newResult;
+	return 0;
+}
+uint16_t mySqrt(uint32_t x) {
+	uint32_t guess = x >> 1; // Initial guess
+	if (x <= 100) {
+		return 10;
 	}
-	return result;
+	while ((guess * guess) > x) {
+		guess = (guess + x / guess) >> 1;
+	}
+	return (uint16_t) guess;
 }
 void ADCdataInit(void) {
-	HV_data.channel = 3;
+	HV_data.channel = 2;
 	HV_data.counter = 0;
 	HV_data.sum = 0;
 	HV_data.RMS = 0;
@@ -231,11 +288,6 @@ void ADCdataInit(void) {
 	Vbat_data.sum = 0;
 	Vbat_data.RMS = 0;
 	Vbat_data.ADC = 0;
-	line_vol_data.channel = 2;
-	line_vol_data.counter = 0;
-	line_vol_data.sum = 0;
-	line_vol_data.RMS = 0;
-	line_vol_data.ADC = 0;
 	out_curr_data.channel = 18;
 	out_curr_data.counter = 0;
 	out_curr_data.sum = 0;

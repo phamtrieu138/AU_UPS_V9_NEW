@@ -23,7 +23,7 @@
 * Device(s)    : R5F104AA
 * Tool-Chain   : CCRL
 * Description  : This file implements device driver for PFDL module.
-* Creation Date: 10/7/2022
+* Creation Date: 26/09/2023
 ***********************************************************************************************************************/
 
 /***********************************************************************************************************************
@@ -42,11 +42,6 @@ Includes
 Pragma directive
 ***********************************************************************************************************************/
 /* Start user code for pragma. Do not edit comment generated here */
-void commandDataFlashEXE(void);
-void chainInitAllData(void);
-void chainReadBlockX(uint8_t blockno);
-void chainWriteBlockX(uint8_t blockno);
-uint8_t checkDataFlashState(void);
 /* End user code. Do not edit comment generated here */
 
 /***********************************************************************************************************************
@@ -57,18 +52,10 @@ pfdl_request_t gFdlReq;      /* Control variable for PFDL */
 pfdl_descriptor_t gFdlDesc;
 uint8_t gFdlStatus;	         /* This indicates status of FDL library that is "close" or "open". (open=1, close=0) */
 /* Start user code for global. Do not edit comment generated here */
-pfdl_request_t *requestPtr = NULL;
-uint8_t bufferForDataFlash[4], dataFlashState = DF_IDLE;
-pfdl_request_t dataFlashStep[7];
-uint8_t data1024Arr[1024];
-typedef struct {
-	uint8_t index;
-	uint16_t pos1, pos2, len1, len2;
-	uint8_t *buff1;
-	uint8_t *buff2;
-	uint8_t currentState;
-} block_t;
-block_t block0, blockX;
+pfdl_request_t requestPtr;
+uint16_t nextPosition = 0;
+uint8_t dataEEP[1024];
+uint8_t dataFlashState = 0;
 /* End user code. Do not edit comment generated here */
 
 /***********************************************************************************************************************
@@ -271,210 +258,117 @@ pfdl_status_t R_FDL_IVerify(pfdl_u16 index, pfdl_u16 bytecount)
 }
 
 /* Start user code for adding. Do not edit comment generated here */
-
-//write 4 byte on-line
-uint8_t chainManager(void) {
-	static uint16_t pos;
+void dataFlashHandle1(void) {
+	static uint8_t timeOut = 0;
+	uint8_t dataFlashStateOld = 0;
 	switch (dataFlashState) {
-	case DF_READINGBLOCK0: //read position
-		if (gFdlStatus == 0) {
-			chainReadBlockX(0);
-			dataFlashState = DF_STARTWRITEBLOCK0;
-		}
-		break;
-	case DF_STARTWRITEBLOCK0: //start writing block 0
-		if (gFdlStatus == 0) {
-			pos = (data1024Arr[0] << 8) + data1024Arr[1];
-			if (((pos % 4) > 0) || (pos == 0)) { //error or init state
-				data1024Arr[4] = bufferForDataFlash[0];
-				data1024Arr[5] = bufferForDataFlash[1];
-				data1024Arr[6] = bufferForDataFlash[2];
-				data1024Arr[7] = bufferForDataFlash[3];
-				data1024Arr[0] = 0; //0
-				data1024Arr[1] = 8; //8
-				chainInitAllData();
-				dataFlashState = DF_WAITINGTOEND;
-			} else if ((pos > 4092) || (pos <= 1020)) { //return to block 0
-				if (pos > 4092)
-					pos = 4;
-				data1024Arr[pos] = bufferForDataFlash[0];
-				data1024Arr[pos + 1] = bufferForDataFlash[1];
-				data1024Arr[pos + 2] = bufferForDataFlash[2];
-				data1024Arr[pos + 3] = bufferForDataFlash[3];
-				pos += 4;
-				data1024Arr[0] = pos >> 8;
-				data1024Arr[1] = (uint8_t) pos;
-				chainWriteBlockX(0);
-				dataFlashState = DF_WAITINGTOEND;
-			} else {	//to blockX (X>0)
-				pos += 4;
-				if (pos == 4096)
-					pos = 4;
-				data1024Arr[0] = pos >> 8;
-				data1024Arr[1] = (uint8_t) pos;
-				chainWriteBlockX(0);
-				dataFlashState = DF_WAITTOREADBLOCKX;
-			}
-		}
-		break;
-	case DF_WAITTOREADBLOCKX:
-		//writing block 0
-		if (gFdlStatus == 0) {
-			pos = (data1024Arr[0] << 8) + data1024Arr[1];
-			if (pos == 4)
-				chainReadBlockX(3);
-			else
-				chainReadBlockX((pos - 4) >> 10);
-			dataFlashState = DF_READINGBLOCKX;
-		}
-		break;
-	case DF_READINGBLOCKX:
-		//reading blockX
-		if (gFdlStatus == 0) {
-			if (pos == 4) {
-				data1024Arr[1020] = bufferForDataFlash[0];
-				data1024Arr[1021] = bufferForDataFlash[1];
-				data1024Arr[1022] = bufferForDataFlash[2];
-				data1024Arr[1023] = bufferForDataFlash[3];
-				chainWriteBlockX(3);
-			} else {
-				data1024Arr[(pos - 4) & 0x03FF] = bufferForDataFlash[0];
-				data1024Arr[(pos - 3) & 0x03FF] = bufferForDataFlash[1];
-				data1024Arr[(pos - 2) & 0x03FF] = bufferForDataFlash[2];
-				data1024Arr[(pos - 1) & 0x03FF] = bufferForDataFlash[3];
-				chainWriteBlockX((pos - 4) >> 10);
-			}
-			dataFlashState = DF_WAITINGTOEND;
-		}
-		break;
-	case DF_WAITINGTOEND:
-		//WAITING TO END
-		if (gFdlStatus == 0) {
-			dataFlashState = DF_IDLE;
-		}
-		break;
-	case DF_ONLYREADBLOCK0:
-	case DF_ONLYREADBLOCK1:
-	case DF_ONLYREADBLOCK2:
-	case DF_ONLYREADBLOCK3:
-		if (gFdlStatus == 0) {
-			chainReadBlockX(dataFlashState - DF_ONLYREADBLOCK0);
-			dataFlashState = DF_WAITINGTOEND;
-		}
-		break;
-	case DF_IDLE:
-		//idle State
-		break;
-	}
-	commandDataFlashEXE();
-	return (dataFlashState);
-}
-void commandDataFlashEXE(void) {
-	if (gFdlStatus == 0) {
-		if (requestPtr != NULL) {
-			R_FDL_Open();
-			gFdlResult = PFDL_IDLE;
-		}
-	} else {
-		if (requestPtr == NULL)
-			R_FDL_Close();
-		else {
-			if ((requestPtr->bytecount_u16 == 0)
-					&& (requestPtr->command_enu != PFDL_CMD_ERASE_BLOCK))
-				requestPtr = NULL;
+	case 0: //init
+		R_FDL_Open();
+		requestPtr.data_pu08 = dataEEP;
+		//check the position for next write
+		while (1) {
+			R_FDL_Read(nextPosition, dataEEP, 4);
+			if ((dataEEP[0] == 0xFF) && (dataEEP[1] == 0xFF) && (dataEEP[2] == 0xFF) && (dataEEP[3] == 0xFF))
+				break;
 			else {
-				switch (gFdlResult) {
-				case PFDL_IDLE:
-					gFdlResult = PFDL_Execute(requestPtr);
+				if (nextPosition == 4090)
 					break;
-				case PFDL_BUSY:
-					gFdlResult = PFDL_Handler();
-					break;
-				case PFDL_OK:
-					requestPtr++;
-					gFdlResult = PFDL_IDLE;
-					break;
-				}
+				else
+					nextPosition++;
 			}
+		}
+		R_FDL_Close();
+		dataFlashState++;
+		break;
+	case 1: //Done
+		break;
+	case 2: //wait for erase block 0 done
+	case 3: //wait for erase block 1 done
+	case 4: //wait for erase block 2 done
+		switch (gFdlResult) {
+		case PFDL_BUSY:
+			gFdlResult = PFDL_Handler();
+			break;
+		case PFDL_OK:
+			requestPtr.index_u16 = dataFlashState - 1;
+			requestPtr.command_enu = PFDL_CMD_ERASE_BLOCK;
+			gFdlResult = PFDL_Execute(&requestPtr);
+			dataFlashState++;
+			break;
+		}
+		break;
+	case 5: //wait for erase block 3 done
+		switch (gFdlResult) {
+		case PFDL_BUSY:
+			gFdlResult = PFDL_Handler();
+			break;
+		case PFDL_OK:
+			requestPtr.index_u16 = 0;
+			requestPtr.command_enu = PFDL_CMD_WRITE_BYTES;
+			gFdlResult = PFDL_Execute(&requestPtr);
+			nextPosition = requestPtr.bytecount_u16;
+			dataFlashState++;
+			break;
+		}
+		break;
+	case 6: //wait for write done
+		switch (gFdlResult) {
+		case PFDL_BUSY:
+			gFdlResult = PFDL_Handler();
+			break;
+		case PFDL_OK:
+			R_FDL_Close();
+			dataFlashState = 1;
+			break;
+		}
+		break;
+	}
+	if (dataFlashStateOld != dataFlashState) {
+		dataFlashStateOld = dataFlashState;
+		timeOut = 0;
+	}
+	if (dataFlashState >= 2) {
+		if (timeOut < 300)
+			timeOut++;
+		else {
+			R_FDL_Close();
+			dataFlashState = 1;
 		}
 	}
 }
-//setup chain of command
-void chainInitAllData(void) {
-	uint8_t i = 0;
-	dataFlashStep[i].index_u16 = 0;
-	dataFlashStep[i].bytecount_u16 = 1;
-	dataFlashStep[i].command_enu = PFDL_CMD_ERASE_BLOCK;
-	i++;
-	dataFlashStep[i].index_u16 = 1;
-	dataFlashStep[i].bytecount_u16 = 1;
-	dataFlashStep[i].command_enu = PFDL_CMD_ERASE_BLOCK;
-	i++;
-	dataFlashStep[i].index_u16 = 2;
-	dataFlashStep[i].bytecount_u16 = 1;
-	dataFlashStep[i].command_enu = PFDL_CMD_ERASE_BLOCK;
-	i++;
-	dataFlashStep[i].index_u16 = 3;
-	dataFlashStep[i].bytecount_u16 = 1;
-	dataFlashStep[i].command_enu = PFDL_CMD_ERASE_BLOCK;
-	i++;
-	dataFlashStep[i].index_u16 = 0;
-	dataFlashStep[i].bytecount_u16 = 1024;
-	dataFlashStep[i].data_pu08 = data1024Arr;
-	dataFlashStep[i].command_enu = PFDL_CMD_WRITE_BYTES;
-	i++;
-	dataFlashStep[i].index_u16 = 0;
-	dataFlashStep[i].bytecount_u16 = 1024;
-	dataFlashStep[i].command_enu = PFDL_CMD_IVERIFY_BYTES;
-	i++;
-//vitual command to end.
-	dataFlashStep[i].index_u16 = 0;
-	dataFlashStep[i].bytecount_u16 = 0;
-	dataFlashStep[i].command_enu = PFDL_CMD_WRITE_BYTES;
-	requestPtr = dataFlashStep;
+uint8_t startWriteToEEP1(uint16_t numberOfData) {
+	if (dataFlashState == 1) {
+		requestPtr.bytecount_u16 = numberOfData;
+		if (numberOfData + nextPosition <= 4096) {
+			requestPtr.bytecount_u16 = numberOfData;
+			requestPtr.index_u16 = nextPosition;
+			requestPtr.command_enu = PFDL_CMD_WRITE_BYTES;
+			R_FDL_Open();
+			gFdlResult = PFDL_Execute(&requestPtr);
+			nextPosition += numberOfData;
+			dataFlashState = 6;
+		} else {
+			requestPtr.index_u16 = 0;
+			requestPtr.command_enu = PFDL_CMD_ERASE_BLOCK;
+			R_FDL_Open();
+			gFdlResult = PFDL_Execute(&requestPtr);
+			dataFlashState = 2;
+		}
+		return 1;
+	} else {
+		return 0;
+	}
 }
-void chainWriteBlockX(uint8_t blockno) {
-	uint8_t i = 0;
-	dataFlashStep[i].index_u16 = blockno;
-	dataFlashStep[i].bytecount_u16 = 1;
-	dataFlashStep[i].command_enu = PFDL_CMD_ERASE_BLOCK;
-	i++;
-	dataFlashStep[i].index_u16 = (blockno << 10);
-	dataFlashStep[i].bytecount_u16 = 1024;
-	dataFlashStep[i].data_pu08 = data1024Arr;
-	dataFlashStep[i].command_enu = PFDL_CMD_WRITE_BYTES;
-	i++;
-	dataFlashStep[i].index_u16 = (blockno << 10);
-	dataFlashStep[i].bytecount_u16 = 1024;
-	dataFlashStep[i].command_enu = PFDL_CMD_IVERIFY_BYTES;
-	i++;
-//vitual command to end.
-	dataFlashStep[i].index_u16 = 0;
-	dataFlashStep[i].bytecount_u16 = 0;
-	dataFlashStep[i].command_enu = PFDL_CMD_WRITE_BYTES;
-	requestPtr = dataFlashStep;
-}
-void chainReadBlockX(uint8_t blockno) {
-	dataFlashStep[0].index_u16 = (blockno << 10);
-	dataFlashStep[0].bytecount_u16 = 1024;
-	dataFlashStep[0].data_pu08 = data1024Arr;
-	dataFlashStep[0].command_enu = PFDL_CMD_READ_BYTES;
-//vitual command to end.
-	dataFlashStep[1].index_u16 = 0;
-	dataFlashStep[1].bytecount_u16 = 0;
-	dataFlashStep[1].command_enu = PFDL_CMD_WRITE_BYTES;
-	requestPtr = dataFlashStep;
-}
-//send data to buffer
-void sendToDataFlashBuffer(uint8_t *data) {
-	memcpy(bufferForDataFlash,data,4);
-	memset(data,0,4);
-	dataFlashState = DF_READINGBLOCK0;
-}
-uint8_t checkDataFlashState(void) {
-	return dataFlashState;
-}
-void readDataFlashBlock(uint8_t blockno) {
-	dataFlashState = DF_ONLYREADBLOCK0 + blockno;
+uint8_t startReadFromEEP1(uint16_t numberOfData, uint16_t startOfAddress) {
+	if ((numberOfData + startOfAddress <= 4096) && (dataFlashState == 1)) {
+		requestPtr.bytecount_u16 = numberOfData;
+		requestPtr.index_u16 = startOfAddress;
+		requestPtr.command_enu = PFDL_CMD_READ_BYTES;
+		R_FDL_Open();
+		gFdlResult = PFDL_Execute(&requestPtr);
+		dataFlashState = 6;
+		return 1;
+	} else
+		return 0;
 }
 /* End user code. Do not edit comment generated here */

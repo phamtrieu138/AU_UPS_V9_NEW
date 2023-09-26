@@ -17,6 +17,7 @@
       </Category>
       <Category Name="generate">
         <Path>generate\cstart.asm</Path>
+        <Path>generate\hdwinit.asm</Path>
         <Path>generate\iodefine.h</Path>
         <Path>generate\stkinit.asm</Path>
       </Category>
@@ -82,8 +83,8 @@
           <Option>-output="${ProjName}.abs"</Option>
           <Option>-debug</Option>
           <Option>-nocompress</Option>
-          <Option>-memory=high</Option>
           <Option>-rom=.data=.dataR,.sdata=.sdataR</Option>
+          <Option>-stack</Option>
           <Option>-nomessage</Option>
           <Option>-nologo</Option>
           <Option>-total_size</Option>
@@ -104,6 +105,7 @@
         </LibraryGenerateOptions>
         <LinkOrder>
           <Path>HardwareDebug\cstart.obj</Path>
+          <Path>HardwareDebug\hdwinit.obj</Path>
           <Path>HardwareDebug\stkinit.obj</Path>
           <Path>HardwareDebug\r_cg_adc.obj</Path>
           <Path>HardwareDebug\r_cg_adc_user.obj</Path>
@@ -201,10 +203,10 @@
       &lt;/Effect&gt;&#13;
     &lt;/VDDValue&gt;&#13;
     &lt;VDD Name="VDD" Text="false" Comment="used" /&gt;&#13;
-    &lt;AD_ADPC_USEDPIN Name="AD_ADPC_USEDPIN" Text="ANI0,ANI1,ANI2,ANI3," /&gt;&#13;
+    &lt;AD_ADPC_USEDPIN Name="AD_ADPC_USEDPIN" Text="ANI0,ANI1,ANI2," /&gt;&#13;
     &lt;ADC_ADS_VALUE Name="ADC_ADS_VALUE" Text="ANI1," /&gt;&#13;
     &lt;ADPC_DA_PIN Name="ADPC_DA_PIN" Text="false" /&gt;&#13;
-    &lt;ADPC_AD Name="ADPC_AD" Value="3" /&gt;&#13;
+    &lt;ADPC_AD Name="ADPC_AD" Value="2" /&gt;&#13;
     &lt;ADPC_DA Name="ADPC_DA" Value="0" /&gt;&#13;
     &lt;IIC00 Name="IIC00" Text="false" Comment="unused" Trigger="IIC00"&gt;&#13;
       &lt;Effect&gt;&#13;
@@ -263,7 +265,7 @@
     &lt;TRD1_INTP0 Name="TRD1_INTP0" Value="0" /&gt;&#13;
     &lt;ELC_TARGET8 Name="ELC_TARGET8" Text="disable" /&gt;&#13;
     &lt;ProjectName Name="PrjName" Text="FC750_V9" /&gt;&#13;
-    &lt;ProjectPath Name="PrjPath" Text="E:\OneDrive\LUU DIEN CUA CUON\AUSDOOR\UPS V9\FirmWare\FC750_V9" /&gt;&#13;
+    &lt;ProjectPath Name="PrjPath" Text="C:\Users\phamv\Desktop\FC750_V9" /&gt;&#13;
     &lt;ProjectKind Name="PrjKind" Text="Project78K0R" /&gt;&#13;
     &lt;DeviceName Name="DeviceName" Fixed="" Text="RL78G14" /&gt;&#13;
     &lt;CPUCoreType Name="CPUCoreType" Fixed="" Text="1" /&gt;&#13;
@@ -415,7 +417,7 @@
           &lt;P20 Name="P20/ANI0/AVREFP" AltFunc="ANALOG_0" Point="I/O" /&gt;&#13;
           &lt;P21 Name="P21/ANI1/AVREFM" AltFunc="ANI1" Point="I/O" /&gt;&#13;
           &lt;P22 Chip="R5F104AA,R5F104AC,R5F104AD,R5F104AE,R5F104BA,R5F104BC,R5F104BD,R5F104BE,R5F104CA,R5F104CC,R5F104CD,R5F104CE,R5F104EA,R5F104EC,R5F104ED,R5F104EE,R5F104FA,R5F104FC,R5F104FD,R5F104FE,R5F104GA,R5F104GC,R5F104GD,R5F104GE,R5F104JC,R5F104JD,R5F104JE,R5F104LC,R5F104LD,R5F104LE" Name="P22/ANI2" AltFunc="ANALOG_2" Point="I/O" /&gt;&#13;
-          &lt;P23 Chip="R5F104AA,R5F104AC,R5F104AD,R5F104AE,R5F104AF,R5F104AG,R5F104BA,R5F104BC,R5F104BD,R5F104BE,R5F104CA,R5F104CC,R5F104CD,R5F104CE,R5F104EA,R5F104EC,R5F104ED,R5F104EE,R5F104FA,R5F104FC,R5F104FD,R5F104FE,R5F104GA,R5F104GC,R5F104GD,R5F104GE,R5F104JC,R5F104JD,R5F104JE,R5F104LC,R5F104LD,R5F104LE" Name="P23/ANI3" AltFunc="ANALOG_3" Point="I/O" /&gt;&#13;
+          &lt;P23 Chip="R5F104AA,R5F104AC,R5F104AD,R5F104AE,R5F104AF,R5F104AG,R5F104BA,R5F104BC,R5F104BD,R5F104BE,R5F104CA,R5F104CC,R5F104CD,R5F104CE,R5F104EA,R5F104EC,R5F104ED,R5F104EE,R5F104FA,R5F104FC,R5F104FD,R5F104FE,R5F104GA,R5F104GC,R5F104GD,R5F104GE,R5F104JC,R5F104JD,R5F104JE,R5F104LC,R5F104LD,R5F104LE" Name="P23/ANI3" AltFunc="P23" Point="I/O" /&gt;&#13;
         &lt;/Port2&gt;&#13;
         &lt;Port3 Pullup="true"&gt;&#13;
           &lt;P30 Chip="RL78G14_30pin,RL78G14_32pin,RL78G14_36pin,RL78G14_40pin,RL78G14_44pin,RL78G14_48pin,RL78G14_49pin,RL78G14_52pin,RL78G14_64pin,RL78G14_80pin,RL78G14_100pin" Name="P30/INTP3/RTC1HZ/_SCK00/SCL00/TRJO0" Nch="true" TTL="true" AltFunc="P30" Point="I/O" /&gt;&#13;
@@ -765,11 +767,11 @@
       &lt;PORT&gt;&#13;
         &lt;r_cg_port.c UserName="r_cg_port.c" LibName=".c" InUse="1"&gt;&#13;
           &lt;Type R_PORT_Create="void R_PORT_Create(void)" /&gt;&#13;
-          &lt;R_PORT_Create UserName="" LibName="R_PORT_Create" Init="1" InitMode="" InUse="1" /&gt;&#13;
+          &lt;R_PORT_Create UserName="R_PORT_Create" LibName="R_PORT_Create" Init="1" InitMode="" InUse="1" /&gt;&#13;
         &lt;/r_cg_port.c&gt;&#13;
         &lt;r_cg_port_user.c UserName="r_cg_port_user.c" LibName="_user.c" InUse="1"&gt;&#13;
           &lt;Type R_PORT_Create_UserInit="void R_PORT_Create_UserInit(void)" /&gt;&#13;
-          &lt;R_PORT_Create_UserInit UserName="" LibName="R_PORT_Create_UserInit" InUse="0" /&gt;&#13;
+          &lt;R_PORT_Create_UserInit UserName="R_PORT_Create_UserInit" LibName="R_PORT_Create_UserInit" InUse="0" /&gt;&#13;
         &lt;/r_cg_port_user.c&gt;&#13;
         &lt;r_cg_port.h UserName="r_cg_port.h" LibName=".h" InUse="1" /&gt;&#13;
       &lt;/PORT&gt;&#13;
@@ -921,7 +923,7 @@
               &lt;r_uart0_interrupt_receive UserName="r_uart0_interrupt_receive" INTHandle="" LibName="R_UARTn_Interrupt_Receive" InUse="1" /&gt;&#13;
               &lt;r_uart0_interrupt_error UserName="" INTHandle="" LibName="R_UARTn_Interrupt_Error" InUse="0" /&gt;&#13;
               &lt;r_uart0_interrupt_send UserName="r_uart0_interrupt_send" INTHandle="" LibName="R_UARTn_Interrupt_Send" InUse="1" /&gt;&#13;
-              &lt;r_uart0_callback_receiveend UserName="" LibName="R_UARTn_Callback_ReceiveEnd" InUse="0" /&gt;&#13;
+              &lt;r_uart0_callback_receiveend UserName="" LibName="R_UARTn_Callback_ReceiveEnd" InUse="1" /&gt;&#13;
               &lt;r_uart0_callback_sendend UserName="" LibName="R_UARTn_Callback_SendEnd" InUse="0" /&gt;&#13;
               &lt;r_uart0_callback_error UserName="" LibName="R_UARTn_Callback_Error" InUse="0" /&gt;&#13;
               &lt;r_uart0_callback_softwareoverrun UserName="" LibName="R_UARTn_Callback_SoftwareOverRun" InUse="0" /&gt;&#13;
@@ -1344,6 +1346,7 @@
         &lt;pior1_value Name="pior1_value" Value="00" /&gt;&#13;
         &lt;cg_security1 Name="cg_security1" Value="00" /&gt;&#13;
         &lt;cg_security9 Name="cg_security9" Value="00" /&gt;&#13;
+        &lt;lvi_option Name="lvi_option" Value="FF" /&gt;&#13;
         &lt;cg_security6 Name="cg_security6" Value="00" /&gt;&#13;
         &lt;cg_crc_area Name="cg_crc_area" Value="00" /&gt;&#13;
         &lt;cg_iawctl_value Name="cg_iawctl_value" Value="00" /&gt;&#13;
@@ -1355,9 +1358,8 @@
         &lt;cg_security4 Name="cg_security4" Value="00" /&gt;&#13;
         &lt;pior_value Name="pior_value" Value="00" /&gt;&#13;
         &lt;cg_pms_value Name="cg_pms_value" Value="00" /&gt;&#13;
-        &lt;cg_option Name="cg_option" Value="04" /&gt;&#13;
         &lt;cg_security7 Name="cg_security7" Value="00" /&gt;&#13;
-        &lt;lvi_option Name="lvi_option" Value="FF" /&gt;&#13;
+        &lt;cg_option Name="cg_option" Value="04" /&gt;&#13;
       &lt;/GlobleUserTag&gt;&#13;
     &lt;/TAG&gt;&#13;
   &lt;/DIR&gt;&#13;
@@ -1567,7 +1569,7 @@
           &lt;setting name="Output_value" value="0" /&gt;&#13;
         &lt;/P22&gt;&#13;
         &lt;P23&gt;&#13;
-          &lt;setting name="Operation" value="unused" /&gt;&#13;
+          &lt;setting name="Operation" value="input" /&gt;&#13;
           &lt;setting name="Pull_up" value="unused" /&gt;&#13;
           &lt;setting name="TTL_buffer" value="unused" /&gt;&#13;
           &lt;setting name="N-ch_open-drain" value="unused" /&gt;&#13;
@@ -1578,7 +1580,7 @@
         &lt;P30&gt;&#13;
           &lt;setting name="Operation" value="input" /&gt;&#13;
           &lt;setting name="Pull_up" value="unused" /&gt;&#13;
-          &lt;setting name="TTL_buffer" value="unused" /&gt;&#13;
+          &lt;setting name="TTL_buffer" value="used" /&gt;&#13;
           &lt;setting name="N-ch_open-drain" value="unused" /&gt;&#13;
           &lt;setting name="Output_value" value="0" /&gt;&#13;
         &lt;/P30&gt;&#13;
@@ -1729,7 +1731,7 @@
           &lt;setting name="Receive_data_length" value="8 bits" /&gt;&#13;
           &lt;setting name="Receive_parity" value="none" /&gt;&#13;
           &lt;setting name="RecBaudrate" value="9600" /&gt;&#13;
-          &lt;setting name="Receive_end_callback_function" value="not generated" /&gt;&#13;
+          &lt;setting name="Receive_end_callback_function" value="generated" /&gt;&#13;
           &lt;setting name="Receive_error_callback_function" value="not generated" /&gt;&#13;
           &lt;setting name="Transfer_mode" value="single" /&gt;&#13;
           &lt;setting name="Transmit_data_direction" value="LSB" /&gt;&#13;
@@ -1809,7 +1811,7 @@
       &lt;setting name="AD_Trigger_Timer" value="0" /&gt;&#13;
       &lt;setting name="Mode" value="ONESELECT" /&gt;&#13;
       &lt;setting name="InputPins" value="0" /&gt;&#13;
-      &lt;setting name="InputPinsAttach" value="ANI0 - ANI3" /&gt;&#13;
+      &lt;setting name="InputPinsAttach" value="ANI0 - ANI2" /&gt;&#13;
       &lt;setting name="AD_Inputpin16" value="unused" /&gt;&#13;
       &lt;setting name="AD_Inputpin17" value="unused" /&gt;&#13;
       &lt;setting name="AD_Inputpin18" value="used" /&gt;&#13;
@@ -1967,7 +1969,7 @@
         &lt;setting name="OutputLevelD" value="0" /&gt;&#13;
         &lt;setting name="InitOutputLevelC" value="0" /&gt;&#13;
         &lt;setting name="OutputLevelC" value="0" /&gt;&#13;
-        &lt;setting name="InitOutputLevelB" value="0" /&gt;&#13;
+        &lt;setting name="InitOutputLevelB" value="1" /&gt;&#13;
         &lt;setting name="OutputLevelB" value="2" /&gt;&#13;
         &lt;setting name="InitOutputLevelA" value="0" /&gt;&#13;
         &lt;setting name="OutputLevelA" value="2" /&gt;&#13;
@@ -2009,7 +2011,7 @@
         &lt;setting name="OutputLevelD" value="0" /&gt;&#13;
         &lt;setting name="InitOutputLevelC" value="0" /&gt;&#13;
         &lt;setting name="OutputLevelC" value="0" /&gt;&#13;
-        &lt;setting name="InitOutputLevelB" value="0" /&gt;&#13;
+        &lt;setting name="InitOutputLevelB" value="1" /&gt;&#13;
         &lt;setting name="OutputLevelB" value="2" /&gt;&#13;
         &lt;setting name="InitOutputLevelA" value="0" /&gt;&#13;
         &lt;setting name="OutputLevelA" value="2" /&gt;&#13;

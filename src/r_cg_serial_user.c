@@ -23,7 +23,7 @@
 * Device(s)    : R5F104AA
 * Tool-Chain   : CCRL
 * Description  : This file implements device driver for Serial module.
-* Creation Date: 10/7/2022
+* Creation Date: 26/09/2023
 ***********************************************************************************************************************/
 
 /***********************************************************************************************************************
@@ -58,6 +58,7 @@ uint8_t dataOut[16];
 uint8_t dataReadOut[10][4];
 uint8_t receiveArray[8];
 uartData_t receivedData;
+uint8_t RXdataReceiver;
 /* End user code. Do not edit comment generated here */
 
 /***********************************************************************************************************************
@@ -74,12 +75,17 @@ static void __near r_uart0_interrupt_receive(void)
     err_type = (uint8_t)(SSR01 & 0x0007U);
     SIR01 = (uint16_t)err_type;
     rx_data = RXD0;
-    uartReceiveHandle(rx_data);
+
     if (g_uart0_rx_length > g_uart0_rx_count)
     {
         *gp_uart0_rx_address = rx_data;
         gp_uart0_rx_address++;
         g_uart0_rx_count++;
+
+        if (g_uart0_rx_length == g_uart0_rx_count)
+        {
+            r_uart0_callback_receiveend();
+        }
     }
 }
 
@@ -97,6 +103,20 @@ static void __near r_uart0_interrupt_send(void)
         gp_uart0_tx_address++;
         g_uart0_tx_count--;
     }
+}
+
+/***********************************************************************************************************************
+* Function Name: r_uart0_callback_receiveend
+* Description  : This function is a callback function when UART0 finishes reception.
+* Arguments    : None
+* Return Value : None
+***********************************************************************************************************************/
+static void r_uart0_callback_receiveend(void)
+{
+    /* Start user code. Do not edit comment generated here */
+	uartReceiveHandle(RXdataReceiver);
+	R_UART0_Receive(&RXdataReceiver, 1);
+    /* End user code. Do not edit comment generated here */
 }
 
 /* Start user code for adding. Do not edit comment generated here */
