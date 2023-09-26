@@ -1,37 +1,37 @@
 /***********************************************************************************************************************
-* DISCLAIMER
-* This software is supplied by Renesas Electronics Corporation and is only intended for use with Renesas products.
-* No other uses are authorized. This software is owned by Renesas Electronics Corporation and is protected under all
-* applicable laws, including copyright laws. 
-* THIS SOFTWARE IS PROVIDED "AS IS" AND RENESAS MAKES NO WARRANTIES REGARDING THIS SOFTWARE, WHETHER EXPRESS, IMPLIED
-* OR STATUTORY, INCLUDING BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-* NON-INFRINGEMENT.  ALL SUCH WARRANTIES ARE EXPRESSLY DISCLAIMED.TO THE MAXIMUM EXTENT PERMITTED NOT PROHIBITED BY
-* LAW, NEITHER RENESAS ELECTRONICS CORPORATION NOR ANY OF ITS AFFILIATED COMPANIES SHALL BE LIABLE FOR ANY DIRECT,
-* INDIRECT, SPECIAL, INCIDENTAL OR CONSEQUENTIAL DAMAGES FOR ANY REASON RELATED TO THIS SOFTWARE, EVEN IF RENESAS OR
-* ITS AFFILIATES HAVE BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
-* Renesas reserves the right, without notice, to make changes to this software and to discontinue the availability 
-* of this software. By using this software, you agree to the additional terms and conditions found by accessing the 
-* following link:
-* http://www.renesas.com/disclaimer
-*
-* Copyright (C) 2011, 2021 Renesas Electronics Corporation. All rights reserved.
-***********************************************************************************************************************/
+ * DISCLAIMER
+ * This software is supplied by Renesas Electronics Corporation and is only intended for use with Renesas products.
+ * No other uses are authorized. This software is owned by Renesas Electronics Corporation and is protected under all
+ * applicable laws, including copyright laws.
+ * THIS SOFTWARE IS PROVIDED "AS IS" AND RENESAS MAKES NO WARRANTIES REGARDING THIS SOFTWARE, WHETHER EXPRESS, IMPLIED
+ * OR STATUTORY, INCLUDING BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NON-INFRINGEMENT.  ALL SUCH WARRANTIES ARE EXPRESSLY DISCLAIMED.TO THE MAXIMUM EXTENT PERMITTED NOT PROHIBITED BY
+ * LAW, NEITHER RENESAS ELECTRONICS CORPORATION NOR ANY OF ITS AFFILIATED COMPANIES SHALL BE LIABLE FOR ANY DIRECT,
+ * INDIRECT, SPECIAL, INCIDENTAL OR CONSEQUENTIAL DAMAGES FOR ANY REASON RELATED TO THIS SOFTWARE, EVEN IF RENESAS OR
+ * ITS AFFILIATES HAVE BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
+ * Renesas reserves the right, without notice, to make changes to this software and to discontinue the availability
+ * of this software. By using this software, you agree to the additional terms and conditions found by accessing the
+ * following link:
+ * http://www.renesas.com/disclaimer
+ *
+ * Copyright (C) 2011, 2021 Renesas Electronics Corporation. All rights reserved.
+ ***********************************************************************************************************************/
 
 /***********************************************************************************************************************
-* File Name    : r_cg_userdefine.h
-* Version      : CodeGenerator for RL78/G14 V2.05.06.02 [08 Nov 2021]
-* Device(s)    : R5F104AA
-* Tool-Chain   : CCRL
-* Description  : This file includes user definition.
-* Creation Date: 10/7/2022
-***********************************************************************************************************************/
+ * File Name    : r_cg_userdefine.h
+ * Version      : CodeGenerator for RL78/G14 V2.05.06.02 [08 Nov 2021]
+ * Device(s)    : R5F104AA
+ * Tool-Chain   : CCRL
+ * Description  : This file includes user definition.
+ * Creation Date: 10/7/2022
+ ***********************************************************************************************************************/
 
 #ifndef _USER_DEF_H
 #define _USER_DEF_H
 
 /***********************************************************************************************************************
-User definitions
-***********************************************************************************************************************/
+ User definitions
+ ***********************************************************************************************************************/
 
 /* Start user code for function. Do not edit comment generated here */
 #define	FIRMWARE_VER			904
@@ -41,7 +41,7 @@ User definitions
 #define D_TYPE 1
 //define type of UPS
 #if C750
-	//C750
+//C750
 	#define OUTPUT_DIS_OVERLOAD2 	430		//330
 	#define	MAX_TIME_DIS			20000000   //56h
 #else
@@ -51,18 +51,18 @@ User definitions
 #endif
 //over current when grid on
 #if ENABLE_LINE_OVERCURRENT
-#if C750
-#define OUTPUT_GRID_OVERLOAD 	450  //340
-#else
+	#if C750
+		#define OUTPUT_GRID_OVERLOAD 	450  //340
+	#else
 		#define OUTPUT_GRID_OVERLOAD 	700  //340
 	#endif
 #else
 	#define OUTPUT_GRID_OVERLOAD 	1000  //340
 #endif
 #if ENABLE_DECREASE_VOLTAGE
-#if C750
-	#define OUTPUT_DIS_OVERLOAD1 	300  //340
-#else
+	#if C750
+		#define OUTPUT_DIS_OVERLOAD1 	300  //340
+	#else
 		#define OUTPUT_DIS_OVERLOAD1 	350  //340
 	#endif
 #else

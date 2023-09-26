@@ -438,6 +438,8 @@ void main(void)
 					else
 						sysCom.state = SYS_DIS;
 				}
+				if ((sysDis.released == TRUE) && (sysDis.pushButton))
+					sysCom.state = SYS_STOP;
 				if (sysCharg.lineFlag == 1)
 					sysCom.state = SYS_CHARGE;
 				break;

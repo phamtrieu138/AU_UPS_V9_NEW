@@ -1,7 +1,0 @@
--asmopt=-MM
--asmopt=-MP
--cpu=S3
--c
--dev="C:/Users/phamv/.eclipse/com.renesas.platform_1435879475/DebugComp/RL78/RL78/Common/DR5F104AA.DVF"
--character_set=utf8
--g
