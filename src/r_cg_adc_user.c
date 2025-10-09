@@ -14,16 +14,16 @@
 * following link:
 * http://www.renesas.com/disclaimer
 *
-* Copyright (C) 2011, 2021 Renesas Electronics Corporation. All rights reserved.
+* Copyright (C) 2011, 2024 Renesas Electronics Corporation. All rights reserved.
 ***********************************************************************************************************************/
 
 /***********************************************************************************************************************
 * File Name    : r_cg_adc_user.c
-* Version      : CodeGenerator for RL78/G14 V2.05.06.02 [08 Nov 2021]
+* Version      : CodeGenerator for RL78/G14 V2.05.08.02 [03 Jun 2024]
 * Device(s)    : R5F104AA
 * Tool-Chain   : CCRL
 * Description  : This file implements device driver for ADC module.
-* Creation Date: 26/09/2023
+* Creation Date: 8/11/2025
 ***********************************************************************************************************************/
 
 /***********************************************************************************************************************
@@ -157,7 +157,7 @@ static void __near r_adc_interrupt(void)
 		else {
 			HV_data.counter = 0;
 			HV_data.sum = HV_data.sum >> 8;
-			HV_data.sum = HV_data.sum * 528 / 1000;
+			HV_data.sum = HV_data.sum * 528 / 1000;//528
 			HV_data.RMS = (uint16_t) HV_data.sum;
 			HV_data.sum = 0;
 		}
@@ -200,16 +200,16 @@ static void __near r_adc_interrupt(void)
 					currAVEsaveCnt = 0;
 			}
 			// kiem tra ngan mach
-			if (currentAve < 60)
-				countShortCurr = 0;
-			else {
-				if (currentAve > currentMAX[countShortCurr]) {
-					outputShortFlag = 1;
-					sysDis.errCode = 0x04;
-				}
-				if (countShortCurr < 11)
-					countShortCurr++; //10ms
-			}
+//			if (currentAve < 60)
+//				countShortCurr = 0;
+//			else {
+//				if (currentAve > currentMAX[countShortCurr]) {
+//					outputShortFlag = 1;
+//					sysDis.errCode = 0x04;
+//				}
+//				if (countShortCurr < 11)
+//					countShortCurr++; //10ms
+//			}
 		}
 		//calcu RMS current output
 		out_curr_data.sum += out_curr_data.ADC * out_curr_data.ADC;

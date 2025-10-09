@@ -17,7 +17,6 @@
       </Category>
       <Category Name="generate">
         <Path>generate\cstart.asm</Path>
-        <Path>generate\hdwinit.asm</Path>
         <Path>generate\iodefine.h</Path>
         <Path>generate\stkinit.asm</Path>
       </Category>
@@ -46,15 +45,16 @@
       </Category>
     </Files>
     <Device Category="com.renesas.cdt.managedbuild.renesas.ccrl.common.option.cpu.s3" Series="RL78">R5F104AA</Device>
-    <BuildOptions Name="CC-RL" Version="v1.10.00">
+    <BuildOptions Name="CC-RL" Version="v1.12.01">
       <BuildMode Active="True" Name="HardwareDebug">
         <GeneralOptions/>
         <CompileOptions>
           <Option>-cpu=S3</Option>
           <Option>-c</Option>
-          <Option>-dev="C:/Users/phamv/.eclipse/com.renesas.platform_1435879475/DebugComp/RL78/RL78/Common/DR5F104AA.DVF"</Option>
-          <Option>-I "${ProjDirPath}\C:\Users\phamv\e2_studio\workspace22-7\${ProjName}\CCRL_100\lib"</Option>
+          <Option>-dev="C:/Users/PVTRIEU-PC/.eclipse/com.renesas.platform_1435879475/DebugComp/RL78/RL78/Common/DR5F104AA.DVF"</Option>
+          <Option>-I "${ProjDirPath}\CCRL_100\lib"</Option>
           <Option>-I "${ProjDirPath}\generate"</Option>
+          <Option>-I "${ProjDirPath}\src"</Option>
           <Option>-character_set=utf8</Option>
           <Option>-g</Option>
           <Option>-o ${workspace_loc}\${ProjName}/${ConfigName}</Option>
@@ -64,14 +64,14 @@
         <AssembleOptions>
           <Option>-cpu=S3</Option>
           <Option>-c</Option>
-          <Option>-dev="C:/Users/phamv/.eclipse/com.renesas.platform_1435879475/DebugComp/RL78/RL78/Common/DR5F104AA.DVF"</Option>
+          <Option>-dev="C:/Users/PVTRIEU-PC/.eclipse/com.renesas.platform_1435879475/DebugComp/RL78/RL78/Common/DR5F104AA.DVF"</Option>
           <Option>-character_set=utf8</Option>
           <Option>-g</Option>
-          <Option>-o "${ProjDirPath}/C:/Users/phamv/e2_studio/workspace22-7/${ProjName}/${ConfigName}"</Option>
+          <Option>-o "${ProjDirPath}\${ConfigName}"</Option>
         </AssembleOptions>
         <LinkOptions>
-          <Option>-device="C:/Users/phamv/.eclipse/com.renesas.platform_1435879475/DebugComp/RL78/RL78/Common/DR5F104AA.DVF"</Option>
-          <Option>-list=${ProjName}.map</Option>
+          <Option>-device="C:/Users/PVTRIEU-PC/.eclipse/com.renesas.platform_1435879475/DebugComp/RL78/RL78/Common/DR5F104AA.DVF"</Option>
+          <Option>-list</Option>
           <Option>-show=total_size</Option>
           <Option>-nooptimize</Option>
           <Option>-entry=_start</Option>
@@ -88,9 +88,9 @@
           <Option>-nomessage</Option>
           <Option>-nologo</Option>
           <Option>-total_size</Option>
-          <Option>-library="C:\Program Files (x86)\Renesas Electronics\CS+\CC\CC-RL\V1.10.00\lib\rl78em4s.lib"</Option>
-          <Option>-library="C:\Program Files (x86)\Renesas Electronics\CS+\CC\CC-RL\V1.10.00\lib\rl78em4r.lib"</Option>
-          <Option>-library="${ProjDirPath}/C:/Users/phamv/e2_studio/workspace22-7/${ProjName}/CCRL_100/lib/pfdl.lib"</Option>
+          <Option>-library="C:\Program Files (x86)\Renesas\RL78\1_12_1\lib\rl78em4s.lib"</Option>
+          <Option>-library="C:\Program Files (x86)\Renesas\RL78\1_12_1\lib\rl78em4r.lib"</Option>
+          <Option>-library="${ProjDirPath}\CCRL_100\lib\pfdl.lib"</Option>
           <Option>-end</Option>
           <Option>-output="${ProjName}.hex"</Option>
           <Option>-form=hexadecimal</Option>
@@ -101,11 +101,10 @@
           <PreLinker>Auto</PreLinker>
         </LinkOptions>
         <LibraryGenerateOptions>
-          <GenerateMode>BuildOptionChanged</GenerateMode>
+          <GenerateMode>BuildAlways</GenerateMode>
         </LibraryGenerateOptions>
         <LinkOrder>
           <Path>HardwareDebug\cstart.obj</Path>
-          <Path>HardwareDebug\hdwinit.obj</Path>
           <Path>HardwareDebug\stkinit.obj</Path>
           <Path>HardwareDebug\r_cg_adc.obj</Path>
           <Path>HardwareDebug\r_cg_adc_user.obj</Path>
@@ -120,10 +119,15 @@
           <Path>HardwareDebug\r_cg_timer_user.obj</Path>
           <Path>HardwareDebug\r_main.obj</Path>
           <Path>HardwareDebug\r_systeminit.obj</Path>
+          <Path>${ProjDirPath}\CCRL_100\lib\pfdl.lib</Path>
+          <Path>C:\Program Files (x86)\Renesas\RL78\1_12_1\lib\rl78em4s.lib</Path>
+          <Path>C:\Program Files (x86)\Renesas\RL78\1_12_1\lib\rl78em4r.lib</Path>
+          <Path>C:\Program Files (x86)\Renesas\RL78\1_12_1\lib\malloc_n.lib</Path>
         </LinkOrder>
         <CommonOptions>
-          <IncludePathForC>"${ProjDirPath}\C:\Users\phamv\e2_studio\workspace22-7\${ProjName}\CCRL_100\lib"</IncludePathForC>
+          <IncludePathForC>"${ProjDirPath}\CCRL_100\lib"</IncludePathForC>
           <IncludePathForC>"${ProjDirPath}\generate"</IncludePathForC>
+          <IncludePathForC>"${ProjDirPath}\src"</IncludePathForC>
         </CommonOptions>
       </BuildMode>
     </BuildOptions>
@@ -265,7 +269,7 @@
     &lt;TRD1_INTP0 Name="TRD1_INTP0" Value="0" /&gt;&#13;
     &lt;ELC_TARGET8 Name="ELC_TARGET8" Text="disable" /&gt;&#13;
     &lt;ProjectName Name="PrjName" Text="FC750_V9" /&gt;&#13;
-    &lt;ProjectPath Name="PrjPath" Text="C:\Users\phamv\Desktop\FC750_V9" /&gt;&#13;
+    &lt;ProjectPath Name="PrjPath" Text="E:\OneDrive\LUU DIEN CUA CUON\AUSDOOR\UPS V9\FirmWare\FC750_V9" /&gt;&#13;
     &lt;ProjectKind Name="PrjKind" Text="Project78K0R" /&gt;&#13;
     &lt;DeviceName Name="DeviceName" Fixed="" Text="RL78G14" /&gt;&#13;
     &lt;CPUCoreType Name="CPUCoreType" Fixed="" Text="1" /&gt;&#13;
@@ -330,7 +334,7 @@
     &lt;OCDROM_Length Name="OCDROM_Length" Text="256" /&gt;&#13;
     &lt;HasRRMRam Name="HasRRMRam" Text="" /&gt;&#13;
     &lt;PrjVersion Name="PrjVersion" Text="1.2.0.1" /&gt;&#13;
-    &lt;ProductVersion Name="ProductVersion" Text="2.19.00.01" /&gt;&#13;
+    &lt;ProductVersion Name="ProductVersion" Text="2.21.00.01" /&gt;&#13;
     &lt;DataRAddress Name="DataRAddress" Text="FF500" /&gt;&#13;
     &lt;TO02_PWM Name="TO02_PWM" Text="false" /&gt;&#13;
     &lt;TO03_PWM Name="TO03_PWM" Text="true" /&gt;&#13;

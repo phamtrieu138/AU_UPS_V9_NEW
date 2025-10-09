@@ -73,10 +73,10 @@
       </Effect>
     </VDDValue>
     <VDD Name="VDD" Text="false" Comment="used" />
-    <AD_ADPC_USEDPIN Name="AD_ADPC_USEDPIN" Text="ANI0,ANI1,ANI2," />
+    <AD_ADPC_USEDPIN Name="AD_ADPC_USEDPIN" Text="ANI0,ANI1,ANI2,ANI3," />
     <ADC_ADS_VALUE Name="ADC_ADS_VALUE" Text="ANI1," />
     <ADPC_DA_PIN Name="ADPC_DA_PIN" Text="false" />
-    <ADPC_AD Name="ADPC_AD" Value="2" />
+    <ADPC_AD Name="ADPC_AD" Value="3" />
     <ADPC_DA Name="ADPC_DA" Value="0" />
     <IIC00 Name="IIC00" Text="false" Comment="unused" Trigger="IIC00">
       <Effect>
@@ -200,7 +200,7 @@
     <OCDROM_Length Name="OCDROM_Length" Text="256" />
     <HasRRMRam Name="HasRRMRam" Text="" />
     <PrjVersion Name="PrjVersion" Text="1.2.0.1" />
-    <ProductVersion Name="ProductVersion" Text="2.21.00.01" />
+    <ProductVersion Name="ProductVersion" Text="2.19.00.01" />
     <DataRAddress Name="DataRAddress" Text="FF500" />
     <TO02_PWM Name="TO02_PWM" Text="false" />
     <TO03_PWM Name="TO03_PWM" Text="true" />
@@ -287,7 +287,7 @@
           <P20 Name="P20/ANI0/AVREFP" AltFunc="ANALOG_0" Point="I/O" />
           <P21 Name="P21/ANI1/AVREFM" AltFunc="ANI1" Point="I/O" />
           <P22 Chip="R5F104AA,R5F104AC,R5F104AD,R5F104AE,R5F104BA,R5F104BC,R5F104BD,R5F104BE,R5F104CA,R5F104CC,R5F104CD,R5F104CE,R5F104EA,R5F104EC,R5F104ED,R5F104EE,R5F104FA,R5F104FC,R5F104FD,R5F104FE,R5F104GA,R5F104GC,R5F104GD,R5F104GE,R5F104JC,R5F104JD,R5F104JE,R5F104LC,R5F104LD,R5F104LE" Name="P22/ANI2" AltFunc="ANALOG_2" Point="I/O" />
-          <P23 Chip="R5F104AA,R5F104AC,R5F104AD,R5F104AE,R5F104AF,R5F104AG,R5F104BA,R5F104BC,R5F104BD,R5F104BE,R5F104CA,R5F104CC,R5F104CD,R5F104CE,R5F104EA,R5F104EC,R5F104ED,R5F104EE,R5F104FA,R5F104FC,R5F104FD,R5F104FE,R5F104GA,R5F104GC,R5F104GD,R5F104GE,R5F104JC,R5F104JD,R5F104JE,R5F104LC,R5F104LD,R5F104LE" Name="P23/ANI3" AltFunc="P23" Point="I/O" />
+          <P23 Chip="R5F104AA,R5F104AC,R5F104AD,R5F104AE,R5F104AF,R5F104AG,R5F104BA,R5F104BC,R5F104BD,R5F104BE,R5F104CA,R5F104CC,R5F104CD,R5F104CE,R5F104EA,R5F104EC,R5F104ED,R5F104EE,R5F104FA,R5F104FC,R5F104FD,R5F104FE,R5F104GA,R5F104GC,R5F104GD,R5F104GE,R5F104JC,R5F104JD,R5F104JE,R5F104LC,R5F104LD,R5F104LE" Name="P23/ANI3" AltFunc="ANALOG_3" Point="I/O" />
         </Port2>
         <Port3 Pullup="true">
           <P30 Chip="RL78G14_30pin,RL78G14_32pin,RL78G14_36pin,RL78G14_40pin,RL78G14_44pin,RL78G14_48pin,RL78G14_49pin,RL78G14_52pin,RL78G14_64pin,RL78G14_80pin,RL78G14_100pin" Name="P30/INTP3/RTC1HZ/_SCK00/SCL00/TRJO0" Nch="true" TTL="true" AltFunc="P30" Point="I/O" />
@@ -637,11 +637,11 @@
       <PORT>
         <r_cg_port.c UserName="r_cg_port.c" LibName=".c" InUse="1">
           <Type R_PORT_Create="void R_PORT_Create(void)" />
-          <R_PORT_Create UserName="R_PORT_Create" LibName="R_PORT_Create" Init="1" InitMode="" InUse="1" />
+          <R_PORT_Create UserName="" LibName="R_PORT_Create" Init="1" InitMode="" InUse="1" />
         </r_cg_port.c>
         <r_cg_port_user.c UserName="r_cg_port_user.c" LibName="_user.c" InUse="1">
           <Type R_PORT_Create_UserInit="void R_PORT_Create_UserInit(void)" />
-          <R_PORT_Create_UserInit UserName="R_PORT_Create_UserInit" LibName="R_PORT_Create_UserInit" InUse="0" />
+          <R_PORT_Create_UserInit UserName="" LibName="R_PORT_Create_UserInit" InUse="0" />
         </r_cg_port_user.c>
         <r_cg_port.h UserName="r_cg_port.h" LibName=".h" InUse="1" />
       </PORT>
@@ -793,7 +793,7 @@
               <r_uart0_interrupt_receive UserName="r_uart0_interrupt_receive" INTHandle="" LibName="R_UARTn_Interrupt_Receive" InUse="1" />
               <r_uart0_interrupt_error UserName="" INTHandle="" LibName="R_UARTn_Interrupt_Error" InUse="0" />
               <r_uart0_interrupt_send UserName="r_uart0_interrupt_send" INTHandle="" LibName="R_UARTn_Interrupt_Send" InUse="1" />
-              <r_uart0_callback_receiveend UserName="" LibName="R_UARTn_Callback_ReceiveEnd" InUse="1" />
+              <r_uart0_callback_receiveend UserName="" LibName="R_UARTn_Callback_ReceiveEnd" InUse="0" />
               <r_uart0_callback_sendend UserName="" LibName="R_UARTn_Callback_SendEnd" InUse="0" />
               <r_uart0_callback_error UserName="" LibName="R_UARTn_Callback_Error" InUse="0" />
               <r_uart0_callback_softwareoverrun UserName="" LibName="R_UARTn_Callback_SoftwareOverRun" InUse="0" />
@@ -1216,7 +1216,6 @@
         <pior1_value Name="pior1_value" Value="00" />
         <cg_security1 Name="cg_security1" Value="00" />
         <cg_security9 Name="cg_security9" Value="00" />
-        <lvi_option Name="lvi_option" Value="FF" />
         <cg_security6 Name="cg_security6" Value="00" />
         <cg_crc_area Name="cg_crc_area" Value="00" />
         <cg_iawctl_value Name="cg_iawctl_value" Value="00" />
@@ -1228,8 +1227,9 @@
         <cg_security4 Name="cg_security4" Value="00" />
         <pior_value Name="pior_value" Value="00" />
         <cg_pms_value Name="cg_pms_value" Value="00" />
-        <cg_security7 Name="cg_security7" Value="00" />
         <cg_option Name="cg_option" Value="04" />
+        <cg_security7 Name="cg_security7" Value="00" />
+        <lvi_option Name="lvi_option" Value="FF" />
       </GlobleUserTag>
     </TAG>
   </DIR>
@@ -1439,7 +1439,7 @@
           <setting name="Output_value" value="0" />
         </P22>
         <P23>
-          <setting name="Operation" value="input" />
+          <setting name="Operation" value="unused" />
           <setting name="Pull_up" value="unused" />
           <setting name="TTL_buffer" value="unused" />
           <setting name="N-ch_open-drain" value="unused" />
@@ -1450,7 +1450,7 @@
         <P30>
           <setting name="Operation" value="input" />
           <setting name="Pull_up" value="unused" />
-          <setting name="TTL_buffer" value="used" />
+          <setting name="TTL_buffer" value="unused" />
           <setting name="N-ch_open-drain" value="unused" />
           <setting name="Output_value" value="0" />
         </P30>
@@ -1601,7 +1601,7 @@
           <setting name="Receive_data_length" value="8 bits" />
           <setting name="Receive_parity" value="none" />
           <setting name="RecBaudrate" value="9600" />
-          <setting name="Receive_end_callback_function" value="generated" />
+          <setting name="Receive_end_callback_function" value="not generated" />
           <setting name="Receive_error_callback_function" value="not generated" />
           <setting name="Transfer_mode" value="single" />
           <setting name="Transmit_data_direction" value="LSB" />
@@ -1681,7 +1681,7 @@
       <setting name="AD_Trigger_Timer" value="0" />
       <setting name="Mode" value="ONESELECT" />
       <setting name="InputPins" value="0" />
-      <setting name="InputPinsAttach" value="ANI0 - ANI2" />
+      <setting name="InputPinsAttach" value="ANI0 - ANI3" />
       <setting name="AD_Inputpin16" value="unused" />
       <setting name="AD_Inputpin17" value="unused" />
       <setting name="AD_Inputpin18" value="used" />
@@ -1839,7 +1839,7 @@
         <setting name="OutputLevelD" value="0" />
         <setting name="InitOutputLevelC" value="0" />
         <setting name="OutputLevelC" value="0" />
-        <setting name="InitOutputLevelB" value="1" />
+        <setting name="InitOutputLevelB" value="0" />
         <setting name="OutputLevelB" value="2" />
         <setting name="InitOutputLevelA" value="0" />
         <setting name="OutputLevelA" value="2" />
@@ -1881,7 +1881,7 @@
         <setting name="OutputLevelD" value="0" />
         <setting name="InitOutputLevelC" value="0" />
         <setting name="OutputLevelC" value="0" />
-        <setting name="InitOutputLevelB" value="1" />
+        <setting name="InitOutputLevelB" value="0" />
         <setting name="OutputLevelB" value="2" />
         <setting name="InitOutputLevelA" value="0" />
         <setting name="OutputLevelA" value="2" />

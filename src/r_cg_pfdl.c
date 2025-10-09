@@ -14,16 +14,16 @@
 * following link:
 * http://www.renesas.com/disclaimer
 *
-* Copyright (C) 2011, 2021 Renesas Electronics Corporation. All rights reserved.
+* Copyright (C) 2011, 2024 Renesas Electronics Corporation. All rights reserved.
 ***********************************************************************************************************************/
 
 /***********************************************************************************************************************
 * File Name    : r_cg_pfdl.c
-* Version      : CodeGenerator for RL78/G14 V2.05.06.02 [08 Nov 2021]
+* Version      : CodeGenerator for RL78/G14 V2.05.08.02 [03 Jun 2024]
 * Device(s)    : R5F104AA
 * Tool-Chain   : CCRL
 * Description  : This file implements device driver for PFDL module.
-* Creation Date: 26/09/2023
+* Creation Date: 8/11/2025
 ***********************************************************************************************************************/
 
 /***********************************************************************************************************************

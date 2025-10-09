@@ -14,16 +14,16 @@
 * following link:
 * http://www.renesas.com/disclaimer
 *
-* Copyright (C) 2011, 2021 Renesas Electronics Corporation. All rights reserved.
+* Copyright (C) 2011, 2024 Renesas Electronics Corporation. All rights reserved.
 ***********************************************************************************************************************/
 
 /***********************************************************************************************************************
 * File Name    : r_main.c
-* Version      : CodeGenerator for RL78/G14 V2.05.06.02 [08 Nov 2021]
+* Version      : CodeGenerator for RL78/G14 V2.05.08.02 [03 Jun 2024]
 * Device(s)    : R5F104AA
 * Tool-Chain   : CCRL
 * Description  : This file implements main function.
-* Creation Date: 26/09/2023
+* Creation Date: 8/11/2025
 ***********************************************************************************************************************/
 
 /***********************************************************************************************************************
@@ -203,7 +203,7 @@ void main(void)
 				}
 				//bao ve qua tai 1, check after 1 cycle of AC output (calculated rms current)
 				if (doneCalcuRMS == 1) {
-					switch (sysDis.overCurrStep) {
+					/*switch (sysDis.overCurrStep) {
 					case 0: //while do not have over RMS
 						sysDis.checkOverCurCnt = 0;
 						if (out_curr_data.RMS > OUTPUT_DIS_OVERLOAD2)
@@ -233,7 +233,7 @@ void main(void)
 						else
 							sysDis.overCurrStep = 0;
 						break;
-					}
+					}*/
 					doneCalcuRMS = 0;
 				}
 				//bao ve AQ yeu
