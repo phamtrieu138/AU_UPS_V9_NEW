@@ -23,7 +23,7 @@
 * Device(s)    : R5F104AA
 * Tool-Chain   : CCRL
 * Description  : This file implements device driver for PORT module.
-* Creation Date: 8/11/2025
+* Creation Date: 10/9/2025
 ***********************************************************************************************************************/
 
 /***********************************************************************************************************************
@@ -32,6 +32,7 @@ Includes
 #include "r_cg_macrodriver.h"
 #include "r_cg_port.h"
 /* Start user code for include. Do not edit comment generated here */
+#include "r_cg_timer.h"
 /* End user code. Do not edit comment generated here */
 #include "r_cg_userdefine.h"
 
@@ -59,47 +60,85 @@ void clearTestCheck(void) {
 	PU1_bit.no0 = 0;
 	PIM1_bit.no0 = 0;
 }
-void buzzerUpdate(buzzer_t state) {
+void buzzerUpdate(buzzer_t state,uint8_t errCode) {
 	static buzzer_t stateOld;
 	static uint8_t buzzerCnt = 0;
 	switch (state) {
 	case BUZZ_DIS:
 		if (buzzerCnt < 60) {
-			if (buzzerCnt % 20 == 0)
-				BUZZER ^= 1;
+			if (buzzerCnt == 0)
+				R_TAU0_Channel1_Start();
+			else if (buzzerCnt == 20)
+				R_TAU0_Channel1_Stop();
+			if (buzzerCnt == 40)
+				R_TAU0_Channel1_Start();
 			++buzzerCnt;
-		} else
+		} else {
+			R_TAU0_Channel1_Stop();
 			BUZZER = 0;
+		}
 		break;
 	case BUZZ_CHARGE:
 		if (buzzerCnt < 90) {
-			if (buzzerCnt % 30 == 0)
-				BUZZER ^= 1;
+			if (buzzerCnt == 0)
+				R_TAU0_Channel1_Start();
+			else if (buzzerCnt == 30)
+				R_TAU0_Channel1_Stop();
+			if (buzzerCnt == 60)
+				R_TAU0_Channel1_Start();
 			++buzzerCnt;
-		} else
+		} else {
+			R_TAU0_Channel1_Stop();
 			BUZZER = 0;
+		}
 		break;
 	case BUZZ_ERR:
 		if (buzzerCnt < 90) {
-			if (buzzerCnt % 10 == 0)
-				BUZZER ^= 1;
+			if (buzzerCnt == 0)
+				R_TAU0_Channel1_Start();
+			else if (buzzerCnt == 10)
+				R_TAU0_Channel1_Stop();
+			if (buzzerCnt == 20)
+				R_TAU0_Channel1_Start();
+			else if (buzzerCnt == 30)
+				R_TAU0_Channel1_Stop();
+			if (buzzerCnt == 40)
+				R_TAU0_Channel1_Start();
+			else if (buzzerCnt == 50)
+				R_TAU0_Channel1_Stop();
+			if (buzzerCnt == 60)
+				R_TAU0_Channel1_Start();
+			else if (buzzerCnt == 70)
+				R_TAU0_Channel1_Stop();
+			if (buzzerCnt == 80)
+				R_TAU0_Channel1_Start();
 			++buzzerCnt;
-		} else
+		} else {
+			R_TAU0_Channel1_Stop();
 			BUZZER = 0;
+		}
 		break;
 	case BUZZ_STOP:
 		if (buzzerCnt < 30) {
-			if (buzzerCnt % 10 == 0)
-				BUZZER ^= 1;
+			if (buzzerCnt == 0)
+				R_TAU0_Channel1_Start();
+			else if (buzzerCnt == 10)
+				R_TAU0_Channel1_Stop();
+			if (buzzerCnt == 20)
+				R_TAU0_Channel1_Start();
 			++buzzerCnt;
-		} else
+		} else {
+			R_TAU0_Channel1_Stop();
 			BUZZER = 0;
+		}
 		break;
 	case BUZZ_OFF:
+		R_TAU0_Channel1_Stop();
 		BUZZER = 0;
 		break;
 	}
 	if (stateOld != state) {
+		R_TAU0_Channel1_Stop();
 		BUZZER = 0;
 		buzzerCnt = 0;
 		stateOld = state;

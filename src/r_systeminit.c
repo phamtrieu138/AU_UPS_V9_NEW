@@ -23,7 +23,7 @@
 * Device(s)    : R5F104AA
 * Tool-Chain   : CCRL
 * Description  : This file implements system initializing function.
-* Creation Date: 8/11/2025
+* Creation Date: 10/9/2025
 ***********************************************************************************************************************/
 
 /***********************************************************************************************************************
@@ -31,7 +31,6 @@ Includes
 ***********************************************************************************************************************/
 #include "r_cg_macrodriver.h"
 #include "r_cg_cgc.h"
-#include "r_cg_pfdl.h"
 #include "r_cg_port.h"
 #include "r_cg_serial.h"
 #include "r_cg_adc.h"
@@ -60,8 +59,6 @@ Global variables and functions
 ***********************************************************************************************************************/
 void R_Systeminit(void)
 {
-    volatile uint32_t w_count;
-    
     PIOR0 = 0x00U;
     PIOR1 = 0x00U;
     R_CGC_Get_ResetSource();
@@ -73,13 +70,6 @@ void R_Systeminit(void)
     R_TMR_RD0_Create();
     R_TMR_RD1_Create();
     IAWCTL = 0x00U;
-    /* Start data flash control */
-    DFLEN = 1U;
-    for (w_count = 0U; w_count < 6U; w_count++)
-    {
-        NOP();
-    }
-    /* End data flash control */
 }
 
 

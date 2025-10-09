@@ -8,6 +8,28 @@
   <Project Name="FC750_V9" Type="Application">
     <Files>
       <Path>r_option_cc.txt</Path>
+      <Category Name=".metadata">
+        <Category Name=".metadata">
+          <Category Name=".plugins">
+            <Category Name="org.eclipse.cdt.make.core">
+              <Path>.metadata\.metadata\.plugins\org.eclipse.cdt.make.core\specs.c</Path>
+              <Path>.metadata\.metadata\.plugins\org.eclipse.cdt.make.core\specs.cpp</Path>
+            </Category>
+            <Category Name="org.eclipse.jdt.core">
+              <Path>.metadata\.metadata\.plugins\org.eclipse.jdt.core\javaLikeNames.txt</Path>
+            </Category>
+          </Category>
+        </Category>
+        <Category Name=".plugins">
+          <Category Name="org.eclipse.cdt.make.core">
+            <Path>.metadata\.plugins\org.eclipse.cdt.make.core\specs.c</Path>
+            <Path>.metadata\.plugins\org.eclipse.cdt.make.core\specs.cpp</Path>
+          </Category>
+          <Category Name="org.eclipse.jdt.core">
+            <Path>.metadata\.plugins\org.eclipse.jdt.core\javaLikeNames.txt</Path>
+          </Category>
+        </Category>
+      </Category>
       <Category Name="CCRL_100">
         <Category Name="lib">
           <Path>CCRL_100\lib\pfdl.h</Path>
@@ -28,8 +50,6 @@
         <Path>src\r_cg_cgc.h</Path>
         <Path>src\r_cg_cgc_user.c</Path>
         <Path>src\r_cg_macrodriver.h</Path>
-        <Path>src\r_cg_pfdl.c</Path>
-        <Path>src\r_cg_pfdl.h</Path>
         <Path>src\r_cg_port.c</Path>
         <Path>src\r_cg_port.h</Path>
         <Path>src\r_cg_port_user.c</Path>
@@ -51,7 +71,7 @@
         <CompileOptions>
           <Option>-cpu=S3</Option>
           <Option>-c</Option>
-          <Option>-dev="C:/Users/PVTRIEU-PC/.eclipse/com.renesas.platform_1435879475/DebugComp/RL78/RL78/Common/DR5F104AA.DVF"</Option>
+          <Option>-dev="C:/Users/phamv/.eclipse/com.renesas.platform_1435879475/DebugComp/RL78/RL78/Common/DR5F104AA.DVF"</Option>
           <Option>-I "${ProjDirPath}\CCRL_100\lib"</Option>
           <Option>-I "${ProjDirPath}\generate"</Option>
           <Option>-I "${ProjDirPath}\src"</Option>
@@ -64,13 +84,13 @@
         <AssembleOptions>
           <Option>-cpu=S3</Option>
           <Option>-c</Option>
-          <Option>-dev="C:/Users/PVTRIEU-PC/.eclipse/com.renesas.platform_1435879475/DebugComp/RL78/RL78/Common/DR5F104AA.DVF"</Option>
+          <Option>-dev="C:/Users/phamv/.eclipse/com.renesas.platform_1435879475/DebugComp/RL78/RL78/Common/DR5F104AA.DVF"</Option>
           <Option>-character_set=utf8</Option>
           <Option>-g</Option>
           <Option>-o "${ProjDirPath}\${ConfigName}"</Option>
         </AssembleOptions>
         <LinkOptions>
-          <Option>-device="C:/Users/PVTRIEU-PC/.eclipse/com.renesas.platform_1435879475/DebugComp/RL78/RL78/Common/DR5F104AA.DVF"</Option>
+          <Option>-device="C:/Users/phamv/.eclipse/com.renesas.platform_1435879475/DebugComp/RL78/RL78/Common/DR5F104AA.DVF"</Option>
           <Option>-list</Option>
           <Option>-show=total_size</Option>
           <Option>-nooptimize</Option>
@@ -110,7 +130,6 @@
           <Path>HardwareDebug\r_cg_adc_user.obj</Path>
           <Path>HardwareDebug\r_cg_cgc.obj</Path>
           <Path>HardwareDebug\r_cg_cgc_user.obj</Path>
-          <Path>HardwareDebug\r_cg_pfdl.obj</Path>
           <Path>HardwareDebug\r_cg_port.obj</Path>
           <Path>HardwareDebug\r_cg_port_user.obj</Path>
           <Path>HardwareDebug\r_cg_serial.obj</Path>
@@ -124,6 +143,10 @@
           <Path>C:\Program Files (x86)\Renesas\RL78\1_12_1\lib\rl78em4r.lib</Path>
           <Path>C:\Program Files (x86)\Renesas\RL78\1_12_1\lib\malloc_n.lib</Path>
         </LinkOrder>
+        <NoTargetFile Target=".metadata\.metadata\.plugins\org.eclipse.cdt.make.core\specs.c"/>
+        <NoTargetFile Target=".metadata\.metadata\.plugins\org.eclipse.cdt.make.core\specs.cpp"/>
+        <NoTargetFile Target=".metadata\.plugins\org.eclipse.cdt.make.core\specs.c"/>
+        <NoTargetFile Target=".metadata\.plugins\org.eclipse.cdt.make.core\specs.cpp"/>
         <CommonOptions>
           <IncludePathForC>"${ProjDirPath}\CCRL_100\lib"</IncludePathForC>
           <IncludePathForC>"${ProjDirPath}\generate"</IncludePathForC>
@@ -269,7 +292,7 @@
     &lt;TRD1_INTP0 Name="TRD1_INTP0" Value="0" /&gt;&#13;
     &lt;ELC_TARGET8 Name="ELC_TARGET8" Text="disable" /&gt;&#13;
     &lt;ProjectName Name="PrjName" Text="FC750_V9" /&gt;&#13;
-    &lt;ProjectPath Name="PrjPath" Text="E:\OneDrive\LUU DIEN CUA CUON\AUSDOOR\UPS V9\FirmWare\FC750_V9" /&gt;&#13;
+    &lt;ProjectPath Name="PrjPath" Text="D:\OneDrive - HTK TECHNOLOGY\Project_Trieu\LUU DIEN CUA CUON\AUSDOOR\UPS V9\FirmWare\FC750_V9\project" /&gt;&#13;
     &lt;ProjectKind Name="PrjKind" Text="Project78K0R" /&gt;&#13;
     &lt;DeviceName Name="DeviceName" Fixed="" Text="RL78G14" /&gt;&#13;
     &lt;CPUCoreType Name="CPUCoreType" Fixed="" Text="1" /&gt;&#13;
@@ -334,7 +357,7 @@
     &lt;OCDROM_Length Name="OCDROM_Length" Text="256" /&gt;&#13;
     &lt;HasRRMRam Name="HasRRMRam" Text="" /&gt;&#13;
     &lt;PrjVersion Name="PrjVersion" Text="1.2.0.1" /&gt;&#13;
-    &lt;ProductVersion Name="ProductVersion" Text="2.21.00.01" /&gt;&#13;
+    &lt;ProductVersion Name="ProductVersion" Text="2.24.00.01" /&gt;&#13;
     &lt;DataRAddress Name="DataRAddress" Text="FF500" /&gt;&#13;
     &lt;TO02_PWM Name="TO02_PWM" Text="false" /&gt;&#13;
     &lt;TO03_PWM Name="TO03_PWM" Text="true" /&gt;&#13;
@@ -648,7 +671,7 @@
             &lt;INTTM00 InUse="1" ISR="r_tau0_channel0_interrupt" /&gt;&#13;
           &lt;/Channel0&gt;&#13;
           &lt;Channel1&gt;&#13;
-            &lt;INTTM01 InUse="0" ISR="r_tau0_channel1_interrupt" /&gt;&#13;
+            &lt;INTTM01 InUse="1" ISR="r_tau0_channel1_interrupt" /&gt;&#13;
             &lt;INTTM01H InUse="0" ISR="r_tau0_channel1_higher8bits_interrupt" /&gt;&#13;
           &lt;/Channel1&gt;&#13;
           &lt;Channel2&gt;&#13;
@@ -714,23 +737,26 @@
           &lt;hdwinit UserName="" LibName="hdwinit" FixedName="" Compiler="CARL78,CCRL" InUse="1" Init="" /&gt;&#13;
           &lt;__low_level_init UserName="" LibName="low_level_init" FixedName="" Compiler="ICCRL78" InUse="1" Init="" /&gt;&#13;
         &lt;/r_systeminit.c&gt;&#13;
-        &lt;r_hardware_setup.c UserName="" LibName="hardwaresetup.c" Compiler="GCCRL78" InUse="1"&gt;&#13;
+        &lt;r_hardware_setup.c UserName="" LibName="hardwaresetup.c" Compiler="GCCRL78,LLVMRL78" InUse="1"&gt;&#13;
           &lt;Type systeminit="void R_Systeminit(void)" hardwaresetup="void HardwareSetup(void)" /&gt;&#13;
           &lt;R_Systeminit UserName="" LibName="systeminit" InUse="1" Init="" /&gt;&#13;
           &lt;HardwareSetup UserName="" LibName="hardwaresetup" FixedName="" InUse="1" Init="" /&gt;&#13;
         &lt;/r_hardware_setup.c&gt;&#13;
+        &lt;r_cg_vector_table.c UserName="" LibName="vectortable.c" Compiler="LLVMRL78" InUse="1" /&gt;&#13;
         &lt;r_cg_vector_table.c UserName="" LibName="vectortable.c" Compiler="GCCRL78" InUse="1"&gt;&#13;
           &lt;Type R_Dummy="void R_Dummy(void)" /&gt;&#13;
-          &lt;R_Dummy UserName="R_Dummy" LibName="R_Dummy" InUse="1" /&gt;&#13;
+          &lt;R_Dummy UserName="R_Dummy" LibName="R_Dummy" InUse="1" Compiler="GCCRL78" /&gt;&#13;
         &lt;/r_cg_vector_table.c&gt;&#13;
         &lt;r_reset_program.asm UserName="" LibName="resetprogram.s" Compiler="GCCRL78" InUse="1" /&gt;&#13;
-        &lt;r_cg_interrupt_handlers.h UserName="" LibName="interrupthandlers.h" Compiler="GCCRL78" InUse="1" /&gt;&#13;
+        &lt;start.S UserName="" LibName="resetprogram.s" Compiler="LLVMRL78" InUse="1" /&gt;&#13;
+        &lt;r_cg_inthandler.c UserName="" LibName="interrupthandlers.c" Compiler="LLVMRL78" InUse="1" /&gt;&#13;
+        &lt;r_cg_interrupt_handlers.h UserName="" LibName="interrupthandlers.h" Compiler="GCCRL78,LLVMRL78" InUse="1" /&gt;&#13;
         &lt;r_cg_macrodriver.h UserName="r_cg_macrodriver.h" LibName="macrodriver1.h" InUse="1" /&gt;&#13;
         &lt;r_cg_userdefine.h UserName="r_cg_userdefine.h" LibName="userdefine.h" InUse="1" /&gt;&#13;
         &lt;r_lk.dr UserName="" LibName="lk.dr" IsLibrary="false" Compiler="CARL78" InUse="1" /&gt;&#13;
         &lt;r_mdlnk.xcl UserName="" LibName="md_lnk.xcl" Visible="false" IsLibrary="false" Compiler="ICCRL78" InUse="1" /&gt;&#13;
-        &lt;iodefine.head UserName="" LibName="iodefine.head" Visible="false" IsLibrary="false" Compiler="GCCRL78" InUse="1" /&gt;&#13;
-        &lt;iodefineext.head UserName="" LibName="iodefineext.head" Visible="false" IsLibrary="false" Compiler="GCCRL78" InUse="1" /&gt;&#13;
+        &lt;iodefine.head UserName="" LibName="iodefine.head" Visible="false" IsLibrary="false" Compiler="GCCRL78,LLVMRL78" InUse="1" /&gt;&#13;
+        &lt;iodefineext.head UserName="" LibName="iodefineext.head" Visible="false" IsLibrary="false" Compiler="GCCRL78,LLVMRL78" InUse="1" /&gt;&#13;
         &lt;mdt.customdebuglinker UserName="" LibName="mdt.customdebuglinker" Visible="false" IsLibrary="false" Compiler="GCCRL78" ForAP="true" InUse="1" /&gt;&#13;
         &lt;mdt.debuglinker UserName="" LibName="mdt.debuglinker" Visible="false" IsLibrary="false" Compiler="GCCRL78" ForAP="true" InUse="1" /&gt;&#13;
         &lt;mdt.hardwaredebuglinker UserName="" LibName="mdt.hardwaredebuglinker" Visible="false" IsLibrary="false" Compiler="GCCRL78" ForAP="true" InUse="1" /&gt;&#13;
@@ -1040,10 +1066,10 @@
               &lt;R_TAU0_Channel0_Set_SoftwareTriggerOn UserName="R_TAU0_Channel0_Set_SoftwareTriggerOn" LibName="R_TAU_Channeln_Set_SoftwareTriggerOn" InUse="0" /&gt;&#13;
             &lt;/Channel0&gt;&#13;
             &lt;Channel1 InUse=""&gt;&#13;
-              &lt;R_TAU0_Channel1_Start UserName="R_TAU0_Channel1_Start" LibName="R_TAU_Channeln_Start" InUse="0" /&gt;&#13;
+              &lt;R_TAU0_Channel1_Start UserName="R_TAU0_Channel1_Start" LibName="R_TAU_Channeln_Start" InUse="1" /&gt;&#13;
               &lt;R_TAU0_Channel1_Higher8bits_Start UserName="R_TAU0_Channel1_Higher8bits_Start" LibName="R_TAU_Channeln_Higher8bits_Start" InUse="0" /&gt;&#13;
               &lt;R_TAU0_Channel1_Lower8bits_Start UserName="R_TAU0_Channel1_Lower8bits_Start" LibName="R_TAU_Channeln_Lower8bits_Start" InUse="0" /&gt;&#13;
-              &lt;R_TAU0_Channel1_Stop UserName="R_TAU0_Channel1_Stop" LibName="R_TAU_Channeln_Stop" InUse="0" /&gt;&#13;
+              &lt;R_TAU0_Channel1_Stop UserName="R_TAU0_Channel1_Stop" LibName="R_TAU_Channeln_Stop" InUse="1" /&gt;&#13;
               &lt;R_TAU0_Channel1_Higher8bits_Stop UserName="R_TAU0_Channel1_Higher8bits_Stop" LibName="R_TAU_Channeln_Higher8bits_Stop" InUse="0" /&gt;&#13;
               &lt;R_TAU0_Channel1_Lower8bits_Stop UserName="R_TAU0_Channel1_Lower8bits_Stop" LibName="R_TAU_Channeln_Lower8bits_Stop" InUse="0" /&gt;&#13;
               &lt;R_TAU0_Channel1_Get_PulseWidth UserName="R_TAU0_Channel1_Get_PulseWidth" LibName="R_TAU_Channeln_Get_PulseWidth" InUse="0" /&gt;&#13;
@@ -1105,7 +1131,7 @@
               &lt;r_tau0_channel0_interrupt UserName="r_tau0_channel0_interrupt" INTHandle="" LibName="r_tau_channeln_interrupt" InUse="1" /&gt;&#13;
             &lt;/Channel0&gt;&#13;
             &lt;Channel1 InUse=""&gt;&#13;
-              &lt;r_tau0_channel1_interrupt UserName="r_tau0_channel1_interrupt" INTHandle="" LibName="r_tau_channeln_interrupt" InUse="0" /&gt;&#13;
+              &lt;r_tau0_channel1_interrupt UserName="r_tau0_channel1_interrupt" INTHandle="" LibName="r_tau_channeln_interrupt" InUse="1" /&gt;&#13;
               &lt;r_tau0_channel1_higher8bits_interrupt UserName="r_tau0_channel1_higher8bits_interrupt" INTHandle="" LibName="r_tau_channeln_higher8bits_interrupt" InUse="0" /&gt;&#13;
             &lt;/Channel1&gt;&#13;
             &lt;Channel2 InUse=""&gt;&#13;
@@ -1350,7 +1376,6 @@
         &lt;pior1_value Name="pior1_value" Value="00" /&gt;&#13;
         &lt;cg_security1 Name="cg_security1" Value="00" /&gt;&#13;
         &lt;cg_security9 Name="cg_security9" Value="00" /&gt;&#13;
-        &lt;lvi_option Name="lvi_option" Value="FF" /&gt;&#13;
         &lt;cg_security6 Name="cg_security6" Value="00" /&gt;&#13;
         &lt;cg_crc_area Name="cg_crc_area" Value="00" /&gt;&#13;
         &lt;cg_iawctl_value Name="cg_iawctl_value" Value="00" /&gt;&#13;
@@ -1362,8 +1387,9 @@
         &lt;cg_security4 Name="cg_security4" Value="00" /&gt;&#13;
         &lt;pior_value Name="pior_value" Value="00" /&gt;&#13;
         &lt;cg_pms_value Name="cg_pms_value" Value="00" /&gt;&#13;
-        &lt;cg_security7 Name="cg_security7" Value="00" /&gt;&#13;
         &lt;cg_option Name="cg_option" Value="04" /&gt;&#13;
+        &lt;cg_security7 Name="cg_security7" Value="00" /&gt;&#13;
+        &lt;lvi_option Name="lvi_option" Value="FF" /&gt;&#13;
       &lt;/GlobleUserTag&gt;&#13;
     &lt;/TAG&gt;&#13;
   &lt;/DIR&gt;&#13;
@@ -1901,8 +1927,24 @@
         &lt;/TAUMultiPWMMaster0&gt;&#13;
       &lt;/Channel0&gt;&#13;
       &lt;Channel1&gt;&#13;
-        &lt;setting name="ChannelFunction" value="0" /&gt;&#13;
+        &lt;setting name="ChannelFunction" value="1" /&gt;&#13;
         &lt;setting name="Pinselection" value="-1" /&gt;&#13;
+        &lt;TAUInterval1&gt;&#13;
+          &lt;setting name="OperationMode" value="16bits" /&gt;&#13;
+          &lt;setting name="Count_clock" value="MCK clock" /&gt;&#13;
+          &lt;setting name="Sub_clock_mode" value="-1" /&gt;&#13;
+          &lt;setting name="Interval_value" value="125" /&gt;&#13;
+          &lt;setting name="Value_scale" value="1" /&gt;&#13;
+          &lt;setting name="Intervalvalue_High8bits" value="100" /&gt;&#13;
+          &lt;setting name="Intervalvalue_High8bits_scale" value="1" /&gt;&#13;
+          &lt;setting name="Intervalvalue_Low8bits" value="100" /&gt;&#13;
+          &lt;setting name="Intervalvalue_Low8bits_Scale" value="1" /&gt;&#13;
+          &lt;setting name="Generate_interrupt_when_couting_started" value="no" /&gt;&#13;
+          &lt;setting name="Interrupt" value="used" /&gt;&#13;
+          &lt;setting name="Interrupt_priority" value="3" /&gt;&#13;
+          &lt;setting name="InterruptH_priority" value="3" /&gt;&#13;
+          &lt;setting name="InterruptH8" value="used" /&gt;&#13;
+        &lt;/TAUInterval1&gt;&#13;
       &lt;/Channel1&gt;&#13;
       &lt;Channel2&gt;&#13;
         &lt;setting name="ChannelFunction" value="1" /&gt;&#13;

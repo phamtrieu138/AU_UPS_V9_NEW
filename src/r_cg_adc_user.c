@@ -23,7 +23,7 @@
 * Device(s)    : R5F104AA
 * Tool-Chain   : CCRL
 * Description  : This file implements device driver for ADC module.
-* Creation Date: 8/11/2025
+* Creation Date: 10/9/2025
 ***********************************************************************************************************************/
 
 /***********************************************************************************************************************
@@ -35,6 +35,7 @@ Includes
 #include "stdio.h"
 #include "stdlib.h"
 #include "r_cg_port.h"
+#include <string.h>
 /* End user code. Do not edit comment generated here */
 #include "r_cg_userdefine.h"
 
@@ -60,7 +61,24 @@ uint8_t currentADCsave[5], currADCsaveCnt = 0;
 uint8_t vbattRMSsave[100], vbattRMSsaveCnt = 0;
 uint8_t vbattAVEsave[45], vbattAVEsaveCnt = 0;
 uint8_t vppAVEsave[45], vppAVEsaveCnt = 0;
-uint16_t currentMAX[12] = { 205, 169, 139, 126, 120, 118, 116, 114, 112, 110, 108, 106 };
+//bao ve qua tai
+const uint16_t overRMSratio[8] = { 320, 210, 155, 140, 130, 120, 110, 105 };
+const uint8_t overRMScntMAX[8] = { 2, 4, 6, 7, 8, 9, 11, 12 };
+//bao ve ngăn mach
+const uint16_t currentADCMAXDIS[4] = { 290, 275, 250, 220 };
+uint16_t currentADCMAX[4] = { 0 };
+uint8_t shortCntMAX[4] = { 1, 2, 3, 5 };
+const uint16_t currentADCMAXCHARGE[4] = { 330, 290, 280, 260 };
+const uint8_t shortCntMAXDIS[4] = { 1, 2, 3, 5 };
+const uint8_t shortCntMAXCHARGE[4] = { 3, 6, 9, 15 };
+uint8_t overSHORTcnt[4];
+//bve AQ yếu
+uint16_t vbatMIN = 1920;
+uint16_t HVflt;
+uint16_t battflt;
+void LPF(uint16_t input, uint16_t *output, uint8_t numerator,
+		uint8_t denominator);
+uint16_t trieuHV;
 /* End user code. Do not edit comment generated here */
 
 /***********************************************************************************************************************
@@ -72,9 +90,8 @@ uint16_t currentMAX[12] = { 205, 169, 139, 126, 120, 118, 116, 114, 112, 110, 10
 static void __near r_adc_interrupt(void)
 {
     /* Start user code. Do not edit comment generated here */
+	uint8_t shortCnt;
 	uint32_t guess = 0;
-	static uint8_t countShortCurr = 0;
-	static uint16_t threeTimeCurrCnt = 0, curSum = 0;
 	static uint16_t threeTimeVppCnt = 0, vppSum = 0;
 	static uint16_t threeTimeVbattCnt = 0, vbattSum = 0, saveVbattRMScnt = 0;
 	switch (ADS) {
@@ -105,7 +122,9 @@ static void __near r_adc_interrupt(void)
 			Vbat_data.counter = 0;
 			Vbat_data.sum = Vbat_data.sum >> 4;
 			Vbat_data.sum = Vbat_data.sum * 4971 / 1000;
-			Vbat_data.RMS = (uint16_t) Vbat_data.sum;
+			//Vbat_data.RMS = (uint16_t) Vbat_data.sum;
+			LPF((uint16_t) Vbat_data.sum, &battflt, 1, 4);
+			Vbat_data.RMS = battflt;
 			Vbat_data.longSum += Vbat_data.RMS;
 			Vbat_data.sum = 0;
 			//save vbatt rms per 1 second = vbat * 5
@@ -152,15 +171,18 @@ static void __near r_adc_interrupt(void)
 			}
 			vppSum = 0;
 		}
-		if (HV_data.counter < 255)
-			HV_data.counter++;
-		else {
-			HV_data.counter = 0;
-			HV_data.sum = HV_data.sum >> 8;
-			HV_data.sum = HV_data.sum * 528 / 1000;//528
-			HV_data.RMS = (uint16_t) HV_data.sum;
-			HV_data.sum = 0;
-		}
+		LPF(HV_data.ADC, &HVflt, 1, 8);
+		//HV_data.RMS = (uint16_t) ((uint32_t) HVflt * 573 / 1000);
+		HV_data.RMS = (uint16_t)((uint32_t)HVflt* 528 / 1000);
+//		if (HV_data.counter < 255)
+//			HV_data.counter++;
+//		else {
+//			HV_data.counter = 0;
+//			HV_data.sum = HV_data.sum >> 8;
+//			HV_data.sum = HV_data.sum * 528 / 1000;//528
+//			HV_data.RMS = (uint16_t) HV_data.sum;
+//			HV_data.sum = 0;
+//		}
 		ADS = Vbat_data.channel;
 		break;
 	case 18: //150ms 1 lần lấy mẫu
@@ -180,36 +202,21 @@ static void __near r_adc_interrupt(void)
 			else
 				currADCsaveCnt = 0;
 		}
-		// calculate ave value (3 times)
-		curSum += out_curr_data.ADC;
-		if (threeTimeCurrCnt < 2) {
-			threeTimeCurrCnt++;
-		} else {
-			threeTimeCurrCnt = 0;
-			currentAve = curSum / 3;
-			curSum = 0;
-			//save ave value to array
-			if (sysDis.errCode == 0) {
-				if (currentAve < 508)
-					currentAVEsave[currAVEsaveCnt] = currentAve >> 1;
-				else
-					currentAVEsave[currAVEsaveCnt] = 0xFE;
-				if (currAVEsaveCnt < 44)
-					currAVEsaveCnt++;
-				else
-					currAVEsaveCnt = 0;
+		//LPF(out_curr_data.ADC, &currentAve, 1, 4);
+		//diff = (int32_t)out_curr_data.ADC - (int32_t)(currentAve);            // Tinh hieu
+		currentAve = out_curr_data.ADC;
+		for (shortCnt = 0; shortCnt <= 3; shortCnt++) {
+			if (out_curr_data.ADC >= currentADCMAX[shortCnt])
+				overSHORTcnt[shortCnt]++;
+			else {
+				if (overSHORTcnt[shortCnt] > 0)
+					overSHORTcnt[shortCnt]--;
 			}
-			// kiem tra ngan mach
-//			if (currentAve < 60)
-//				countShortCurr = 0;
-//			else {
-//				if (currentAve > currentMAX[countShortCurr]) {
-//					outputShortFlag = 1;
-//					sysDis.errCode = 0x04;
-//				}
-//				if (countShortCurr < 11)
-//					countShortCurr++; //10ms
-//			}
+			if (overSHORTcnt[shortCnt] >= shortCntMAX[shortCnt]) {
+				outputShortFlag = 1;
+				memset(overSHORTcnt, 0, sizeof(overSHORTcnt));
+				break;
+			}
 		}
 		//calcu RMS current output
 		out_curr_data.sum += out_curr_data.ADC * out_curr_data.ADC;
@@ -254,19 +261,6 @@ static void __near r_adc_interrupt(void)
 }
 
 /* Start user code for adding. Do not edit comment generated here */
-uint8_t checkShortCircuit(uint16_t dataADCave) {
-	static uint8_t count;
-	if (dataADCave < 60)
-		count = 0;
-	else {
-		if (dataADCave > currentMAX[count]) {
-			return 1;
-		}
-		if (count < 11)
-			count++; //10ms
-	}
-	return 0;
-}
 uint16_t mySqrt(uint32_t x) {
 	uint32_t guess = x >> 1; // Initial guess
 	if (x <= 100) {
@@ -293,5 +287,18 @@ void ADCdataInit(void) {
 	out_curr_data.sum = 0;
 	out_curr_data.RMS = 0;
 	out_curr_data.ADC = 0;
+}
+void LPF(uint16_t input, uint16_t *output, uint8_t numerator,
+		uint8_t denominator) {
+	int32_t diff = (int32_t) input - (int32_t) (*output);           // Tinh hieu
+	int32_t result = (*output) + (numerator * diff) / denominator; // Ap dung phep loc voi so nguyen
+	// Dam bao ket qua nam trong pham vi uint16_t
+	if (result < 0) {
+		*output = 0;
+	} else if (result > 65535) {
+		*output = 65535;
+	} else {
+		*output = (uint16_t) result;
+	}
 }
 /* End user code. Do not edit comment generated here */

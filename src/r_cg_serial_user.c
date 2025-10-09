@@ -23,7 +23,7 @@
 * Device(s)    : R5F104AA
 * Tool-Chain   : CCRL
 * Description  : This file implements device driver for Serial module.
-* Creation Date: 8/11/2025
+* Creation Date: 10/9/2025
 ***********************************************************************************************************************/
 
 /***********************************************************************************************************************
@@ -114,110 +114,12 @@ static void __near r_uart0_interrupt_send(void)
 static void r_uart0_callback_receiveend(void)
 {
     /* Start user code. Do not edit comment generated here */
-	uartReceiveHandle(RXdataReceiver);
-	R_UART0_Receive(&RXdataReceiver, 1);
+	//uartReceiveHandle(RXdataReceiver);
+	//R_UART0_Receive(&RXdataReceiver, 1);
     /* End user code. Do not edit comment generated here */
 }
 
 /* Start user code for adding. Do not edit comment generated here */
-void uartSendDataCallBack(uint8_t length, uint8_t command, uint8_t address,
-		uint8_t *dataPtr) {
-	uint8_t i = 0;
-	uint8_t *ptr;
-	ptr = dataPtr;
-	if ((command <= 3) && (length >= 4)) {
-		dataOut[0] = 0xBD;
-		dataOut[1] = length;
-		dataOut[1] = command;
-		dataOut[2] = address;
-		for (i = 3; i <= length - 1; i++) {
-			dataOut[i] = *ptr;
-			ptr++;
-		}
-		dataOut[length + 1] = checkSumCalcu(dataOut, length + 1);
-		dataOut[length + 2] = 0xED;
-		R_UART0_Send(dataOut, length + 3);
-	}
-}
-void uartSendSysCallBack(uint8_t address, uint8_t data1, uint8_t data2) {
-	dataOut[0] = 0xBD;
-	dataOut[1] = 5;
-	dataOut[2] = UART_COMMAND_SEND;
-	dataOut[3] = address;
-	dataOut[4] = data1;
-	dataOut[5] = data2;
-	dataOut[6] = checkSumCalcu(dataOut, 6);
-	dataOut[7] = 0xED;
-	R_UART0_Send(dataOut, 8);
-}
-void uartReceiveHandle(uint8_t data) {
-	static uint8_t uartReceiveState = 0, i;
-	static uint8_t length;
-	uint8_t checkSum;
-	receivedData.data = receiveArray;
-	switch (uartReceiveState) {
-	case 0: //check begin
-		if (data == 0xBD)
-			uartReceiveState = 1;
-		break;
-	case 1: //check length
-		if ((data >= 3) && (data <= 7)) {
-			length = data;
-			receiveArray[0] = data;
-			uartReceiveState = 2;
-			i = 1;
-		} else
-			uartReceiveState = 0;
-		break;
-	case 2: //receive Data
-		if (i <= length) {
-			receiveArray[i] = data;
-			i++;
-		} else {
-			if (data == 0xED) { //check data
-				checkSum = 0xBD;
-				for (i = 0; i < length; i++) {
-					checkSum ^= receiveArray[i];
-				}
-				if (checkSum == receiveArray[length]) {
-					//da check checksum OK
-					receivedData.length = length - 3;
-					receivedData.command = receiveArray[1];
-					receivedData.address = receiveArray[2];
-					for (i = 0; i < receivedData.length; i++)
-						*receivedData.data = receiveArray[i + 3];
-					switch (receivedData.command) {
-					case UART_COMMAND_READ:
-						if (receivedData.address != UART_ADDRESS_DATA) {
-							dataOut[0] = 0xBD;
-							dataOut[1] = dataReadOut[receivedData.address][0]; //length
-							dataOut[2] = UART_COMMAND_SEND;
-							dataOut[3] = receivedData.address;
-							for (i = 4;
-									i <= dataReadOut[receivedData.address][0];
-									i++) {
-								dataOut[i] = dataReadOut[receivedData.address][i
-										- 3];
-							}
-							dataOut[i] = checkSumCalcu(dataOut, i);
-							dataOut[i + 1] = 0xED;
-							R_UART0_Send(dataOut, i + 2);
-						} else {
-							if (receivedData.data[0] <= 3) {
-								uartBlockReadFlag = receivedData.data[0];
-							}
-						}
-						break;
-					case UART_COMMAND_SEND:
-						break;
-					}
-				}
-			}
-			uartReceiveState = 0;
-		}
-		break;
-	}
-}
 /***********************************************************************************************************************
  * Function Name: checkSumCalcu
  * Description  : This function calculate check sum of data in array with length.

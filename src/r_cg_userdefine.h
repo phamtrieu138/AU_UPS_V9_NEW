@@ -23,7 +23,7 @@
 * Device(s)    : R5F104AA
 * Tool-Chain   : CCRL
 * Description  : This file includes user definition.
-* Creation Date: 8/11/2025
+* Creation Date: 10/9/2025
 ***********************************************************************************************************************/
 
 #ifndef _USER_DEF_H
@@ -40,15 +40,16 @@ User definitions
 //define type of UPS
 #if C750
 //C750
-	#define OUTPUT_DIS_OVERLOAD2 	325		//325 V9.1.0
-	#define	MAX_TIME_DIS			20000000   //56h
+	#define OUTPUT_DIS_OVERLOAD2 	325		//325 V9.1.0  - 290
+	#define OUTPUT_GRID_OVERLOAD 	450  //650 V9.1.0
+	#define	MAX_TIME_DIS			18000000   //50h
 #else
 //C1200
-#define OUTPUT_DIS_OVERLOAD2 	450    //450 V9.1.0
-#define	MAX_TIME_DIS			28000000	//78h
+	#define OUTPUT_DIS_OVERLOAD2 	405    //450 V9.1.0
+	#define OUTPUT_GRID_OVERLOAD 	470  //650 V9.1.0
+	#define	MAX_TIME_DIS			26640000	//74h
 #endif
 //over current when grid on
-#define OUTPUT_GRID_OVERLOAD 	650  //650 V9.1.0
 #define SYS_DELAY_INIT 			1000
 #define SYS_DELAY_RELAY_DIS		800
 #define SYS_DELAY_PP	 		2200
@@ -91,7 +92,6 @@ typedef struct {
 typedef struct {
 	uint32_t disCnt;
 	uint8_t checkOverCurCnt;
-	uint8_t overCurrStep;
 	uint16_t underBattVolCnt;
 	uint32_t noLoadCnt;
 	disState_t state;
@@ -105,8 +105,8 @@ typedef struct {
 	boolean released;
 } sysDis_t;
 typedef struct {
+	uint8_t errCode;
 	uint8_t checkOverCurCnt;
-	uint8_t overCurrStep;
 	uint16_t resetChargCnt;
 	uint16_t timeStartState1;
 	uint16_t floatVoltageSet;
@@ -127,7 +127,7 @@ typedef struct {
 	uint8_t length;
 } comDataFlash_t;
 
-void buzzerUpdate(buzzer_t state);
+void buzzerUpdate(buzzer_t state,uint8_t errCode);
 void ledUpdate(led_t state, uint8_t errCode);
 void LED_D_UPDATE(unsigned char stateOfCharge, led_t ledState1);
 void PPcontrol(boolean flag);

@@ -135,7 +135,7 @@
     <TRD1_INTP0 Name="TRD1_INTP0" Value="0" />
     <ELC_TARGET8 Name="ELC_TARGET8" Text="disable" />
     <ProjectName Name="PrjName" Text="FC750_V9" />
-    <ProjectPath Name="PrjPath" Text="E:\OneDrive\LUU DIEN CUA CUON\AUSDOOR\UPS V9\FirmWare\FC750_V9" />
+    <ProjectPath Name="PrjPath" Text="D:\OneDrive - HTK TECHNOLOGY\Project_Trieu\LUU DIEN CUA CUON\AUSDOOR\UPS V9\FirmWare\FC750_V9\project" />
     <ProjectKind Name="PrjKind" Text="Project78K0R" />
     <DeviceName Name="DeviceName" Fixed="" Text="RL78G14" />
     <CPUCoreType Name="CPUCoreType" Fixed="" Text="1" />
@@ -200,7 +200,7 @@
     <OCDROM_Length Name="OCDROM_Length" Text="256" />
     <HasRRMRam Name="HasRRMRam" Text="" />
     <PrjVersion Name="PrjVersion" Text="1.2.0.1" />
-    <ProductVersion Name="ProductVersion" Text="2.21.00.01" />
+    <ProductVersion Name="ProductVersion" Text="2.24.00.01" />
     <DataRAddress Name="DataRAddress" Text="FF500" />
     <TO02_PWM Name="TO02_PWM" Text="false" />
     <TO03_PWM Name="TO03_PWM" Text="true" />
@@ -514,7 +514,7 @@
             <INTTM00 InUse="1" ISR="r_tau0_channel0_interrupt" />
           </Channel0>
           <Channel1>
-            <INTTM01 InUse="0" ISR="r_tau0_channel1_interrupt" />
+            <INTTM01 InUse="1" ISR="r_tau0_channel1_interrupt" />
             <INTTM01H InUse="0" ISR="r_tau0_channel1_higher8bits_interrupt" />
           </Channel1>
           <Channel2>
@@ -580,23 +580,26 @@
           <hdwinit UserName="" LibName="hdwinit" FixedName="" Compiler="CARL78,CCRL" InUse="1" Init="" />
           <__low_level_init UserName="" LibName="low_level_init" FixedName="" Compiler="ICCRL78" InUse="1" Init="" />
         </r_systeminit.c>
-        <r_hardware_setup.c UserName="" LibName="hardwaresetup.c" Compiler="GCCRL78" InUse="1">
+        <r_hardware_setup.c UserName="" LibName="hardwaresetup.c" Compiler="GCCRL78,LLVMRL78" InUse="1">
           <Type systeminit="void R_Systeminit(void)" hardwaresetup="void HardwareSetup(void)" />
           <R_Systeminit UserName="" LibName="systeminit" InUse="1" Init="" />
           <HardwareSetup UserName="" LibName="hardwaresetup" FixedName="" InUse="1" Init="" />
         </r_hardware_setup.c>
+        <r_cg_vector_table.c UserName="" LibName="vectortable.c" Compiler="LLVMRL78" InUse="1" />
         <r_cg_vector_table.c UserName="" LibName="vectortable.c" Compiler="GCCRL78" InUse="1">
           <Type R_Dummy="void R_Dummy(void)" />
-          <R_Dummy UserName="R_Dummy" LibName="R_Dummy" InUse="1" />
+          <R_Dummy UserName="R_Dummy" LibName="R_Dummy" InUse="1" Compiler="GCCRL78" />
         </r_cg_vector_table.c>
         <r_reset_program.asm UserName="" LibName="resetprogram.s" Compiler="GCCRL78" InUse="1" />
-        <r_cg_interrupt_handlers.h UserName="" LibName="interrupthandlers.h" Compiler="GCCRL78" InUse="1" />
+        <start.S UserName="" LibName="resetprogram.s" Compiler="LLVMRL78" InUse="1" />
+        <r_cg_inthandler.c UserName="" LibName="interrupthandlers.c" Compiler="LLVMRL78" InUse="1" />
+        <r_cg_interrupt_handlers.h UserName="" LibName="interrupthandlers.h" Compiler="GCCRL78,LLVMRL78" InUse="1" />
         <r_cg_macrodriver.h UserName="r_cg_macrodriver.h" LibName="macrodriver1.h" InUse="1" />
         <r_cg_userdefine.h UserName="r_cg_userdefine.h" LibName="userdefine.h" InUse="1" />
         <r_lk.dr UserName="" LibName="lk.dr" IsLibrary="false" Compiler="CARL78" InUse="1" />
         <r_mdlnk.xcl UserName="" LibName="md_lnk.xcl" Visible="false" IsLibrary="false" Compiler="ICCRL78" InUse="1" />
-        <iodefine.head UserName="" LibName="iodefine.head" Visible="false" IsLibrary="false" Compiler="GCCRL78" InUse="1" />
-        <iodefineext.head UserName="" LibName="iodefineext.head" Visible="false" IsLibrary="false" Compiler="GCCRL78" InUse="1" />
+        <iodefine.head UserName="" LibName="iodefine.head" Visible="false" IsLibrary="false" Compiler="GCCRL78,LLVMRL78" InUse="1" />
+        <iodefineext.head UserName="" LibName="iodefineext.head" Visible="false" IsLibrary="false" Compiler="GCCRL78,LLVMRL78" InUse="1" />
         <mdt.customdebuglinker UserName="" LibName="mdt.customdebuglinker" Visible="false" IsLibrary="false" Compiler="GCCRL78" ForAP="true" InUse="1" />
         <mdt.debuglinker UserName="" LibName="mdt.debuglinker" Visible="false" IsLibrary="false" Compiler="GCCRL78" ForAP="true" InUse="1" />
         <mdt.hardwaredebuglinker UserName="" LibName="mdt.hardwaredebuglinker" Visible="false" IsLibrary="false" Compiler="GCCRL78" ForAP="true" InUse="1" />
@@ -906,10 +909,10 @@
               <R_TAU0_Channel0_Set_SoftwareTriggerOn UserName="R_TAU0_Channel0_Set_SoftwareTriggerOn" LibName="R_TAU_Channeln_Set_SoftwareTriggerOn" InUse="0" />
             </Channel0>
             <Channel1 InUse="">
-              <R_TAU0_Channel1_Start UserName="R_TAU0_Channel1_Start" LibName="R_TAU_Channeln_Start" InUse="0" />
+              <R_TAU0_Channel1_Start UserName="R_TAU0_Channel1_Start" LibName="R_TAU_Channeln_Start" InUse="1" />
               <R_TAU0_Channel1_Higher8bits_Start UserName="R_TAU0_Channel1_Higher8bits_Start" LibName="R_TAU_Channeln_Higher8bits_Start" InUse="0" />
               <R_TAU0_Channel1_Lower8bits_Start UserName="R_TAU0_Channel1_Lower8bits_Start" LibName="R_TAU_Channeln_Lower8bits_Start" InUse="0" />
-              <R_TAU0_Channel1_Stop UserName="R_TAU0_Channel1_Stop" LibName="R_TAU_Channeln_Stop" InUse="0" />
+              <R_TAU0_Channel1_Stop UserName="R_TAU0_Channel1_Stop" LibName="R_TAU_Channeln_Stop" InUse="1" />
               <R_TAU0_Channel1_Higher8bits_Stop UserName="R_TAU0_Channel1_Higher8bits_Stop" LibName="R_TAU_Channeln_Higher8bits_Stop" InUse="0" />
               <R_TAU0_Channel1_Lower8bits_Stop UserName="R_TAU0_Channel1_Lower8bits_Stop" LibName="R_TAU_Channeln_Lower8bits_Stop" InUse="0" />
               <R_TAU0_Channel1_Get_PulseWidth UserName="R_TAU0_Channel1_Get_PulseWidth" LibName="R_TAU_Channeln_Get_PulseWidth" InUse="0" />
@@ -971,7 +974,7 @@
               <r_tau0_channel0_interrupt UserName="r_tau0_channel0_interrupt" INTHandle="" LibName="r_tau_channeln_interrupt" InUse="1" />
             </Channel0>
             <Channel1 InUse="">
-              <r_tau0_channel1_interrupt UserName="r_tau0_channel1_interrupt" INTHandle="" LibName="r_tau_channeln_interrupt" InUse="0" />
+              <r_tau0_channel1_interrupt UserName="r_tau0_channel1_interrupt" INTHandle="" LibName="r_tau_channeln_interrupt" InUse="1" />
               <r_tau0_channel1_higher8bits_interrupt UserName="r_tau0_channel1_higher8bits_interrupt" INTHandle="" LibName="r_tau_channeln_higher8bits_interrupt" InUse="0" />
             </Channel1>
             <Channel2 InUse="">
@@ -1216,7 +1219,6 @@
         <pior1_value Name="pior1_value" Value="00" />
         <cg_security1 Name="cg_security1" Value="00" />
         <cg_security9 Name="cg_security9" Value="00" />
-        <lvi_option Name="lvi_option" Value="FF" />
         <cg_security6 Name="cg_security6" Value="00" />
         <cg_crc_area Name="cg_crc_area" Value="00" />
         <cg_iawctl_value Name="cg_iawctl_value" Value="00" />
@@ -1228,8 +1230,9 @@
         <cg_security4 Name="cg_security4" Value="00" />
         <pior_value Name="pior_value" Value="00" />
         <cg_pms_value Name="cg_pms_value" Value="00" />
-        <cg_security7 Name="cg_security7" Value="00" />
         <cg_option Name="cg_option" Value="04" />
+        <cg_security7 Name="cg_security7" Value="00" />
+        <lvi_option Name="lvi_option" Value="FF" />
       </GlobleUserTag>
     </TAG>
   </DIR>
@@ -1767,8 +1770,24 @@
         </TAUMultiPWMMaster0>
       </Channel0>
       <Channel1>
-        <setting name="ChannelFunction" value="0" />
+        <setting name="ChannelFunction" value="1" />
         <setting name="Pinselection" value="-1" />
+        <TAUInterval1>
+          <setting name="OperationMode" value="16bits" />
+          <setting name="Count_clock" value="MCK clock" />
+          <setting name="Sub_clock_mode" value="-1" />
+          <setting name="Interval_value" value="125" />
+          <setting name="Value_scale" value="1" />
+          <setting name="Intervalvalue_High8bits" value="100" />
+          <setting name="Intervalvalue_High8bits_scale" value="1" />
+          <setting name="Intervalvalue_Low8bits" value="100" />
+          <setting name="Intervalvalue_Low8bits_Scale" value="1" />
+          <setting name="Generate_interrupt_when_couting_started" value="no" />
+          <setting name="Interrupt" value="used" />
+          <setting name="Interrupt_priority" value="3" />
+          <setting name="InterruptH_priority" value="3" />
+          <setting name="InterruptH8" value="used" />
+        </TAUInterval1>
       </Channel1>
       <Channel2>
         <setting name="ChannelFunction" value="1" />

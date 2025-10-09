@@ -23,7 +23,7 @@
 * Device(s)    : R5F104AA
 * Tool-Chain   : CCRL
 * Description  : This file implements device driver for ADC module.
-* Creation Date: 8/11/2025
+* Creation Date: 10/9/2025
 ***********************************************************************************************************************/
 
 #ifndef ADC_H
@@ -182,6 +182,21 @@ typedef struct {
 	uint32_t longSum;
 	uint16_t longRMS;
 } analogData_t;
+typedef struct {
+	uint8_t battMinCalState;
+	uint32_t noLoadCnt;
+	uint16_t currentRMSold;
+} battMin_t;
+extern const uint16_t overRMSratio[8];
+extern const uint8_t overRMScntMAX[8];
+extern const uint16_t currentADCMAXDIS[4];
+extern const uint16_t currentADCMAXCHARGE[4];
+extern const uint8_t shortCntMAXDIS[4];
+extern const uint8_t shortCntMAXCHARGE[4];
+extern uint8_t shortCntMAX[4];
+extern uint16_t currentADCMAX[4];
+extern uint16_t vbatMIN;
+extern uint8_t overSHORTcnt[4];
 uint8_t outCurrCheck(uint16_t valueToCompare, uint8_t compareType,
 		uint8_t dataCnt);
 void ADCdataInit(void);

@@ -23,7 +23,7 @@
 * Device(s)    : R5F104AA
 * Tool-Chain   : CCRL
 * Description  : This file implements main function.
-* Creation Date: 8/11/2025
+* Creation Date: 10/9/2025
 ***********************************************************************************************************************/
 
 /***********************************************************************************************************************
@@ -31,7 +31,6 @@ Includes
 ***********************************************************************************************************************/
 #include "r_cg_macrodriver.h"
 #include "r_cg_cgc.h"
-#include "r_cg_pfdl.h"
 #include "r_cg_port.h"
 #include "r_cg_serial.h"
 #include "r_cg_adc.h"
@@ -45,6 +44,11 @@ Includes
 Pragma directive
 ***********************************************************************************************************************/
 /* Start user code for pragma. Do not edit comment generated here */
+uint8_t dataUartOut[20];
+void uartSendData(void);
+extern uint16_t trieuHV;
+extern uint16_t currentAve;
+extern uint16_t phase;
 /* End user code. Do not edit comment generated here */
 
 /***********************************************************************************************************************
@@ -61,29 +65,22 @@ extern uint8_t currentAVEsave[45], currAVEsaveCnt;
 extern uint8_t currentADCsave[5], currADCsaveCnt;
 extern uint8_t vppAVEsave[45], vppAVEsaveCnt;
 extern analogData_t HV_data, Vbat_data, out_curr_data;
-extern uint16_t currentMAX[12];
-//variants of data flash
-extern uint8_t dataEEP[1024];
-extern uint8_t gFdlStatus;
-extern uint8_t uartBlockReadFlag;
 //variants of uart
 extern uint8_t RXdataReceiver;
 sysCommon_t sysCom;
 uint8_t timeOut10ms = 9;
 uint16_t varCntTest = 0;
 sysDis_t sysDis;
-const uint16_t current_ADC_DIS_MAX[12] = { 205, 169, 139, 126, 120, 118, 116, 114, 112, 110, 108, 106 };
 uint8_t outputShortFlag = 0;
-const uint8_t overRMSratio[30] = { 100, 90, 80, 70, 63, 56, 49, 45, 41, 37, 34, 31, 28, 25, 23, 21, 19, 17, 15, 13, 11, 9, 7, 6, 5, 4, 3, 2, 1, 0 };
+uint8_t overRMScnt[8];
 sysCharge_t sysCharg;
-const uint16_t current_ADC_CHARGE_MAX[12] = { 307, 253, 208, 189, 180, 177, 174, 171, 168, 165, 162, 159 };
 uint16_t Dpart = 0;
 float Ipart = 0;
 uint8_t timeOfChargeState = 15, SOC = 1;
+static uint8_t overCurrentCnt = 0;
 void disSOCCalcu(unsigned char *state);
 boolean checkPP(boolean checkEnable);
-uint8_t saveDataToEEP(uint8_t errCode);
-void saveDataTo_dataEEP(uint8_t errCode);
+battMin_t battMinCal;
 /* End user code. Do not edit comment generated here */
 void R_MAIN_UserInit(void);
 
@@ -97,6 +94,8 @@ void main(void)
 {
     R_MAIN_UserInit();
     /* Start user code. Do not edit comment generated here */
+	memcpy(currentADCMAX, currentADCMAXCHARGE, sizeof(currentADCMAX));
+	memcpy(shortCntMAX, shortCntMAXDIS, sizeof(shortCntMAX));
 	BUZZER = 0;
 	RELAY = 0;
 	ON_24V_MCU = 0;
@@ -108,6 +107,7 @@ void main(void)
 	sysCom.stateOld = SYS_STARTUP;
 	while (1U) {
 		if (checkTAU0_2flag() == 0) {
+			uartSendData();
 			switch (sysCom.state) {
 			case SYS_STARTUP: //delay 400mS to wait stable VCC for MCU
 				setupTestCheck();
@@ -127,26 +127,18 @@ void main(void)
 				}
 				break;
 			case SYS_INIT:
-				//answer read block command from uart
-				if (uartBlockReadFlag < 4) {
-					startReadFromEEP1(1024, uartBlockReadFlag * 1024);
-					uartBlockReadFlag = 5;
-				} else if (uartBlockReadFlag == 5) {
-					R_UART0_Send(dataEEP, 1024);
-					uartBlockReadFlag = 4;
-				}
 				//check lineFlag or buttonFlag
 				if (sysDis.pushButton) {
 					if (Vbat_data.RMS > 1800) {
 						SOC = 5;
 						setPowerMCU_ON();
-						memcpy(currentMAX, current_ADC_DIS_MAX, 12);
+						//memcpy(currentMAX, current_ADC_DIS_MAX, 12);
 						sysCom.state = SYS_DIS;
 					}
 				} else if (sysCharg.lineFlag == 1) {
 					SOC = 1;
 					setPowerMCU_ON();
-					memcpy(currentMAX, current_ADC_CHARGE_MAX, 12);
+					//memcpy(currentMAX, current_ADC_CHARGE_MAX, 12);
 					sysCom.state = SYS_CHARGE;
 				}
 				break;
@@ -156,8 +148,9 @@ void main(void)
 					if (sysCom.cnt == 0) {
 						sysDis.state = DIS_WAIT;
 						doneCalcuRMS = 0;
-						sysDis.overCurrStep = 0;
-						memcpy(currentMAX, current_ADC_DIS_MAX, 12);
+						outputShortFlag = 0;
+						memset(overRMScnt, 0, 7);
+						//memcpy(currentMAX, current_ADC_DIS_MAX, 12);
 					}
 					sysCom.cnt++;
 				}
@@ -171,7 +164,12 @@ void main(void)
 					sysCom.buzzState = BUZZ_DIS;
 					sysCom.ledState = LED_DIS;
 					setDutyDEC(0);
-					outVoltageSet(230);
+					outVoltageSet(227);
+					memcpy(currentADCMAX, currentADCMAXDIS,
+							sizeof(currentADCMAX));
+					memcpy(shortCntMAX, shortCntMAXDIS, sizeof(shortCntMAX));
+					outputShortFlag = 0;
+					memset(overSHORTcnt, 0, sizeof(overSHORTcnt));
 					if (sysCom.cnt >= SYS_DELAY_RELAY_DIS)
 						sysDis.state = DIS_RELAY_ON;
 					break;
@@ -203,47 +201,58 @@ void main(void)
 				}
 				//bao ve qua tai 1, check after 1 cycle of AC output (calculated rms current)
 				if (doneCalcuRMS == 1) {
-					/*switch (sysDis.overCurrStep) {
-					case 0: //while do not have over RMS
-						sysDis.checkOverCurCnt = 0;
-						if (out_curr_data.RMS > OUTPUT_DIS_OVERLOAD2)
-							sysDis.overCurrStep++;
-						break;
-					case 1: //from 1-29 cycles after Irms>OUTPUT_DIS_OVERLOAD2
-						if (out_curr_data.RMS > ((uint16_t) overRMSratio[sysDis.checkOverCurCnt] * OUTPUT_DIS_OVERLOAD2 / 100 + OUTPUT_DIS_OVERLOAD2)) {
+					for (overCurrentCnt = 0; overCurrentCnt <= 7;
+							overCurrentCnt++) {
+						if (out_curr_data.RMS
+								>= (uint16_t) ((uint32_t) overRMSratio[overCurrentCnt]
+										* OUTPUT_DIS_OVERLOAD2 / 100))
+							overRMScnt[overCurrentCnt]++;
+						else {
+							if (overRMScnt[overCurrentCnt] > 0)
+								overRMScnt[overCurrentCnt]--;
+						}
+						if (overRMScnt[overCurrentCnt]
+								>= overRMScntMAX[overCurrentCnt]) {
 							sysCom.state = SYS_DIS_ERR;
 							sysDis.errCode = 0x01;
-							saveDataTo_dataEEP(sysDis.errCode);
 							sysDis.errCnt++;
 						}
-						if (sysDis.checkOverCurCnt < 29)
-							sysDis.checkOverCurCnt++;
-						else
-							sysDis.overCurrStep++;
+					}
+					if(out_curr_data.RMS<320)
+						outVoltageSet(227 + out_curr_data.RMS / 40);
+					else
+						outVoltageSet(232);
+					//bao ve AQ yeu
+					switch (battMinCal.battMinCalState) {
+					case 0: //Dòng lớn
+						vbatMIN = 1920;
+						if(out_curr_data.RMS < 3)
+						{
+							if(battMinCal.noLoadCnt<720000)//tương đương 4h-720000
+								battMinCal.noLoadCnt++;
+							else
+							{
+								battMinCal.battMinCalState = 1;
+								vbatMIN = 2380;
+							}
+						} else
+							battMinCal.noLoadCnt = 0;
 						break;
-					case 2: //from 30-39 cycles after Irms> OUTPUT_DIS_OVERLOAD2
-						if (out_curr_data.RMS > OUTPUT_DIS_OVERLOAD2) {
-							sysCom.state = SYS_DIS_ERR;
-							sysDis.errCode = 0x01;
-							saveDataTo_dataEEP(sysDis.errCode);
-							sysDis.errCnt++;
-						}
-						if (sysDis.checkOverCurCnt < 39)
-							sysDis.checkOverCurCnt++;
-						else
-							sysDis.overCurrStep = 0;
+					case 1: //Dòng nhỏ
+						if(out_curr_data.RMS >= 3)//tương đương 30s
+							battMinCal.battMinCalState = 0;
+						battMinCal.noLoadCnt = 0;
 						break;
-					}*/
+					}
 					doneCalcuRMS = 0;
 				}
 				//bao ve AQ yeu
-				if (Vbat_data.RMS < 1900) {
-					if (sysDis.underBattVolCnt < 2000) {
+				if (Vbat_data.RMS < vbatMIN) {
+					if (sysDis.underBattVolCnt < 1000) {
 						sysDis.underBattVolCnt++;
 					} else {
 						sysCom.state = SYS_DIS_ERR;
 						sysDis.errCode = 0x03;
-						saveDataTo_dataEEP(sysDis.errCode);
 						sysDis.errCnt += 2;
 					}
 				} else
@@ -252,14 +261,12 @@ void main(void)
 				if (outputShortFlag) {
 					sysCom.state = SYS_DIS_ERR;
 					sysDis.errCode = 0x04;
-					saveDataTo_dataEEP(sysDis.errCode);
 					sysDis.errCnt++;
 				}
 				//low PP voltage
 				if (checkPP(sysDis.checkPPflag) == TRUE) {
 					sysCom.state = SYS_DIS_ERR;
 					sysDis.errCode = 0x05;
-					saveDataTo_dataEEP(sysDis.errCode);
 					sysDis.errCnt++;
 				}
 				//protect over time discharge
@@ -269,8 +276,7 @@ void main(void)
 					else {
 						sysCom.state = SYS_DIS_ERR;
 						sysDis.errCode = 0x06;
-						saveDataTo_dataEEP(sysDis.errCode);
-						sysDis.errCnt = 3;
+						sysDis.errCnt += 4;
 					}
 				}
 				// calculate SOC for D ups display
@@ -297,10 +303,6 @@ void main(void)
 			case SYS_DIS_ERR:
 				setPowerMCU_ON();
 				outputShortFlag = 0;
-				if (sysCom.cnt < 200) {
-					if (saveDataToEEP(sysDis.errCode) == 1)
-						sysCom.cnt = 200;
-				}
 				sysDis.PPflag = FALSE;
 				sysDis.PWMflag = FALSE;
 				sysCom.ledState = LED_ERRSTATE;
@@ -308,7 +310,7 @@ void main(void)
 				if (sysCom.cnt < 7002) {
 					++sysCom.cnt;
 				} else {
-					if (sysDis.errCnt >= 3)
+					if (sysDis.errCnt >= 4)
 						sysCom.state = SYS_STOP;
 					else {
 						sysCom.state = SYS_DIS;
@@ -349,55 +351,55 @@ void main(void)
 				sysCom.buzzState = BUZZ_CHARGE;
 				setPowerMCU_ON();
 				if (sysCom.cnt < 65000) {
-					if (sysCom.cnt == 0)
-						memcpy(currentMAX, current_ADC_CHARGE_MAX, 12);
 					sysCom.cnt++;
 				}
 				if (sysCom.cnt < SYS_DELAY_RELAY_CHARGE) {
-					if (sysCom.cnt == 0) {
+					if (sysCom.cnt == 1) {
 						doneCalcuRMS = 0;
-						sysCharg.overCurrStep = 0;
 						Dpart = 0;
 						Ipart = 0;
+						memset(overRMScnt, 0, 7);
+						memset(overRMScnt, 0, 7);
+						memcpy(currentADCMAX, currentADCMAXCHARGE,
+								sizeof(currentADCMAX));
+						memcpy(shortCntMAX, shortCntMAXCHARGE, sizeof(shortCntMAX));
+						outputShortFlag = 0;
+						sysCharg.errCode = 0;
+						memset(overSHORTcnt, 0, sizeof(overSHORTcnt));
 					}
 					sysCharg.resetChargCnt = 0;
 					outputShortFlag = 0;
 				} else {
 					sysDis.relayFlag = TRUE;
 					//bao ve Ngắn mạch
-					if (outputShortFlag)
+					if (outputShortFlag) {
 						sysCom.state = SYS_CHARGE_ERR;
+						sysCharg.errCode = 4;
+						outputShortFlag = 0;
+					}
 					//bao ve qua tai 1, check after 1 cycle of AC output (calculated rms current)
 					if (doneCalcuRMS == 1) {
-						switch (sysCharg.overCurrStep) {
-						case 0: //while do not have over RMS
-							sysCharg.checkOverCurCnt = 0;
-							if (out_curr_data.RMS > OUTPUT_GRID_OVERLOAD)
-								sysCharg.overCurrStep++;
-							break;
-						case 1: //from 1-29 cycles after Irms>OUTPUT_DIS_OVERLOAD2
-							if (out_curr_data.RMS > ((uint16_t) overRMSratio[sysCharg.checkOverCurCnt] * OUTPUT_GRID_OVERLOAD / 100 + OUTPUT_GRID_OVERLOAD)) {
-								sysCom.state = SYS_CHARGE_ERR;
+						for (overCurrentCnt = 0; overCurrentCnt <= 7;
+								overCurrentCnt++) {
+							if (out_curr_data.RMS
+									>= (uint16_t) ((uint32_t) overRMSratio[overCurrentCnt]
+											* OUTPUT_GRID_OVERLOAD / 100))
+								overRMScnt[overCurrentCnt]++;
+							else {
+								if (overRMScnt[overCurrentCnt] > 0)
+									overRMScnt[overCurrentCnt]--;
 							}
-							if (sysCharg.checkOverCurCnt < 29)
-								sysCharg.checkOverCurCnt++;
-							else
-								sysCharg.overCurrStep++;
-							break;
-						case 2: //from 30-39 cycles after Irms> OUTPUT_DIS_OVERLOAD2
-							if (out_curr_data.RMS > OUTPUT_GRID_OVERLOAD) {
+							if (overRMScnt[overCurrentCnt]
+									>= overRMScntMAX[overCurrentCnt]) {
 								sysCom.state = SYS_CHARGE_ERR;
+								sysCharg.errCode = 1;
 							}
-							if (sysCharg.checkOverCurCnt < 39)
-								sysCharg.checkOverCurCnt++;
-							else
-								sysCharg.overCurrStep = 0;
-							break;
 						}
 						doneCalcuRMS = 0;
 					}
 					//check if GRID off, change to DISCHARGE STATE
-					if ((sysCom.cnt >= SYS_DELAY_RELAY_CHARGE + 400) && (sysCharg.lineFlag == 0))
+					if ((sysCom.cnt >= SYS_DELAY_RELAY_CHARGE + 400)
+							&& (sysCharg.lineFlag == 0))
 						sysCom.state = SYS_DIS;
 				}
 				switch (sysCharg.chargeState) {
@@ -469,13 +471,17 @@ void main(void)
 					sysDis.PWMflag = FALSE;
 					sysDis.checkPPflag = FALSE;
 					sysDis.underBattVolCnt = 0;
-					sysDis.overCurrStep = 0;
+					memset(overRMScnt, 0, 7);
+					memcpy(currentADCMAX, currentADCMAXDIS,
+							sizeof(currentADCMAX));
+					memcpy(shortCntMAX, shortCntMAXDIS, sizeof(shortCntMAX));
+					outputShortFlag = 0;
+					memset(overSHORTcnt, 0, sizeof(overSHORTcnt));
 					sysCharg.timeOnline.day = 0;
 					sysCharg.timeOnline.minute = 0;
 					sysCom.buzzState = BUZZ_DIS;
 					sysCom.ledState = LED_AUTO_DIS;
 					doneCalcuRMS = 0;
-					memcpy(currentMAX, current_ADC_DIS_MAX, 12);
 					if (sysCom.cnt < 50)
 						++sysCom.cnt;
 					else {
@@ -541,28 +547,20 @@ void main(void)
 							sysDis.underBattVolCnt = 0;
 						//bao ve qua tai 1, check after 1 cycle of AC output (calculated rms current)
 						if (doneCalcuRMS == 1) {
-							switch (sysDis.overCurrStep) {
-							case 0: //while do not have over RMS
-								sysDis.checkOverCurCnt = 0;
-								if (out_curr_data.RMS > OUTPUT_DIS_OVERLOAD2)
-									sysDis.overCurrStep++;
-								break;
-							case 1: //from 1-29 cycles after Irms>OUTPUT_DIS_OVERLOAD2
-								if (out_curr_data.RMS > ((uint16_t) overRMSratio[sysDis.checkOverCurCnt] * OUTPUT_DIS_OVERLOAD2 / 100 + OUTPUT_DIS_OVERLOAD2))
+							for (overCurrentCnt = 0; overCurrentCnt <= 7;
+									overCurrentCnt++) {
+								if (out_curr_data.RMS
+										>= (uint16_t) ((uint32_t) overRMSratio[overCurrentCnt]
+												* OUTPUT_DIS_OVERLOAD2 / 100))
+									overRMScnt[overCurrentCnt]++;
+								else {
+									if (overRMScnt[overCurrentCnt] > 0)
+										overRMScnt[overCurrentCnt]--;
+								}
+								if (overRMScnt[overCurrentCnt]
+										>= overRMScntMAX[overCurrentCnt]) {
 									backToChargeSystem();
-								if (sysDis.checkOverCurCnt < 29)
-									sysDis.checkOverCurCnt++;
-								else
-									sysDis.overCurrStep++;
-								break;
-							case 2: //from 30-39 cycles after Irms> OUTPUT_DIS_OVERLOAD2
-								if (out_curr_data.RMS > OUTPUT_DIS_OVERLOAD2)
-									backToChargeSystem();
-								if (sysDis.checkOverCurCnt < 39)
-									sysDis.checkOverCurCnt++;
-								else
-									sysDis.overCurrStep = 0;
-								break;
+								}
 							}
 							doneCalcuRMS = 0;
 						}
@@ -604,7 +602,7 @@ void main(void)
 			}
 			if (sysCom.state != SYS_STARTUP) {
 				if (timeOut10ms == 0) {
-					buzzerUpdate(sysCom.buzzState);
+					buzzerUpdate(sysCom.buzzState,sysDis.errCode);
 					timeOut10ms = 9;
 				} else
 					--timeOut10ms;
@@ -624,7 +622,6 @@ void main(void)
 				RELAYcontrol(sysDis.relayFlag); 			// control ON/OFF relay
 				phaseCalcu(HV_data.RMS);				//calcu phase for PWM adjust
 				//setDataOut();				//set data to arr to read out by UART
-				dataFlashHandle1();
 				if (sysCom.state != sysCom.stateOld) {
 					sysCom.stateOld = sysCom.state;
 					sysCom.cnt = 0;
@@ -643,8 +640,7 @@ void main(void)
 			PWMcontrol(sysDis.PWMflag);			//control ON/OFF-adjust duty PWM
 			setTAU0_2flag();
 		}
-		if (gFdlStatus == 0)
-			__halt();
+		__halt();
 	}
 	/* End user code. Do not edit comment generated here */
 }
@@ -663,7 +659,7 @@ void R_MAIN_UserInit(void)
 	ADCdataInit();
 	R_ADC_Set_OperationOn();
 	R_UART0_Start();
-	R_UART0_Receive(&RXdataReceiver, 1);
+	//R_UART0_Receive(&RXdataReceiver, 1);
 	EI();
 	/* End user code. Do not edit comment generated here */
 }
@@ -684,106 +680,6 @@ void timeOnlineContinuos(void) {
 		sysCharg.timeOnline.minute = 0;
 		tick = 0;
 		sysCharg.timeOnline.day++;
-	}
-}
-uint8_t saveDataToEEP(uint8_t errCode) {
-	switch (errCode) {
-	case 0x01:                 //over RMS current
-		return startWriteToEEP1(151);
-	case 0x02:
-		break;
-	case 0x03:                 //low batt while discharge
-		return startWriteToEEP1(106);
-	case 0x04:                 //output short circuit while discharge
-		return startWriteToEEP1(201);
-	case 0x05:                 //low PP voltage
-		if (sysDis.state >= DIS_PWM_ON)
-			return startWriteToEEP1(201);
-		else
-			return startWriteToEEP1(6);
-	case 0x06:                 //over discharge time
-		return startWriteToEEP1(6);
-	}
-	return 1;
-}
-void saveDataTo_dataEEP(uint8_t errCode) {
-	switch (errCode) {
-	case 0x01:                 //over RMS current
-		dataEEP[0] = 0xFF;
-		dataEEP[1] = errCode;
-		dataEEP[2] = sysDis.disCnt >> 24;
-		dataEEP[3] = (sysDis.disCnt & 0xFFFFFF) >> 16;
-		dataEEP[4] = (sysDis.disCnt & 0xFFFF) >> 8;
-		dataEEP[5] = (sysDis.disCnt & 0xFF);
-		//copy 100 rms current value to EEP
-		memcpy(dataEEP + 6, currentRMSsave + currRMSsaveCnt, 100 - currRMSsaveCnt);
-		memcpy(dataEEP + 106 - currRMSsaveCnt, currentRMSsave, currRMSsaveCnt);
-		//copy 45 ave Vpp value to EEP
-		memcpy(dataEEP + 106, vppAVEsave + vppAVEsaveCnt, 45 - vppAVEsaveCnt);
-		memcpy(dataEEP + 151 - vppAVEsaveCnt, vppAVEsave, vppAVEsaveCnt);
-		break;
-	case 0x02:
-		break;
-	case 0x03:                 //low batt while discharge
-		dataEEP[0] = 0xFF;
-		dataEEP[1] = errCode;
-		dataEEP[2] = sysDis.disCnt >> 24;
-		dataEEP[3] = (sysDis.disCnt & 0xFFFFFF) >> 16;
-		dataEEP[4] = (sysDis.disCnt & 0xFFFF) >> 8;
-		dataEEP[5] = (sysDis.disCnt & 0xFF);
-		memcpy(dataEEP + 6, vbattRMSsave + vbattRMSsaveCnt, 100 - vbattRMSsaveCnt);
-		memcpy(dataEEP + 106 - vbattRMSsaveCnt, vbattRMSsave, vbattRMSsaveCnt);
-		break;
-	case 0x04:                 //output short circuit while discharge
-		dataEEP[0] = 0xFF;
-		dataEEP[1] = errCode;
-		dataEEP[2] = sysDis.disCnt >> 24;
-		dataEEP[3] = (sysDis.disCnt & 0xFFFFFF) >> 16;
-		dataEEP[4] = (sysDis.disCnt & 0xFFFF) >> 8;
-		dataEEP[5] = (sysDis.disCnt & 0xFF);
-		//copy 100 rms current value to EEP
-		memcpy(dataEEP + 6, currentRMSsave + currRMSsaveCnt, 100 - currRMSsaveCnt);
-		memcpy(dataEEP + 106 - currRMSsaveCnt, currentRMSsave, currRMSsaveCnt);
-		//copy 45 ave current value to EEP
-		memcpy(dataEEP + 106, currentAVEsave + currAVEsaveCnt, 45 - currAVEsaveCnt);
-		memcpy(dataEEP + 151 - currAVEsaveCnt, currentAVEsave, currAVEsaveCnt);
-		//copy 5 adc current value to EEP
-		memcpy(dataEEP + 151, currentADCsave + currADCsaveCnt, 5 - currADCsaveCnt);
-		memcpy(dataEEP + 156 - currADCsaveCnt, currentADCsave, currADCsaveCnt);
-		//copy 45 ave Vpp value to EEP
-		memcpy(dataEEP + 156, vppAVEsave + vppAVEsaveCnt, 45 - vppAVEsaveCnt);
-		memcpy(dataEEP + 201 - vppAVEsaveCnt, vppAVEsave, vppAVEsaveCnt);
-		break;
-	case 0x05:                 //low PP voltage
-		dataEEP[0] = 0xFF;
-		dataEEP[1] = errCode;
-		dataEEP[2] = sysDis.disCnt >> 24;
-		dataEEP[3] = (sysDis.disCnt & 0xFFFFFF) >> 16;
-		dataEEP[4] = (sysDis.disCnt & 0xFFFF) >> 8;
-		dataEEP[5] = (sysDis.disCnt & 0xFF);
-		if (sysDis.state >= DIS_PWM_ON) {
-			//copy 100 rms current value to EEP
-			memcpy(dataEEP + 6, currentRMSsave + currRMSsaveCnt, 100 - currRMSsaveCnt);
-			memcpy(dataEEP + 106 - currRMSsaveCnt, currentRMSsave, currRMSsaveCnt);
-			//copy 45 ave current value to EEP
-			memcpy(dataEEP + 106, currentAVEsave + currAVEsaveCnt, 45 - currAVEsaveCnt);
-			memcpy(dataEEP + 151 - currAVEsaveCnt, currentAVEsave, currAVEsaveCnt);
-			//copy 5 adc current value to EEP
-			memcpy(dataEEP + 151, currentADCsave + currADCsaveCnt, 5 - currADCsaveCnt);
-			memcpy(dataEEP + 156 - currADCsaveCnt, currentADCsave, currADCsaveCnt);
-			//copy 45 ave Vpp value to EEP
-			memcpy(dataEEP + 156, vbattAVEsave + vbattAVEsaveCnt, 45 - vbattAVEsaveCnt);
-			memcpy(dataEEP + 201 - vbattAVEsaveCnt, vbattAVEsave, vbattAVEsaveCnt);
-		}
-		break;
-	case 0x06:                 //over discharge time
-		dataEEP[0] = 0xFF;
-		dataEEP[1] = errCode;
-		dataEEP[2] = sysDis.disCnt >> 24;
-		dataEEP[3] = (sysDis.disCnt & 0xFFFFFF) >> 16;
-		dataEEP[4] = (sysDis.disCnt & 0xFFFF) >> 8;
-		dataEEP[5] = (sysDis.disCnt & 0xFF);
-		break;
 	}
 }
 ///////////////////////////
@@ -858,6 +754,32 @@ void disSOCCalcu(unsigned char *state) {
 		if (Vbat_data.RMS < 2300)
 			(*socState) = 3;
 		break;
+	}
+}
+void uartSendData(void) {
+	static uint16_t demUart = 0;
+	if (demUart < 50)
+		demUart++;
+	else {
+		demUart = 0;
+		dataUartOut[0] = 0xAA;
+		dataUartOut[1] = (uint8_t) (sysCom.state);
+		dataUartOut[2] = (uint8_t) (sysCom.state >> 8);
+		dataUartOut[3] = (uint8_t) (sysDis.state);
+		dataUartOut[4] = (uint8_t) (sysDis.state >> 8);
+		dataUartOut[5] = (uint8_t) (sysCharg.chargeState);
+		dataUartOut[6] = (uint8_t) (sysCharg.chargeState >> 8);
+		dataUartOut[7] = (uint8_t) (Vbat_data.RMS);
+		dataUartOut[8] = (uint8_t) (Vbat_data.RMS >> 8);
+		dataUartOut[9] = (uint8_t) (out_curr_data.RMS);
+		dataUartOut[10] = (uint8_t) (out_curr_data.RMS >> 8);
+		dataUartOut[11] = (uint8_t) (HV_data.RMS);
+		dataUartOut[12] = (uint8_t) (HV_data.RMS >> 8);
+		dataUartOut[13] = (uint8_t) (sysDis.errCode);
+		dataUartOut[14] = (uint8_t) (sysDis.errCode >> 8);
+		dataUartOut[15] = (uint8_t) (sysCharg.errCode);
+		dataUartOut[16] = (uint8_t) (sysCharg.errCode >> 8);
+		R_UART0_Send(dataUartOut, 17);
 	}
 }
 /* End user code. Do not edit comment generated here */
