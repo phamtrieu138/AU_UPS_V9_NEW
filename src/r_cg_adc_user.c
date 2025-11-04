@@ -172,8 +172,8 @@ static void __near r_adc_interrupt(void)
 			vppSum = 0;
 		}
 		LPF(HV_data.ADC, &HVflt, 1, 8);
-		//HV_data.RMS = (uint16_t) ((uint32_t) HVflt * 573 / 1000);
-		HV_data.RMS = (uint16_t)((uint32_t)HVflt* 528 / 1000);
+		HV_data.RMS = (uint16_t) ((uint32_t) HVflt * 573 / 1000);
+		//HV_data.RMS = (uint16_t)((uint32_t)HVflt* 528 / 1000);
 //		if (HV_data.counter < 255)
 //			HV_data.counter++;
 //		else {

@@ -63,6 +63,7 @@ void clearTestCheck(void) {
 void buzzerUpdate(buzzer_t state,uint8_t errCode) {
 	static buzzer_t stateOld;
 	static uint8_t buzzerCnt = 0;
+	uint8_t buzzCntMax=0;
 	switch (state) {
 	case BUZZ_DIS:
 		if (buzzerCnt < 60) {
@@ -93,7 +94,28 @@ void buzzerUpdate(buzzer_t state,uint8_t errCode) {
 		}
 		break;
 	case BUZZ_ERR:
-		if (buzzerCnt < 90) {
+		switch (errCode)
+		{
+		case 1://over RMS current - 3 bip
+			buzzCntMax = 50;
+			break;
+		case 3://low batt - 4 bip
+			buzzCntMax = 70;
+			break;
+		case 4: //short circuit - 5 bip
+			buzzCntMax = 90;
+			break;
+		case 5: //low PP voltage - 6 bip
+			buzzCntMax = 110;
+			break;
+		case 6: //Discharge over 55h - 7 bip
+			buzzCntMax = 130;
+			break;
+		default:
+			buzzCntMax = 90;
+			break;
+		}
+		if (buzzerCnt < buzzCntMax) {
 			if (buzzerCnt == 0)
 				R_TAU0_Channel1_Start();
 			else if (buzzerCnt == 10)
@@ -110,7 +132,15 @@ void buzzerUpdate(buzzer_t state,uint8_t errCode) {
 				R_TAU0_Channel1_Start();
 			else if (buzzerCnt == 70)
 				R_TAU0_Channel1_Stop();
-			if (buzzerCnt == 80)
+			else if (buzzerCnt == 80)
+				R_TAU0_Channel1_Start();
+			else if (buzzerCnt == 90)
+				R_TAU0_Channel1_Stop();
+			else if (buzzerCnt == 100)
+				R_TAU0_Channel1_Start();
+			else if (buzzerCnt == 110)
+				R_TAU0_Channel1_Stop();
+			else if (buzzerCnt == 120)
 				R_TAU0_Channel1_Start();
 			++buzzerCnt;
 		} else {

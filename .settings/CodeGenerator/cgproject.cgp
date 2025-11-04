@@ -152,7 +152,7 @@
         <DTC />
       </Effect>
     </OnChipDebugTraceDTC>
-    <DataFlashDTC Name="GDataFlash" Text="1" Trigger="dataflash">
+    <DataFlashDTC Name="GDataFlash" Text="2" Trigger="dataflash">
       <Effect>
         <DTC />
       </Effect>
@@ -193,8 +193,8 @@
     <PIOR12Value Name="PIOR12Value" Text="0" />
     <PIOR13Value Name="PIOR13Value" Text="0" />
     <RESET_pin Name="RESET_pin" Text="true" />
-    <UseFDL Name="UseFDL" Text="yes" />
-    <DataFlash Name="DataFlash" Text="1" />
+    <UseFDL Name="UseFDL" Text="no" />
+    <DataFlash Name="DataFlash" Text="0" />
     <OCDROM Name="OCDROM" Text="Unused" />
     <OCDROM_Address Name="OCDROM_Address" Text="00003F00" />
     <OCDROM_Length Name="OCDROM_Length" Text="256" />
@@ -626,16 +626,16 @@
         <r_cg_cgc.h UserName="r_cg_cgc.h" LibName=".h" InUse="1" />
         <r_cg_pfdl.c UserName="r_cg_pfdl.c" LibName="_pfdl.c" InUse="1">
           <Type R_FDL_Create="void R_FDL_Create(void)" R_FDL_Write="pfdl_status_t R_FDL_Write(pfdl_u16 index, __near pfdl_u08* buffer, pfdl_u16 bytecount)" R_FDL_Read="pfdl_status_t R_FDL_Read(pfdl_u16 index, __near pfdl_u08* buffer, pfdl_u16 bytecount)" R_FDL_Erase="pfdl_status_t R_FDL_Erase(pfdl_u16 blockno)" R_FDL_Open="void R_FDL_Open(void)" R_FDL_Close="void PFDL_Close(void)" R_FDL_BlankCheck="pfdl_status_t R_FDL_BlankCheck(pfdl_u16 index, pfdl_u16 bytecount)" R_FDL_IVerify="pfdl_status_t R_FDL_IVerify(pfdl_u16 index, pfdl_u16 bytecount)" />
-          <R_FDL_Create UserName="" LibName="R_FDL_Create" InUse="1" InitMode="" />
-          <R_FDL_Write UserName="" LibName="R_FDL_Write" InUse="1" />
-          <R_FDL_Read UserName="" LibName="R_FDL_Read" InUse="1" />
-          <R_FDL_Erase UserName="" LibName="R_FDL_Erase" InUse="1" />
-          <R_FDL_Open UserName="" LibName="R_FDL_Open" InUse="1" />
-          <R_FDL_Close UserName="" LibName="R_FDL_Close" InUse="1" />
-          <R_FDL_BlankCheck UserName="" LibName="R_FDL_BlankCheck" InUse="1" />
-          <R_FDL_IVerify UserName="" LibName="R_FDL_IVerify" InUse="1" />
+          <R_FDL_Create UserName="" LibName="R_FDL_Create" InUse="0" InitMode="" />
+          <R_FDL_Write UserName="" LibName="R_FDL_Write" InUse="0" />
+          <R_FDL_Read UserName="" LibName="R_FDL_Read" InUse="0" />
+          <R_FDL_Erase UserName="" LibName="R_FDL_Erase" InUse="0" />
+          <R_FDL_Open UserName="" LibName="R_FDL_Open" InUse="0" />
+          <R_FDL_Close UserName="" LibName="R_FDL_Close" InUse="0" />
+          <R_FDL_BlankCheck UserName="" LibName="R_FDL_BlankCheck" InUse="0" />
+          <R_FDL_IVerify UserName="" LibName="R_FDL_IVerify" InUse="0" />
         </r_cg_pfdl.c>
-        <r_cg_pfdl.h UserName="r_cg_pfdl.h" LibName="_pfdl.h" InUse="1" />
+        <r_cg_pfdl.h UserName="r_cg_pfdl.h" LibName="_pfdl.h" InUse="0" />
       </CGC>
       <PORT>
         <r_cg_port.c UserName="r_cg_port.c" LibName=".c" InUse="1">
@@ -1219,10 +1219,10 @@
         <pior1_value Name="pior1_value" Value="00" />
         <cg_security1 Name="cg_security1" Value="00" />
         <cg_security9 Name="cg_security9" Value="00" />
+        <lvi_option Name="lvi_option" Value="FF" />
         <cg_security6 Name="cg_security6" Value="00" />
         <cg_crc_area Name="cg_crc_area" Value="00" />
         <cg_iawctl_value Name="cg_iawctl_value" Value="00" />
-        <dataflash_use Name="dataflash_use" Value="" />
         <cg_security0 Name="cg_security0" Value="00" />
         <ocdstart Name="ocdstart" Value="03F00" />
         <df_waittime Name="df_waittime" Value="6" />
@@ -1230,9 +1230,8 @@
         <cg_security4 Name="cg_security4" Value="00" />
         <pior_value Name="pior_value" Value="00" />
         <cg_pms_value Name="cg_pms_value" Value="00" />
-        <cg_option Name="cg_option" Value="04" />
         <cg_security7 Name="cg_security7" Value="00" />
-        <lvi_option Name="lvi_option" Value="FF" />
+        <cg_option Name="cg_option" Value="04" />
       </GlobleUserTag>
     </TAG>
   </DIR>
@@ -1338,8 +1337,8 @@
       <setting name="PORToperation" value="unused" />
       <setting name="INToperation" value="unused" />
       <setting name="CHIPoperation" value="unused" />
-      <setting name="DataFlash" value="used" />
-      <setting name="ProgramFlash" value="used" />
+      <setting name="DataFlash" value="unused" />
+      <setting name="ProgramFlash" value="unused" />
       <setting name="Monitor" value="unused" />
       <setting name="StartStop" value="unused" />
       <setting name="Emulator" value="E2L" />
