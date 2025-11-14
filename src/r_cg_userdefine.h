@@ -14,16 +14,16 @@
 * following link:
 * http://www.renesas.com/disclaimer
 *
-* Copyright (C) 2011, 2024 Renesas Electronics Corporation. All rights reserved.
+* Copyright (C) 2011, 2025 Renesas Electronics Corporation. All rights reserved.
 ***********************************************************************************************************************/
 
 /***********************************************************************************************************************
 * File Name    : r_cg_userdefine.h
-* Version      : CodeGenerator for RL78/G14 V2.05.08.02 [03 Jun 2024]
+* Version      : CodeGenerator for RL78/G14 V2.05.09.01 [28 Apr 2025]
 * Device(s)    : R5F104AA
 * Tool-Chain   : CCRL
 * Description  : This file includes user definition.
-* Creation Date: 10/9/2025
+* Creation Date: 11/5/2025
 ***********************************************************************************************************************/
 
 #ifndef _USER_DEF_H
@@ -34,9 +34,9 @@ User definitions
 ***********************************************************************************************************************/
 
 /* Start user code for function. Do not edit comment generated here */
-#define	FIRMWARE_VER 910
+#define	FIRMWARE_VER 915
 #define C750 0
-#define D_TYPE 0
+#define D_TYPE 1
 //define type of UPS
 #if C750
 //C750

@@ -14,16 +14,16 @@
 * following link:
 * http://www.renesas.com/disclaimer
 *
-* Copyright (C) 2011, 2024 Renesas Electronics Corporation. All rights reserved.
+* Copyright (C) 2011, 2025 Renesas Electronics Corporation. All rights reserved.
 ***********************************************************************************************************************/
 
 /***********************************************************************************************************************
 * File Name    : r_cg_timer.c
-* Version      : CodeGenerator for RL78/G14 V2.05.08.02 [03 Jun 2024]
+* Version      : CodeGenerator for RL78/G14 V2.05.09.01 [28 Apr 2025]
 * Device(s)    : R5F104AA
 * Tool-Chain   : CCRL
 * Description  : This file implements device driver for TAU module.
-* Creation Date: 10/9/2025
+* Creation Date: 11/5/2025
 ***********************************************************************************************************************/
 
 /***********************************************************************************************************************

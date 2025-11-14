@@ -14,16 +14,16 @@
 * following link:
 * http://www.renesas.com/disclaimer
 *
-* Copyright (C) 2011, 2024 Renesas Electronics Corporation. All rights reserved.
+* Copyright (C) 2011, 2025 Renesas Electronics Corporation. All rights reserved.
 ***********************************************************************************************************************/
 
 /***********************************************************************************************************************
 * File Name    : r_main.c
-* Version      : CodeGenerator for RL78/G14 V2.05.08.02 [03 Jun 2024]
+* Version      : CodeGenerator for RL78/G14 V2.05.09.01 [28 Apr 2025]
 * Device(s)    : R5F104AA
 * Tool-Chain   : CCRL
 * Description  : This file implements main function.
-* Creation Date: 10/9/2025
+* Creation Date: 11/5/2025
 ***********************************************************************************************************************/
 
 /***********************************************************************************************************************
@@ -35,6 +35,7 @@ Includes
 #include "r_cg_serial.h"
 #include "r_cg_adc.h"
 #include "r_cg_timer.h"
+#include "r_cg_wdt.h"
 /* Start user code for include. Do not edit comment generated here */
 #include <string.h>
 /* End user code. Do not edit comment generated here */
@@ -108,6 +109,7 @@ void main(void)
 	while (1U) {
 		if (checkTAU0_2flag() == 0) {
 			uartSendData();
+			R_WDT_Restart();
 			switch (sysCom.state) {
 			case SYS_STARTUP: //delay 400mS to wait stable VCC for MCU
 				setupTestCheck();

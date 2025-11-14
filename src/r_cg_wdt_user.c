@@ -18,11 +18,11 @@
 ***********************************************************************************************************************/
 
 /***********************************************************************************************************************
-* File Name    : r_cg_port.c
+* File Name    : r_cg_wdt_user.c
 * Version      : CodeGenerator for RL78/G14 V2.05.09.01 [28 Apr 2025]
 * Device(s)    : R5F104AA
 * Tool-Chain   : CCRL
-* Description  : This file implements device driver for PORT module.
+* Description  : This file implements device driver for WDT module.
 * Creation Date: 11/5/2025
 ***********************************************************************************************************************/
 
@@ -30,7 +30,7 @@
 Includes
 ***********************************************************************************************************************/
 #include "r_cg_macrodriver.h"
-#include "r_cg_port.h"
+#include "r_cg_wdt.h"
 /* Start user code for include. Do not edit comment generated here */
 /* End user code. Do not edit comment generated here */
 #include "r_cg_userdefine.h"
@@ -38,6 +38,7 @@ Includes
 /***********************************************************************************************************************
 Pragma directive
 ***********************************************************************************************************************/
+#pragma interrupt r_wdt_interrupt(vect=INTWDTI)
 /* Start user code for pragma. Do not edit comment generated here */
 /* End user code. Do not edit comment generated here */
 
@@ -48,28 +49,15 @@ Global variables and functions
 /* End user code. Do not edit comment generated here */
 
 /***********************************************************************************************************************
-* Function Name: R_PORT_Create
-* Description  : This function initializes the Port I/O.
+* Function Name: r_wdt_interrupt
+* Description  : This function is INTWDTI interrupt service routine.
 * Arguments    : None
 * Return Value : None
 ***********************************************************************************************************************/
-void R_PORT_Create(void)
+static void __near r_wdt_interrupt(void)
 {
-    P0 = _00_Pn0_OUTPUT_0 | _00_Pn1_OUTPUT_0;
-    P1 = _00_Pn0_OUTPUT_0 | _00_Pn1_OUTPUT_0 | _00_Pn6_OUTPUT_0;
-    P4 = _00_Pn0_OUTPUT_0;
-    P12 = _00_Pn0_OUTPUT_0;
-    PIM3 = _01_PIMn0_TTL_ON;
-    PMC0 = _00_PMCn0_DI_ON | _00_PMCn1_DI_ON | _FC_PMC0_DEFAULT;
-    PMC12 = _00_PMCn0_DI_ON | _FE_PMC12_DEFAULT;
-    ADPC = _04_ADPC_DI_ON;
-    PM0 = _00_PMn0_MODE_OUTPUT | _00_PMn1_MODE_OUTPUT | _FC_PM0_DEFAULT;
-    PM1 = _00_PMn0_MODE_OUTPUT | _00_PMn1_MODE_OUTPUT | _04_PMn2_NOT_USE | _08_PMn3_NOT_USE | _10_PMn4_NOT_USE |
-          _20_PMn5_NOT_USE | _00_PMn6_MODE_OUTPUT | _80_PMn7_NOT_USE;
-    PM2 = _01_PMn0_NOT_USE | _02_PMn1_NOT_USE | _04_PMn2_NOT_USE | _08_PMn3_MODE_INPUT | _F0_PM2_DEFAULT;
-    PM3 = _01_PMn0_MODE_INPUT | _02_PMn1_NOT_USE | _FC_PM3_DEFAULT;
-    PM4 = _00_PMn0_MODE_OUTPUT | _FE_PM4_DEFAULT;
-    PM12 = _00_PMn0_MODE_OUTPUT | _FE_PM12_DEFAULT;
+    /* Start user code. Do not edit comment generated here */
+    /* End user code. Do not edit comment generated here */
 }
 
 /* Start user code for adding. Do not edit comment generated here */

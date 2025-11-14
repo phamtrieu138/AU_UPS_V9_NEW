@@ -14,16 +14,16 @@
 * following link:
 * http://www.renesas.com/disclaimer
 *
-* Copyright (C) 2011, 2024 Renesas Electronics Corporation. All rights reserved.
+* Copyright (C) 2011, 2025 Renesas Electronics Corporation. All rights reserved.
 ***********************************************************************************************************************/
 
 /***********************************************************************************************************************
 * File Name    : r_cg_adc_user.c
-* Version      : CodeGenerator for RL78/G14 V2.05.08.02 [03 Jun 2024]
+* Version      : CodeGenerator for RL78/G14 V2.05.09.01 [28 Apr 2025]
 * Device(s)    : R5F104AA
 * Tool-Chain   : CCRL
 * Description  : This file implements device driver for ADC module.
-* Creation Date: 10/9/2025
+* Creation Date: 11/5/2025
 ***********************************************************************************************************************/
 
 /***********************************************************************************************************************
@@ -92,6 +92,7 @@ static void __near r_adc_interrupt(void)
     /* Start user code. Do not edit comment generated here */
 	uint8_t shortCnt;
 	uint32_t guess = 0;
+	uint8_t iterations = 0;
 	static uint16_t threeTimeVppCnt = 0, vppSum = 0;
 	static uint16_t threeTimeVbattCnt = 0, vbattSum = 0, saveVbattRMScnt = 0;
 	switch (ADS) {
@@ -227,11 +228,13 @@ static void __near r_adc_interrupt(void)
 			out_curr_data.sum = out_curr_data.sum / 133;
 			//calcu sqrt of sum
 			guess = out_curr_data.sum >> 1; // Initial guess
+			iterations = 0;
 			if (out_curr_data.sum <= 2) {
 				out_curr_data.RMS = 1;
 			} else {
-				while ((guess * guess) > out_curr_data.sum) {
+				while (((guess * guess) > out_curr_data.sum)&& (iterations <= 40)) {
 					guess = (guess + out_curr_data.sum / guess) >> 1;
+					iterations++;
 				}
 				guess = guess * 10;
 				out_curr_data.RMS = guess; //gia tri rms = thuc te *100;

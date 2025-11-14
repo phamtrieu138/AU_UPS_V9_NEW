@@ -135,7 +135,7 @@
     <TRD1_INTP0 Name="TRD1_INTP0" Value="0" />
     <ELC_TARGET8 Name="ELC_TARGET8" Text="disable" />
     <ProjectName Name="PrjName" Text="FC750_V9" />
-    <ProjectPath Name="PrjPath" Text="D:\OneDrive - HTK TECHNOLOGY\Project_Trieu\LUU DIEN CUA CUON\AUSDOOR\UPS V9\FirmWare\FC750_V9\project" />
+    <ProjectPath Name="PrjPath" Text="D:\HTK_PROJECT\AUSDOOR\UPS V9\FirmWare\FC750_V9\AU_UPS_V9_NEW" />
     <ProjectKind Name="PrjKind" Text="Project78K0R" />
     <DeviceName Name="DeviceName" Fixed="" Text="RL78G14" />
     <CPUCoreType Name="CPUCoreType" Fixed="" Text="1" />
@@ -163,7 +163,7 @@
     <StartAddressOfOnChipDebugOptionBytes Name="GOStart" Text="3F00" />
     <SizeOfOnChipDebugOptionBytesArea Name="GOSizeValue" Text="256" />
     <UserOptionBytes Name="GB" Text="1" />
-    <UserOptionBytesValue Name="GBValue" Text="EFFFE9" />
+    <UserOptionBytesValue Name="GBValue" Text="F5FFE9" />
     <RAMStartAddress Chip="R5F104AA,R5F104BA,R5F104CA,R5F104EA,R5F104FA,R5F104GA,R5F104HA" Name="RAMStartAddress" Fixed="" Text="000FF500" />
     <RAMEndAddress Name="RAMEndAddress" Fixed="" Text="000FFEFF" />
     <ROMEndAddress Chip="R5F104AA,R5F104BA,R5F104CA,R5F104EA,R5F104FA,R5F104GA,R5F104HA" Name="ROMEndAddress" Fixed="" Text="00003FFF" />
@@ -200,7 +200,7 @@
     <OCDROM_Length Name="OCDROM_Length" Text="256" />
     <HasRRMRam Name="HasRRMRam" Text="" />
     <PrjVersion Name="PrjVersion" Text="1.2.0.1" />
-    <ProductVersion Name="ProductVersion" Text="2.24.00.01" />
+    <ProductVersion Name="ProductVersion" Text="2.25.00.01" />
     <DataRAddress Name="DataRAddress" Text="FF500" />
     <TO02_PWM Name="TO02_PWM" Text="false" />
     <TO03_PWM Name="TO03_PWM" Text="true" />
@@ -561,7 +561,7 @@
         <INTIT InUse="0" ISR="r_it_interrupt" />
       </IT>
       <WDT>
-        <INTWDTI InUse="0" ISR="r_wdt_interrupt" />
+        <INTWDTI InUse="1" ISR="r_wdt_interrupt" />
       </WDT>
       <LVD>
         <INTLVI InUse="0" ISR="r_lvd_interrupt" IsDMATrigger="true" />
@@ -1005,17 +1005,17 @@
         <r_cg_timer.h UserName="r_cg_timer.h" LibName=".h" InUse="1" />
       </TAU>
       <WDT>
-        <r_cg_wdt.c UserName="" LibName=".c" InUse="0">
+        <r_cg_wdt.c UserName="r_cg_wdt.c" LibName=".c" InUse="1">
           <Type R_WDT_Create="void R_WDT_Create(void)" R_WDT_Restart="void R_WDT_Restart(void)" />
-          <R_WDT_Create UserName="" LibName="R_WDT_Create" InUse="0" Init="1" InitMode="" />
-          <R_WDT_Restart UserName="" LibName="R_WDT_Restart" InUse="0" />
+          <R_WDT_Create UserName="" LibName="R_WDT_Create" InUse="1" Init="1" InitMode="" />
+          <R_WDT_Restart UserName="" LibName="R_WDT_Restart" InUse="1" />
         </r_cg_wdt.c>
-        <r_cg_wdt_user.c UserName="" LibName="_user.c" InUse="0">
+        <r_cg_wdt_user.c UserName="r_cg_wdt_user.c" LibName="_user.c" InUse="1">
           <Type R_WDT_Create_UserInit="void R_WDT_Create_UserInit(void)" r_wdt_interrupt="__interrupt static void r_wdt_interrupt(void)" />
           <R_WDT_Create_UserInit UserName="" LibName="R_WDT_Create_UserInit" InUse="0" />
-          <r_wdt_interrupt UserName="" INTHandle="" LibName="r_wdt_interrupt" InUse="0" />
+          <r_wdt_interrupt UserName="r_wdt_interrupt" INTHandle="" LibName="r_wdt_interrupt" InUse="1" />
         </r_cg_wdt_user.c>
-        <r_cg_wdt.h UserName="" LibName=".h" InUse="0" />
+        <r_cg_wdt.h UserName="r_cg_wdt.h" LibName=".h" InUse="1" />
       </WDT>
       <RTC>
         <r_cg_rtc.c UserName="" LibName=".c" InUse="0">
@@ -1213,13 +1213,12 @@
       <GlobleUserTag>
         <clock_option Name="clock_option" Value="E9" />
         <cg_security5 Name="cg_security5" Value="00" />
-        <wdt_option Name="wdt_option" Value="EF" />
+        <wdt_option Name="wdt_option" Value="F5" />
         <cg_security8 Name="cg_security8" Value="00" />
         <cg_security2 Name="cg_security2" Value="00" />
         <pior1_value Name="pior1_value" Value="00" />
         <cg_security1 Name="cg_security1" Value="00" />
         <cg_security9 Name="cg_security9" Value="00" />
-        <lvi_option Name="lvi_option" Value="FF" />
         <cg_security6 Name="cg_security6" Value="00" />
         <cg_crc_area Name="cg_crc_area" Value="00" />
         <cg_iawctl_value Name="cg_iawctl_value" Value="00" />
@@ -1230,8 +1229,9 @@
         <cg_security4 Name="cg_security4" Value="00" />
         <pior_value Name="pior_value" Value="00" />
         <cg_pms_value Name="cg_pms_value" Value="00" />
-        <cg_security7 Name="cg_security7" Value="00" />
         <cg_option Name="cg_option" Value="04" />
+        <cg_security7 Name="cg_security7" Value="00" />
+        <lvi_option Name="lvi_option" Value="FF" />
       </GlobleUserTag>
     </TAG>
   </DIR>
@@ -1268,8 +1268,8 @@
       <TMRD1 SetFlag="True" MacroName="TMRD" Channel="1" TabEnable="True" />
       <TMRG0 SetFlag="False" MacroName="TMRG" Channel="0" TabEnable="True" />
     </TAU>
-    <WDT Prepared="true" SetFlag="False" HelpID="watchdogtimer" NeedRefresh="False">
-      <WDT SetFlag="False" MacroName="WDT" />
+    <WDT Prepared="true" SetFlag="True" HelpID="watchdogtimer" NeedRefresh="False">
+      <WDT SetFlag="True" MacroName="WDT" />
     </WDT>
     <RTC SetFlag="False" HelpID="rtc" NeedRefresh="False">
       <RTC MacroName="RTC" SetFlag="False" />
@@ -1915,8 +1915,8 @@
       <setting name="Function" value="Unused" />
     </TMRG0>
     <WDT>
-      <setting name="Operation" value="unused" />
-      <setting name="Overflow_time" value="7" />
+      <setting name="Operation" value="used" />
+      <setting name="Overflow_time" value="2" />
       <setting name="Window_opening_time" value="2" />
       <setting name="Standby_operation" value="enable" />
       <setting name="Interval_interrupt" value="use" />
