@@ -1219,6 +1219,7 @@
         <pior1_value Name="pior1_value" Value="00" />
         <cg_security1 Name="cg_security1" Value="00" />
         <cg_security9 Name="cg_security9" Value="00" />
+        <lvi_option Name="lvi_option" Value="FF" />
         <cg_security6 Name="cg_security6" Value="00" />
         <cg_crc_area Name="cg_crc_area" Value="00" />
         <cg_iawctl_value Name="cg_iawctl_value" Value="00" />
@@ -1229,9 +1230,8 @@
         <cg_security4 Name="cg_security4" Value="00" />
         <pior_value Name="pior_value" Value="00" />
         <cg_pms_value Name="cg_pms_value" Value="00" />
-        <cg_option Name="cg_option" Value="04" />
         <cg_security7 Name="cg_security7" Value="00" />
-        <lvi_option Name="lvi_option" Value="FF" />
+        <cg_option Name="cg_option" Value="04" />
       </GlobleUserTag>
     </TAG>
   </DIR>
@@ -1602,7 +1602,7 @@
           <setting name="Receive_data_direction" value="LSB" />
           <setting name="Receive_data_length" value="8 bits" />
           <setting name="Receive_parity" value="none" />
-          <setting name="RecBaudrate" value="9600" />
+          <setting name="RecBaudrate" value="115200" />
           <setting name="Receive_end_callback_function" value="generated" />
           <setting name="Receive_error_callback_function" value="not generated" />
           <setting name="Transfer_mode" value="single" />
@@ -1611,7 +1611,7 @@
           <setting name="Transmit_data_length" value="8 bits" />
           <setting name="Transmit_parity" value="none" />
           <setting name="Transmit_stop_length" value="1 bit" />
-          <setting name="TranBaudrate" value="9600" />
+          <setting name="TranBaudrate" value="115200" />
           <setting name="Transmit_end_callback_function" value="not generated" />
           <setting name="Transmit_end_interrupt_priority" value="3" />
           <setting name="Receive_error_interrupt_priority" value="3" />

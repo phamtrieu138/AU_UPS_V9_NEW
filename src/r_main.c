@@ -23,7 +23,7 @@
 * Device(s)    : R5F104AA
 * Tool-Chain   : CCRL
 * Description  : This file implements main function.
-* Creation Date: 11/5/2025
+* Creation Date: 11/14/2025
 ***********************************************************************************************************************/
 
 /***********************************************************************************************************************
@@ -220,7 +220,7 @@ void main(void)
 							sysDis.errCnt++;
 						}
 					}
-					if(out_curr_data.RMS<320)
+					if (out_curr_data.RMS < 320)
 						outVoltageSet(227 + out_curr_data.RMS / 40);
 					else
 						outVoltageSet(232);
@@ -228,12 +228,10 @@ void main(void)
 					switch (battMinCal.battMinCalState) {
 					case 0: //Dòng lớn
 						vbatMIN = 1920;
-						if(out_curr_data.RMS < 3)
-						{
-							if(battMinCal.noLoadCnt<720000)//tương đương 4h-720000
+						if (out_curr_data.RMS < 3) {
+							if (battMinCal.noLoadCnt < 720000) //tương đương 4h-720000
 								battMinCal.noLoadCnt++;
-							else
-							{
+							else {
 								battMinCal.battMinCalState = 1;
 								vbatMIN = 2380;
 							}
@@ -241,7 +239,7 @@ void main(void)
 							battMinCal.noLoadCnt = 0;
 						break;
 					case 1: //Dòng nhỏ
-						if(out_curr_data.RMS >= 3)//tương đương 30s
+						if (out_curr_data.RMS >= 3) //tương đương 30s
 							battMinCal.battMinCalState = 0;
 						battMinCal.noLoadCnt = 0;
 						break;
@@ -364,7 +362,8 @@ void main(void)
 						memset(overRMScnt, 0, 7);
 						memcpy(currentADCMAX, currentADCMAXCHARGE,
 								sizeof(currentADCMAX));
-						memcpy(shortCntMAX, shortCntMAXCHARGE, sizeof(shortCntMAX));
+						memcpy(shortCntMAX, shortCntMAXCHARGE,
+								sizeof(shortCntMAX));
 						outputShortFlag = 0;
 						sysCharg.errCode = 0;
 						memset(overSHORTcnt, 0, sizeof(overSHORTcnt));
@@ -427,12 +426,15 @@ void main(void)
 					sysCharg.floatVoltageSet = 3000;
 					sysCharg.timeOnline.day = 0;
 					sysCharg.timeOnline.minute = 0;
-					if (sysCharg.timeStartState1 < (0xFFFF - timeOfChargeState)) {
-						if (sysCom.clock.per20minutes >= (sysCharg.timeStartState1 + timeOfChargeState)) {
+					if (sysCharg.timeStartState1
+							< (0xFFFF - timeOfChargeState)) {
+						if (sysCom.clock.per20minutes
+								>= (sysCharg.timeStartState1 + timeOfChargeState)) {
 							sysCharg.chargeState = 2;
 						}
 					} else {
-						if (sysCom.clock.per20minutes >= (30 - (0xFFFF - sysCharg.timeStartState1))) {
+						if (sysCom.clock.per20minutes
+								>= (30 - (0xFFFF - sysCharg.timeStartState1))) {
 							sysCharg.chargeState = 2;
 							Dpart = 0;
 							Ipart = 0;
@@ -604,7 +606,7 @@ void main(void)
 			}
 			if (sysCom.state != SYS_STARTUP) {
 				if (timeOut10ms == 0) {
-					buzzerUpdate(sysCom.buzzState,sysDis.errCode);
+					buzzerUpdate(sysCom.buzzState, sysDis.errCode);
 					timeOut10ms = 9;
 				} else
 					--timeOut10ms;
@@ -612,17 +614,18 @@ void main(void)
 					ledUpdate(sysCom.ledState, sysDis.errCode);
 				else
 					LED_D_UPDATE(SOC, sysCom.ledState);
-				if ((sysCom.state == SYS_DIS) || (sysCom.state == SYS_DIS_ERR)) {
+				if ((sysCom.state == SYS_DIS)
+						|| (sysCom.state == SYS_DIS_ERR)) {
 					if (sysDis.pushButton == 0)
 						sysDis.released = TRUE;
 					if ((sysDis.released == TRUE) && (sysDis.pushButton))
 						sysCom.state = SYS_STOP;
 				}
-				pushButtonCheck(&(sysDis.pushButton)); 			//check push button
+				pushButtonCheck(&(sysDis.pushButton)); 		//check push button
 				lineInCheck(&sysCharg.lineFlag);
-				PPcontrol(sysDis.PPflag); 				//control ON/OFF push pull
-				RELAYcontrol(sysDis.relayFlag); 			// control ON/OFF relay
-				phaseCalcu(HV_data.RMS);				//calcu phase for PWM adjust
+				PPcontrol(sysDis.PPflag); 			//control ON/OFF push pull
+				RELAYcontrol(sysDis.relayFlag); 		// control ON/OFF relay
+				phaseCalcu(HV_data.RMS);			//calcu phase for PWM adjust
 				//setDataOut();				//set data to arr to read out by UART
 				if (sysCom.state != sysCom.stateOld) {
 					sysCom.stateOld = sysCom.state;
@@ -760,28 +763,23 @@ void disSOCCalcu(unsigned char *state) {
 }
 void uartSendData(void) {
 	static uint16_t demUart = 0;
-	if (demUart < 50)
+	uint16_t firmware = FIRMWARE_VER;
+	if (demUart < 500)
 		demUart++;
 	else {
 		demUart = 0;
 		dataUartOut[0] = 0xAA;
-		dataUartOut[1] = (uint8_t) (sysCom.state);
-		dataUartOut[2] = (uint8_t) (sysCom.state >> 8);
-		dataUartOut[3] = (uint8_t) (sysDis.state);
-		dataUartOut[4] = (uint8_t) (sysDis.state >> 8);
-		dataUartOut[5] = (uint8_t) (sysCharg.chargeState);
-		dataUartOut[6] = (uint8_t) (sysCharg.chargeState >> 8);
-		dataUartOut[7] = (uint8_t) (Vbat_data.RMS);
-		dataUartOut[8] = (uint8_t) (Vbat_data.RMS >> 8);
-		dataUartOut[9] = (uint8_t) (out_curr_data.RMS);
-		dataUartOut[10] = (uint8_t) (out_curr_data.RMS >> 8);
-		dataUartOut[11] = (uint8_t) (HV_data.RMS);
-		dataUartOut[12] = (uint8_t) (HV_data.RMS >> 8);
-		dataUartOut[13] = (uint8_t) (sysDis.errCode);
-		dataUartOut[14] = (uint8_t) (sysDis.errCode >> 8);
-		dataUartOut[15] = (uint8_t) (sysCharg.errCode);
-		dataUartOut[16] = (uint8_t) (sysCharg.errCode >> 8);
-		R_UART0_Send(dataUartOut, 17);
+		dataUartOut[1] = (uint8_t) (firmware);
+		dataUartOut[2] = (uint8_t) (firmware >> 8);
+		dataUartOut[3] = (uint8_t) (Vbat_data.RMS);
+		dataUartOut[4] = (uint8_t) (Vbat_data.RMS >> 8);
+		dataUartOut[5] = (uint8_t) (HV_data.RMS);
+		dataUartOut[6] = (uint8_t) (HV_data.RMS >> 8);
+		dataUartOut[7] = (uint8_t) (out_curr_data.RMS);
+		dataUartOut[8] = (uint8_t) (out_curr_data.RMS >> 8);
+		dataUartOut[9] = (uint8_t) (sysDis.errCode);
+		dataUartOut[10] = (uint8_t) (sysDis.errCode >> 8);
+		R_UART0_Send(dataUartOut, 11);
 	}
 }
 /* End user code. Do not edit comment generated here */

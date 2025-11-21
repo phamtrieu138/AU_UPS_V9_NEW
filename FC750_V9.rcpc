@@ -1355,6 +1355,7 @@
         &lt;pior1_value Name="pior1_value" Value="00" /&gt;&#13;
         &lt;cg_security1 Name="cg_security1" Value="00" /&gt;&#13;
         &lt;cg_security9 Name="cg_security9" Value="00" /&gt;&#13;
+        &lt;lvi_option Name="lvi_option" Value="FF" /&gt;&#13;
         &lt;cg_security6 Name="cg_security6" Value="00" /&gt;&#13;
         &lt;cg_crc_area Name="cg_crc_area" Value="00" /&gt;&#13;
         &lt;cg_iawctl_value Name="cg_iawctl_value" Value="00" /&gt;&#13;
@@ -1365,9 +1366,8 @@
         &lt;cg_security4 Name="cg_security4" Value="00" /&gt;&#13;
         &lt;pior_value Name="pior_value" Value="00" /&gt;&#13;
         &lt;cg_pms_value Name="cg_pms_value" Value="00" /&gt;&#13;
-        &lt;cg_option Name="cg_option" Value="04" /&gt;&#13;
         &lt;cg_security7 Name="cg_security7" Value="00" /&gt;&#13;
-        &lt;lvi_option Name="lvi_option" Value="FF" /&gt;&#13;
+        &lt;cg_option Name="cg_option" Value="04" /&gt;&#13;
       &lt;/GlobleUserTag&gt;&#13;
     &lt;/TAG&gt;&#13;
   &lt;/DIR&gt;&#13;
@@ -1738,7 +1738,7 @@
           &lt;setting name="Receive_data_direction" value="LSB" /&gt;&#13;
           &lt;setting name="Receive_data_length" value="8 bits" /&gt;&#13;
           &lt;setting name="Receive_parity" value="none" /&gt;&#13;
-          &lt;setting name="RecBaudrate" value="9600" /&gt;&#13;
+          &lt;setting name="RecBaudrate" value="115200" /&gt;&#13;
           &lt;setting name="Receive_end_callback_function" value="generated" /&gt;&#13;
           &lt;setting name="Receive_error_callback_function" value="not generated" /&gt;&#13;
           &lt;setting name="Transfer_mode" value="single" /&gt;&#13;
@@ -1747,7 +1747,7 @@
           &lt;setting name="Transmit_data_length" value="8 bits" /&gt;&#13;
           &lt;setting name="Transmit_parity" value="none" /&gt;&#13;
           &lt;setting name="Transmit_stop_length" value="1 bit" /&gt;&#13;
-          &lt;setting name="TranBaudrate" value="9600" /&gt;&#13;
+          &lt;setting name="TranBaudrate" value="115200" /&gt;&#13;
           &lt;setting name="Transmit_end_callback_function" value="not generated" /&gt;&#13;
           &lt;setting name="Transmit_end_interrupt_priority" value="3" /&gt;&#13;
           &lt;setting name="Receive_error_interrupt_priority" value="3" /&gt;&#13;

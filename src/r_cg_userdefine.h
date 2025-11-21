@@ -23,7 +23,7 @@
 * Device(s)    : R5F104AA
 * Tool-Chain   : CCRL
 * Description  : This file includes user definition.
-* Creation Date: 11/5/2025
+* Creation Date: 11/14/2025
 ***********************************************************************************************************************/
 
 #ifndef _USER_DEF_H
@@ -36,7 +36,7 @@ User definitions
 /* Start user code for function. Do not edit comment generated here */
 #define	FIRMWARE_VER 915
 #define C750 0
-#define D_TYPE 1
+#define D_TYPE 0
 //define type of UPS
 #if C750
 //C750
