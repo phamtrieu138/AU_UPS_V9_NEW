@@ -23,7 +23,7 @@
 * Device(s)    : R5F104AA
 * Tool-Chain   : CCRL
 * Description  : This file implements device driver for Serial module.
-* Creation Date: 11/14/2025
+* Creation Date: 11/24/2025
 ***********************************************************************************************************************/
 
 #ifndef SERIAL_H
@@ -373,8 +373,8 @@ Macro definitions (Register bit)
 /***********************************************************************************************************************
 Macro definitions
 ***********************************************************************************************************************/
-#define _8800_UART0_RECEIVE_DIVISOR      (0x8800U)
-#define _8800_UART0_TRANSMIT_DIVISOR     (0x8800U)
+#define _CE00_UART0_RECEIVE_DIVISOR      (0xCE00U)
+#define _CE00_UART0_TRANSMIT_DIVISOR     (0xCE00U)
 
 /***********************************************************************************************************************
 Typedef definitions
