@@ -52,7 +52,7 @@
         <CompileOptions>
           <Option>-cpu=S3</Option>
           <Option>-c</Option>
-          <Option>-dev="C:/Users/phamv/.eclipse/com.renesas.platform_1435879475/DebugComp/RL78/RL78/Common/DR5F104AA.DVF"</Option>
+          <Option>-dev="C:/Users/PVTRIEU-PC/.eclipse/com.renesas.platform_1435879475/DebugComp/RL78/RL78/Common/DR5F104AA.DVF"</Option>
           <Option>-I "${ProjDirPath}\CCRL_100\lib"</Option>
           <Option>-I "${ProjDirPath}\generate"</Option>
           <Option>-I "${ProjDirPath}\src"</Option>
@@ -65,20 +65,20 @@
         <AssembleOptions>
           <Option>-cpu=S3</Option>
           <Option>-c</Option>
-          <Option>-dev="C:/Users/phamv/.eclipse/com.renesas.platform_1435879475/DebugComp/RL78/RL78/Common/DR5F104AA.DVF"</Option>
+          <Option>-dev="C:/Users/PVTRIEU-PC/.eclipse/com.renesas.platform_1435879475/DebugComp/RL78/RL78/Common/DR5F104AA.DVF"</Option>
           <Option>-character_set=utf8</Option>
           <Option>-g</Option>
           <Option>-o "${ProjDirPath}\${ConfigName}"</Option>
         </AssembleOptions>
         <LinkOptions>
-          <Option>-device="C:/Users/phamv/.eclipse/com.renesas.platform_1435879475/DebugComp/RL78/RL78/Common/DR5F104AA.DVF"</Option>
+          <Option>-device="C:/Users/PVTRIEU-PC/.eclipse/com.renesas.platform_1435879475/DebugComp/RL78/RL78/Common/DR5F104AA.DVF"</Option>
           <Option>-list</Option>
           <Option>-show=total_size</Option>
           <Option>-nooptimize</Option>
           <Option>-entry=_start</Option>
           <Option>-auto_section_layout</Option>
           <Option>-security_id=00000000000000000000</Option>
-          <Option>-user_opt_byte=F5FFE9</Option>
+          <Option>-user_opt_byte=F533E9</Option>
           <Option>-ocdbg=04</Option>
           <Option>-ocdtr</Option>
           <Option>-output="${ProjName}.abs"</Option>
@@ -271,7 +271,7 @@
     &lt;TRD1_INTP0 Name="TRD1_INTP0" Value="0" /&gt;&#13;
     &lt;ELC_TARGET8 Name="ELC_TARGET8" Text="disable" /&gt;&#13;
     &lt;ProjectName Name="PrjName" Text="FC750_V9" /&gt;&#13;
-    &lt;ProjectPath Name="PrjPath" Text="D:\HTK_PROJECT\AUSDOOR\UPS V9\FirmWare\FC750_V9\AU_UPS_V9_NEW" /&gt;&#13;
+    &lt;ProjectPath Name="PrjPath" Text="D:\HTK_PROJECT\AUSDOOR\UPS V9\FirmWare\AU_UPS_V9_NEW_9.2.0" /&gt;&#13;
     &lt;ProjectKind Name="PrjKind" Text="Project78K0R" /&gt;&#13;
     &lt;DeviceName Name="DeviceName" Fixed="" Text="RL78G14" /&gt;&#13;
     &lt;CPUCoreType Name="CPUCoreType" Fixed="" Text="1" /&gt;&#13;
@@ -299,7 +299,7 @@
     &lt;StartAddressOfOnChipDebugOptionBytes Name="GOStart" Text="3F00" /&gt;&#13;
     &lt;SizeOfOnChipDebugOptionBytesArea Name="GOSizeValue" Text="256" /&gt;&#13;
     &lt;UserOptionBytes Name="GB" Text="1" /&gt;&#13;
-    &lt;UserOptionBytesValue Name="GBValue" Text="F5FFE9" /&gt;&#13;
+    &lt;UserOptionBytesValue Name="GBValue" Text="F533E9" /&gt;&#13;
     &lt;RAMStartAddress Chip="R5F104AA,R5F104BA,R5F104CA,R5F104EA,R5F104FA,R5F104GA,R5F104HA" Name="RAMStartAddress" Fixed="" Text="000FF500" /&gt;&#13;
     &lt;RAMEndAddress Name="RAMEndAddress" Fixed="" Text="000FFEFF" /&gt;&#13;
     &lt;ROMEndAddress Chip="R5F104AA,R5F104BA,R5F104CA,R5F104EA,R5F104FA,R5F104GA,R5F104HA" Name="ROMEndAddress" Fixed="" Text="00003FFF" /&gt;&#13;
@@ -414,7 +414,7 @@
           &lt;P11 Name="P11/SI11/SDA11/TRDIOC1" Nch="true" AltFunc="P11" Point="I/O" /&gt;&#13;
           &lt;P12 Chip="R5F104AA,R5F104AC,R5F104AD,R5F104AE,R5F104BA,R5F104BC,R5F104BD,R5F104BE,R5F104CA,R5F104CC,R5F104CD,R5F104CE,R5F104EA,R5F104EC,R5F104ED,R5F104EE,R5F104FA,R5F104FC,R5F104FD,R5F104FE,R5F104GA,R5F104GC,R5F104GD,R5F104GE,R5F104JC,R5F104JD,R5F104JE,R5F104LC,R5F104LD,R5F104LE" Name="P12/SO11/TRDIOB1" AltFunc="TRDIOB1_P12" Point="I/O" /&gt;&#13;
           &lt;P13 Chip="R5F104AA,R5F104AC,R5F104AD,R5F104AE,R5F104BA,R5F104BC,R5F104BD,R5F104BE,R5F104CA,R5F104CC,R5F104CD,R5F104CE,R5F104EA,R5F104EC,R5F104ED,R5F104EE,R5F104FA,R5F104FC,R5F104FD,R5F104FE,R5F104GA,R5F104GC,R5F104GD,R5F104GE,R5F104JC,R5F104JD,R5F104JE,R5F104LC,R5F104LD,R5F104LE" Name="P13/TXD2/SO20/TRDIOA1" Nch="true" AltFunc="TRDIOA1_P13" Point="I/O" /&gt;&#13;
-          &lt;P14 Name="P14/RXD2/SI20/SDA20/TRDIOD0" TTL="true" Nch="true" AltFunc="" Point="I/O" /&gt;&#13;
+          &lt;P14 Name="P14/RXD2/SI20/SDA20/TRDIOD0" TTL="true" Nch="true" AltFunc="P14" Point="I/O" /&gt;&#13;
           &lt;P15 Name="P15/_SCK20/SCL20/TRDIOB0" TTL="true" Nch="true" AltFunc="TRDIOB0_P15" Point="I/O" /&gt;&#13;
           &lt;P16 Chip="R5F104AA,R5F104AC,R5F104AD,R5F104AE,R5F104BA,R5F104BC,R5F104BD,R5F104BE,R5F104CA,R5F104CC,R5F104CD,R5F104CE,R5F104EA,R5F104EC,R5F104ED,R5F104EE,R5F104FA,R5F104FC,R5F104FD,R5F104FE,R5F104GA,R5F104GC,R5F104GD,R5F104GE,R5F104JC,R5F104JD,R5F104JE,R5F104LC,R5F104LD,R5F104LE" Name="P16/TI01/TO01/INTP5/TRDIOC0" TTL="true" AltFunc="P16" Point="I/O" /&gt;&#13;
           &lt;P17 Chip="R5F104AA,R5F104AC,R5F104AD,R5F104AE,R5F104BA,R5F104BC,R5F104BD,R5F104BE,R5F104CA,R5F104CC,R5F104CD,R5F104CE,R5F104EA,R5F104EC,R5F104ED,R5F104EE,R5F104FA,R5F104FC,R5F104FD,R5F104FE,R5F104GA,R5F104GC,R5F104GD,R5F104GE,R5F104JC,R5F104JD,R5F104JE,R5F104LC,R5F104LD,R5F104LE" Name="P17/TI02/TO02/TRDIOA0/TRDCLK" TTL="true" Nch="true" AltFunc="TRDIOA0_P17" Point="I/O" /&gt;&#13;
@@ -1355,7 +1355,6 @@
         &lt;pior1_value Name="pior1_value" Value="00" /&gt;&#13;
         &lt;cg_security1 Name="cg_security1" Value="00" /&gt;&#13;
         &lt;cg_security9 Name="cg_security9" Value="00" /&gt;&#13;
-        &lt;lvi_option Name="lvi_option" Value="FF" /&gt;&#13;
         &lt;cg_security6 Name="cg_security6" Value="00" /&gt;&#13;
         &lt;cg_crc_area Name="cg_crc_area" Value="00" /&gt;&#13;
         &lt;cg_iawctl_value Name="cg_iawctl_value" Value="00" /&gt;&#13;
@@ -1366,8 +1365,9 @@
         &lt;cg_security4 Name="cg_security4" Value="00" /&gt;&#13;
         &lt;pior_value Name="pior_value" Value="00" /&gt;&#13;
         &lt;cg_pms_value Name="cg_pms_value" Value="00" /&gt;&#13;
-        &lt;cg_security7 Name="cg_security7" Value="00" /&gt;&#13;
         &lt;cg_option Name="cg_option" Value="04" /&gt;&#13;
+        &lt;cg_security7 Name="cg_security7" Value="00" /&gt;&#13;
+        &lt;lvi_option Name="lvi_option" Value="33" /&gt;&#13;
       &lt;/GlobleUserTag&gt;&#13;
     &lt;/TAG&gt;&#13;
   &lt;/DIR&gt;&#13;
@@ -1423,8 +1423,8 @@
     &lt;ELC SetFlag="False" HelpID="elc" NeedRefresh="False"&gt;&#13;
       &lt;ELC Accelerate="No" MacroName="ELC" SetFlag="False" /&gt;&#13;
     &lt;/ELC&gt;&#13;
-    &lt;LVD SetFlag="False" Prepared="true" HelpID="lvi" NeedRefresh="False"&gt;&#13;
-      &lt;LVD MacroName="LVD" SetFlag="False" /&gt;&#13;
+    &lt;LVD SetFlag="True" Prepared="true" HelpID="lvi" NeedRefresh="False"&gt;&#13;
+      &lt;LVD MacroName="LVD" SetFlag="True" /&gt;&#13;
     &lt;/LVD&gt;&#13;
   &lt;/MACRO&gt;&#13;
   &lt;SETTING&gt;&#13;
@@ -1526,7 +1526,7 @@
           &lt;setting name="Output_value" value="0" /&gt;&#13;
         &lt;/P13&gt;&#13;
         &lt;P14&gt;&#13;
-          &lt;setting name="Operation" value="unused" /&gt;&#13;
+          &lt;setting name="Operation" value="output" /&gt;&#13;
           &lt;setting name="Pull_up" value="unused" /&gt;&#13;
           &lt;setting name="TTL_buffer" value="unused" /&gt;&#13;
           &lt;setting name="N-ch_open-drain" value="unused" /&gt;&#13;
@@ -2246,8 +2246,8 @@
       &lt;/ELSELR6&gt;&#13;
     &lt;/ELC&gt;&#13;
     &lt;LVD&gt;&#13;
-      &lt;setting name="Operation" value="unused" /&gt;&#13;
-      &lt;setting name="Reset_only_level" value="0" /&gt;&#13;
+      &lt;setting name="Operation" value="used" /&gt;&#13;
+      &lt;setting name="Reset_only_level" value="11" /&gt;&#13;
       &lt;setting name="InterruptReset_level" value="0" /&gt;&#13;
       &lt;setting name="Interrupt_level" value="0" /&gt;&#13;
       &lt;setting name="Interrupt_only_level" value="0" /&gt;&#13;

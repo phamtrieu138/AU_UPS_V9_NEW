@@ -23,7 +23,7 @@
 * Device(s)    : R5F104AA
 * Tool-Chain   : CCRL
 * Description  : This file includes user definition.
-* Creation Date: 11/14/2025
+* Creation Date: 6/2/2026
 ***********************************************************************************************************************/
 
 #ifndef _USER_DEF_H
@@ -34,18 +34,18 @@ User definitions
 ***********************************************************************************************************************/
 
 /* Start user code for function. Do not edit comment generated here */
-#define	FIRMWARE_VER 915
-#define C750 0
-#define D_TYPE 0
+#define	FIRMWARE_VER 920
+#define C750 1
+#define D_TYPE 1
 //define type of UPS
 #if C750
 //C750
-	#define OUTPUT_DIS_OVERLOAD2 	325		//325 V9.1.0  - 290
+	#define OUTPUT_DIS_OVERLOAD2 	373		//325 V9.1.0  - 290
 	#define OUTPUT_GRID_OVERLOAD 	450  //650 V9.1.0
 	#define	MAX_TIME_DIS			18000000   //50h
 #else
 //C1200
-	#define OUTPUT_DIS_OVERLOAD2 	405    //450 V9.1.0
+	#define OUTPUT_DIS_OVERLOAD2 	466    //450 V9.1.0
 	#define OUTPUT_GRID_OVERLOAD 	470  //650 V9.1.0
 	#define	MAX_TIME_DIS			26640000	//74h
 #endif

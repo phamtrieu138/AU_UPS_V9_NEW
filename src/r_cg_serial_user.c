@@ -23,7 +23,7 @@
 * Device(s)    : R5F104AA
 * Tool-Chain   : CCRL
 * Description  : This file implements device driver for Serial module.
-* Creation Date: 11/14/2025
+* Creation Date: 6/2/2026
 ***********************************************************************************************************************/
 
 /***********************************************************************************************************************
@@ -59,6 +59,7 @@ uint8_t dataReadOut[10][4];
 uint8_t receiveArray[8];
 uartData_t receivedData;
 uint8_t RXdataReceiver;
+extern uint8_t timeOfChargeState;
 /* End user code. Do not edit comment generated here */
 
 /***********************************************************************************************************************
@@ -114,12 +115,49 @@ static void __near r_uart0_interrupt_send(void)
 static void r_uart0_callback_receiveend(void)
 {
     /* Start user code. Do not edit comment generated here */
-	//uartReceiveHandle(RXdataReceiver);
-	//R_UART0_Receive(&RXdataReceiver, 1);
-    /* End user code. Do not edit comment generated here */
+	uartReceiveHandle(RXdataReceiver);
+	R_UART0_Receive(&RXdataReceiver, 1);
+	/* End user code. Do not edit comment generated here */
 }
 
 /* Start user code for adding. Do not edit comment generated here */
+void uartReceiveHandle(uint8_t dataIn) {
+	uint8_t inputData = dataIn;
+	static uint8_t uartState = 0;
+	switch (uartState) {
+	case 0:
+		if (inputData == 0xAA)
+			uartState++;
+		break;
+	case 1:
+		if (inputData == 0xBB)
+			uartState++;
+		else
+			uartState = 0;
+		break;
+	case 2:
+		if (inputData == 0xCC)
+			uartState++;
+		else
+			uartState = 0;
+		break;
+	case 3:
+		if (inputData == 0xDD)
+			uartState++;
+		else
+			uartState = 0;
+		break;
+	case 4:
+		if (inputData == 0xEE) {
+			timeOfChargeState = 0;
+		}
+		uartState = 0;
+		break;
+	default:
+		uartState = 0;
+		break;
+	}
+}
 /***********************************************************************************************************************
  * Function Name: checkSumCalcu
  * Description  : This function calculate check sum of data in array with length.

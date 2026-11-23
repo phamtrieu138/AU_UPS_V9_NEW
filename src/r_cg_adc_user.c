@@ -23,7 +23,7 @@
 * Device(s)    : R5F104AA
 * Tool-Chain   : CCRL
 * Description  : This file implements device driver for ADC module.
-* Creation Date: 11/14/2025
+* Creation Date: 6/2/2026
 ***********************************************************************************************************************/
 
 /***********************************************************************************************************************
@@ -232,11 +232,11 @@ static void __near r_adc_interrupt(void)
 			if (out_curr_data.sum <= 2) {
 				out_curr_data.RMS = 1;
 			} else {
-				while (((guess * guess) > out_curr_data.sum)&& (iterations <= 40)) {
+				while (((guess * guess) > out_curr_data.sum)&& (iterations <= 100)) {
 					guess = (guess + out_curr_data.sum / guess) >> 1;
 					iterations++;
 				}
-				guess = guess * 10;
+				guess = (uint16_t)((uint32_t)guess * 115/10);
 				out_curr_data.RMS = guess; //gia tri rms = thuc te *100;
 			}
 			doneCalcuRMS = 1;

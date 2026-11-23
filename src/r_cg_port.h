@@ -23,7 +23,7 @@
 * Device(s)    : R5F104AA
 * Tool-Chain   : CCRL
 * Description  : This file implements device driver for PORT module.
-* Creation Date: 11/14/2025
+* Creation Date: 6/2/2026
 ***********************************************************************************************************************/
 
 #ifndef PORT_H
@@ -206,16 +206,16 @@ void R_PORT_Create(void);
 //	#define LED_YELLOW 	P0_bit.no1
 //	#define LED_GREEN 	P1_bit.no0
 //AUS
-#define LED_GREEN 	P0_bit.no0
-#define LED_YELLOW 	P0_bit.no1
+#define LED_GREEN 	P0_bit.no1
+#define LED_YELLOW 	P1_bit.no4
 #define LED_RED 	P1_bit.no0
 
-#define D2		 	P0_bit.no0
-#define D1 			P0_bit.no1
-#define D0		 	P1_bit.no0
+#define D2		 	LED_GREEN
+#define D1 			LED_YELLOW
+#define D0		 	LED_RED
 
 #define SD_PP	 	P1_bit.no6
-#define ON_24V_MCU 	P4_bit.no0
+#define ON_24V_MCU 	P0_bit.no0
 #define RELAY	 	P1_bit.no1
 #define PB		 	P3_bit.no0
 #define LINE_IN	 	P2_bit.no3

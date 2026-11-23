@@ -23,7 +23,7 @@
 * Device(s)    : R5F104AA
 * Tool-Chain   : CCRL
 * Description  : This file implements main function.
-* Creation Date: 11/14/2025
+* Creation Date: 6/2/2026
 ***********************************************************************************************************************/
 
 /***********************************************************************************************************************
@@ -610,7 +610,7 @@ void main(void)
 					timeOut10ms = 9;
 				} else
 					--timeOut10ms;
-				if ((D_TYPE == 0) || (varCntTest > 350))
+				if ((D_TYPE == 0) || (varCntTest > 350)|| (timeOfChargeState == 0))
 					ledUpdate(sysCom.ledState, sysDis.errCode);
 				else
 					LED_D_UPDATE(SOC, sysCom.ledState);
@@ -664,7 +664,7 @@ void R_MAIN_UserInit(void)
 	ADCdataInit();
 	R_ADC_Set_OperationOn();
 	R_UART0_Start();
-	//R_UART0_Receive(&RXdataReceiver, 1);
+	R_UART0_Receive(&RXdataReceiver, 1);
 	EI();
 	/* End user code. Do not edit comment generated here */
 }
@@ -779,7 +779,9 @@ void uartSendData(void) {
 		dataUartOut[8] = (uint8_t) (out_curr_data.RMS >> 8);
 		dataUartOut[9] = (uint8_t) (sysDis.errCode);
 		dataUartOut[10] = (uint8_t) (sysDis.errCode >> 8);
-		R_UART0_Send(dataUartOut, 11);
+		dataUartOut[11] = (uint8_t) (timeOfChargeState);
+		dataUartOut[12] = (uint8_t) (timeOfChargeState >> 8);
+		R_UART0_Send(dataUartOut, 13);
 	}
 }
 /* End user code. Do not edit comment generated here */
